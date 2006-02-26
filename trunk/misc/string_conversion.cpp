@@ -30,27 +30,6 @@ string n(int v)
 	return b;
 }
 
-void trim(string& s)
-{
-	int i;
-	for (i = 0; i < s.length() && isspace(s[i]); i++)
-		;
-	s = s.substr(i);
-	i = s.length();
-	while (i-- && isspace(s[i]))
-		;
-	s.erase(i + 1);
-}
-
-string to_lower(const string& s)
-{
-	string r;
-	r.reserve(s.length());
-	for (int i = 0; i < s.length(); i++)
-		r += tolower(s[i]);
-	return r;
-}
-
 void split_key(const string& key, string& name, string& value)
 {
 	int i = key.find('=');

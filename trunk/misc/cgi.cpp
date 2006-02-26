@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "cgi.h"
 
+#include <boost/algorithm/string.hpp>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include "multi_line.h"
 #include "string_conversion.h"
 #include "xf2_mm.h"
+
+using namespace boost;
 
 const char* cgi_error_text[] = {
 	"Error: none",
@@ -25,18 +28,18 @@ string get_env(const string& name)
 
 static t_request_method get_request_method()
 {
-	const string v = to_lower(get_env("REQUEST_METHOD"));
-	if (v == "get")
+	const string v = get_env("REQUEST_METHOD");
+	if (iequals(v, "get"))
 		return rm_get;
-	else if (v == "post")
+	if (iequals(v, "post"))
 		return rm_post;
 	return rm_unknown;
 }
 
 static t_content_type get_content_type()
 {
-	const string v = to_lower(get_env("CONTENT_TYPE"));
-	if (v == "application/x-www-form-urlencoded")
+	const string v = get_env("CONTENT_TYPE");
+	if (iequals(v, "application/x-www-form-urlencoded"))
 		return ct_application;
 	return ct_unknown;
 }

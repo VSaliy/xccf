@@ -1,9 +1,10 @@
-#pragma warning(disable: 4786)
-
 #include "stdafx.h"
+#include <boost/algorithm/string.hpp>
 #include "cgi.h"
 #include "cookie.h"
 #include "string_conversion.h"
+
+using namespace boost;
 
 Ccookie::Ccookie()
 {
