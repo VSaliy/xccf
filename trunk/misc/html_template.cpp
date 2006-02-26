@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "html_template.h"
 
+#include <boost/algorithm/string.hpp>
 #include <cstdio>
 #include "../forum_database.h"
 #include "../forum_global.h"
 #include "multi_line.h"
+
+using namespace boost;
 
 enum t_template_element {te_if, te_else, te_endif, te_echo, te_literal, te_end};
 
@@ -216,13 +219,13 @@ int Ctemplate_write::import_line(string s)
 {
 	m_repeat_line = false;
 	s = trim_field(s);
-	if (string_equal_ip(s, "#"))
+	if (istarts_with(s, "#"))
 	{
 		close_literal();
 		Cmulti_line l = s.substr(1);
 		string c = l.get_next_line(' ');
 		string p = l.get_next_line(' ');
-		if (string_equal_i(c, "define"))
+		if (iequals(c, "define"))
 		{
 			if (!m_name.empty())
 			{
@@ -238,17 +241,17 @@ int Ctemplate_write::import_line(string s)
 				return 1;
 			}
 		}
-		else if (string_equal_ip(c, "if"))
+		else if (istarts_with(c, "if"))
 		{
 			*m_w++ = te_if;
 			*reinterpret_cast<int*>(m_w) = p == "1" ? -2 : m_database.get_string_i(p);
 			m_w += sizeof(int);
 		}
-		else if (string_equal_ip(c, "else"))
+		else if (istarts_with(c, "else"))
 		{
 			*m_w++ = te_else;
 		}
-		else if (string_equal_ip(c, "endif"))
+		else if (istarts_with(c, "endif"))
 		{
 			*m_w++ = te_endif;
 		}
@@ -260,7 +263,7 @@ int Ctemplate_write::import_line(string s)
 		for (int i = 0; i < s.length(); )
 		{
 			char c = s[i];
-			if (c == '<' && string_equal_ip(s.c_str() + i, "<%"))
+			if (c == '<' && istarts_with(s.c_str() + i, "<%"))
 			{
 				i += 2;
 				int j = s.find("%>", i);

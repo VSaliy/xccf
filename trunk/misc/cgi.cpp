@@ -199,7 +199,7 @@ string web_decode(const string& v)
 		{
 			const char* a = v.c_str() + i + 1;
 			int j = v.find(';', i + 1);
-			if (string_equal_ip(a, "nbsp;"))
+			if (istarts_with(a, "nbsp;"))
 			{
 				i = j;
 				r += ' ';

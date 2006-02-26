@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <boost/algorithm/string.hpp>
 #include <cstdio>
 #include <ctime>
 #ifdef WIN32
@@ -29,6 +30,8 @@
 #include "string_conversion.h"
 #include "xcc_z.h"
 #include "xf2_mm.h"
+
+using namespace boost;
 
 Ccgi_input cgi;
 Ccookie cookie = static_cast<Cmulti_line>(cgi.get_cookie());
@@ -88,7 +91,7 @@ static string strip_quotes(const string& v)
 		}
 		else
 			line = v.substr(i, p - i + 1);
-		if (!string_equal_ip(line, "> "))
+		if (!istarts_with(line, "> "))
 			r += line;
 		i = p + 1;
 	}

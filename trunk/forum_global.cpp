@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "forum_global.h"
 
+#include <boost/algorithm/string.hpp>
 #include <cstdio>
 #include "forum_database.h"
 #include "html_template.h"
 #include "string_conversion.h"
 #include "web_tools.h"
 #include "xf2_mm.h"
+
+using namespace boost;
 
 const char* mt_name[] = 
 {
@@ -106,7 +109,7 @@ int text_cy(const string& v, bool ignore_quotes)
 		if (ignore_quotes)
 		{
 			string line = v.substr(i, p - i);
-			if (!line.empty() && !string_equal_ip(line, "> "))
+			if (!line.empty() && !istarts_with(line, "> "))
 				r++;
 		}
 		else
@@ -119,18 +122,18 @@ int text_cy(const string& v, bool ignore_quotes)
 static bool tag_valid(const string& v)
 {
 	return *v.c_str() == '/'
-		|| string_equal_i(v, "b")
-		|| string_equal_i(v, "i")
-		|| string_equal_i(v, "u");
+		|| iequals(v, "b")
+		|| iequals(v, "i")
+		|| iequals(v, "u");
 }
 
 static string encode_local_url(const string& url, const string& local_domain_url, const string& local_forum_url)
 {
-	if (!local_forum_url.empty() && string_equal_ip(url, local_forum_url))
+	if (!local_forum_url.empty() && istarts_with(url, local_forum_url))
 	{
 		return url.substr(local_forum_url.length());
 	}
-	if (!local_domain_url.empty() && string_equal_ip(url, local_domain_url))
+	if (!local_domain_url.empty() && istarts_with(url, local_domain_url))
 		return url.substr(local_domain_url.length());
 	return url;
 }
@@ -162,12 +165,12 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 	string w;
 	for (int i = 0; i < v.length(); )
 	{
-		if (string_equal_ip(v.c_str() + i, "ftp.")
-			|| string_equal_ip(v.c_str() + i, "ftp://")
-			|| string_equal_ip(v.c_str() + i, "http://")
-			|| string_equal_ip(v.c_str() + i, "https://")
-			|| string_equal_ip(v.c_str() + i, "mailto:")
-			|| string_equal_ip(v.c_str() + i, "www."))
+		if (istarts_with(v.c_str() + i, "ftp.")
+			|| istarts_with(v.c_str() + i, "ftp://")
+			|| istarts_with(v.c_str() + i, "http://")
+			|| istarts_with(v.c_str() + i, "https://")
+			|| istarts_with(v.c_str() + i, "mailto:")
+			|| istarts_with(v.c_str() + i, "www."))
 		{
 			r += highlight(w, hl);
 			w.erase();
@@ -185,12 +188,12 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 			if (v[p - 1] == ')')
 				p--;
 			string url = web_encode(v.substr(i, p - i));
-			if (string_equal_ip(v.c_str() + i, "ftp."))
+			if (istarts_with(v.c_str() + i, "ftp."))
 				r += web_link(highlight(url, hl), "ftp://" + url, false);
-			else if (string_equal_ip(v.c_str() + i, "www."))
+			else if (istarts_with(v.c_str() + i, "www."))
 				r += web_link(highlight(url, hl), "http://" + url, false);
 			else
-				r += web_link(highlight(string_equal_ip(v.c_str() + i, "mailto:") ? url.substr(7) : encode_local_url(url, local_domain_url, local_forum_url), hl), url, false);
+				r += web_link(highlight(istarts_with(v.c_str() + i, "mailto:") ? url.substr(7) : encode_local_url(url, local_domain_url, local_forum_url), hl), url, false);
 			i = p;
 		}
 		else 
@@ -200,7 +203,7 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 			{
 				for (t_smily_map::const_iterator j = smily_map.begin(); j != smily_map.end(); j++)					
 				{
-					if (string_equal_ip(v.c_str() + i, j->first))
+					if (istarts_with(v.c_str() + i, j->first))
 					{
 						r += highlight(w, hl);
 						w.erase();
@@ -243,7 +246,7 @@ string encode_text(const string& v, const t_smily_map& smily_map, const string& 
 		string line = v.substr(i, p - i);
 		if (remove_html)
 			line = encode_field(line, smily_map, local_domain_url, local_forum_url, hl);
-		r += add_span && string_equal_ip(line, "> ")
+		r += add_span && istarts_with(line, "> ")
 			? html_span(line, "class=quote")
 			: line;
 		if (add_br)

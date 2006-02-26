@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "form_message.h"
 
+#include <boost/algorithm/string.hpp>
 #include "string_conversion.h"
+
+using namespace boost;
 
 Cform_message::Cform_message(Cforum_database& database):
 	Cform_base(database)
@@ -71,7 +74,7 @@ void Cform_message::write_cookie(const Ccookie& v)
 
 static string adjust_subject(const string& v)
 {
-	return string_equal_ip(v, "Re: ") ? v : "Re: " + v;
+	return istarts_with(v, "Re: ") ? v : "Re: " + v;
 }
 
 static string adjust_body(const string& v)
@@ -90,7 +93,7 @@ static string adjust_body(const string& v)
 		else
 			line = v.substr(i, p - i + 1);
 		i = p + 1;
-		if (string_equal_ip(line, "> > > > "))
+		if (istarts_with(line, "> > > > "))
 			continue;
 		if (!trim_field(line).empty())
 			r += "> ";
