@@ -1,0 +1,104 @@
+#include "stdafx.h"
+#include "string_conversion.h"
+
+#include <cstdio>
+#include <ctime>
+
+int a2ip(const string& s)
+{
+	int r = 0;
+	int l = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		int c = s.find('.', l);
+		r = r << 8 | atoi(s.substr(l, c - l).c_str());
+		l = c + 1;
+	}
+	r = r << 8 | atoi(s.substr(l).c_str());
+	return r;
+}
+
+string ip2a(int v)
+{
+	return n(v >> 24 & 0xff) + '.' + n(v >> 16 & 0xff) + '.' + n(v >> 8 & 0xff) + '.' + n(v & 0xff);
+}
+
+string n(int v)
+{
+	char b[12];
+	sprintf(b, "%d", v);
+	return b;
+}
+
+void trim(string& s)
+{
+	int i;
+	for (i = 0; i < s.length() && isspace(s[i]); i++)
+		;
+	s = s.substr(i);
+	i = s.length();
+	while (i-- && isspace(s[i]))
+		;
+	s.erase(i + 1);
+}
+
+string to_lower(const string& s)
+{
+	string r;
+	r.reserve(s.length());
+	for (int i = 0; i < s.length(); i++)
+		r += tolower(s[i]);
+	return r;
+}
+
+void split_key(const string& key, string& name, string& value)
+{
+	int i = key.find('=');
+	if (i == string::npos)
+	{
+		name = key;
+		value.erase();
+	}
+	else
+	{
+		name = key.substr(0, i);
+		value = key.substr(i + 1);
+	}
+}
+
+bool string_equal_i(const char* a, const char* b)
+{
+	while (1)
+	{
+		if (*a != *b && tolower(*a) != tolower(*b))
+			return false;
+		if (!*a)
+			return true;
+		a++;
+		b++;
+	}
+}
+
+bool string_equal_ip(const char* a, const char* b)
+{
+	while (1)
+	{
+		if (!*b)
+			return true;
+		if (*a != *b && tolower(*a) != tolower(*b))
+			return false;
+		a++;
+		b++;
+	}
+}
+
+string time2a(time_t v)
+{
+	char b[20];
+	const tm* date = gmtime(&v);
+	if (date)
+		sprintf(b, "%04d-%02d-%02d %02d:%02d:%02d", date->tm_year + 1900, date->tm_mon + 1, date->tm_mday, date->tm_hour, date->tm_min, date->tm_sec);
+	else
+		*b = 0;
+	return b;
+}
