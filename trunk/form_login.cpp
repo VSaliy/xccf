@@ -2,7 +2,6 @@
 #include "form_login.h"
 
 #include "forum_global.h"
-#include "string_conversion.h"
 
 Cform_login::Cform_login(Cforum_database& database):
 	Cform_base(database)

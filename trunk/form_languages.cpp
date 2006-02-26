@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "form_languages.h"
 
-#include "string_conversion.h"
-
 Cform_languages::Cform_languages(Cforum_database& database):
 	Cform_base(database)
 {

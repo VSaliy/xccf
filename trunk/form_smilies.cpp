@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "form_smilies.h"
 
-#include "string_conversion.h"
-
 Cform_smilies::Cform_smilies(Cforum_database& database):
 	Cform_base(database)
 {

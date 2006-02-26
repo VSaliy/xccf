@@ -2,7 +2,6 @@
 #include "form_register.h"
 
 #include "forum_global.h"
-#include "string_conversion.h"
 
 Cform_register::Cform_register(Cforum_database& database):
 	Cform_base(database)

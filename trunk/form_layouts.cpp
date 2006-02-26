@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "form_layouts.h"
 
-#include "string_conversion.h"
-
 Cform_layouts::Cform_layouts(Cforum_database& database):
 	Cform_base(database)
 {

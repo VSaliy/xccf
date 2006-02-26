@@ -2,7 +2,6 @@
 #include "form_profile.h"
 
 #include "forum_global.h"
-#include "string_conversion.h"
 #include "web_tools.h"
 
 Cform_profile::Cform_profile(Cforum_database& database):

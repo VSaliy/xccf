@@ -2,7 +2,6 @@
 #include "form_password.h"
 
 #include "forum_global.h"
-#include "string_conversion.h"
 
 Cform_password::Cform_password(Cforum_database& database):
 	Cform_base(database)
