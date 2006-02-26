@@ -1,0 +1,953 @@
+#define html_file
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<%html_head%>
+<%html_top%>
+<%html_page%>
+<%html_bottom%>
+
+#define html_head
+<link rel=stylesheet href="<%css%>">
+#if custom_css
+	<link rel=stylesheet href="<%custom_css%>">
+#endif
+<title>
+	#if page_title
+		<%page_title%> -<% %>
+	#endif
+	<%forum_title%>
+</title>
+
+#define html_top
+<table width="100%">
+	<tr>
+		<td valign=bottom>
+			<span class=page_title>
+				#if page_title
+					<%page_title%> -<% %>
+				#endif
+				<%forum_title%>
+			</span>
+
+		<td align=right valign=bottom>
+			#if uid
+				<a href="<%link_logout%>"><%link_text_logout%></a> |<% %>
+				<a href="<%link_password%>"><%link_text_password%></a> |<% %>
+				<a href="<%link_preferences%>"><%link_text_preferences%></a> |<% %>
+				<a href="<%link_profile%>"><%link_text_profile%></a> |<% %>
+			#else
+				<a href="<%link_register%>"><%link_text_register%></a> |<% %>
+				<a href="<%link_login%>"><%link_text_login%></a> |<% %>
+			#endif
+			<a href="<%link_search%>"><%link_text_search%></a>
+			<br>
+			<a href="<%link_history%>"><%link_text_history%></a> |<% %>
+			<a href="<%link_home%>"><%link_text_home%></a> |<% %>
+			#if link_reply
+				#if 0
+					<a href="<%link_reply%>"><%link_text_reply%> |<% %>
+				#endif
+			#else
+				<a href="<%link_post%>"><%link_text_post%></a> |<% %>
+			#endif
+			<a href="<%link_recent_messages%>"><%link_text_recent_messages%></a>
+</table>
+<hr>
+
+#define html_bottom
+<hr>
+<table width="100%">
+	<tr>
+		<td valign=top>
+			<%date_long%><br>
+			#if uid
+				Welcome back <a href="<%url_show_user%>"><%name%></a>!
+			#endif
+		<td align=right valign=top>
+			#if link_admin
+				<a href="<%link_admin%>"><%link_text_admin%></a> |<% %>
+			#endif
+			#if link_moderate
+				<a href="<%link_moderate%>"><%link_text_moderate%></a> |<% %>
+			#endif
+			<a href="<%link_home%>"><%link_text_home%></a> |<% %>
+			#if link_reply
+				<a href="<%link_reply%>"><%link_text_reply%></a> |<% %>
+			#else
+				<a href="<%link_post%>"><%link_text_post%></a> |<% %>
+			#endif
+			<a href="<%link_user_list%>"><%link_text_user_list%></a> |<% %>
+			<a href="<%link_recent_messages%>"><%link_text_recent_messages%></a>
+			<br>
+			#if link_languages
+				<a href="?flush_template_cache="><%link_text_flush_template_cache%></a> |<% %>
+				<a href="<%link_ipa_search%>"><%link_text_ipa_search%></a> |<% %>
+				<a href="<%link_config%>"><%link_text_config%></a> |<% %>
+				<a href="<%link_languages%>"><%link_text_languages%></a> |<% %>
+				<a href="<%link_layouts%>"><%link_text_layouts%></a> |<% %>
+				<a href="<%link_smilies%>"><%link_text_smilies%></a> |<% %>
+				<a href="<%link_styles%>"><%link_text_styles%></a>
+			#endif
+</table>
+
+#define page_login
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+			<td width="100%"><%field_error_name%>
+		<tr>
+			<td align=right>Password:
+			<td><%field_password%>
+			<td><%field_error_password%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Login">
+	</table>
+</form>
+
+#define page_message
+<form action="<%action%>" method=post>
+	<table width="100%">
+		#if field_name
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+			<td><%field_error_name%>
+		#endif
+		<tr>
+			<td align=right>Subject:
+			<td><%field_subject%>
+			<td><%field_error_subject%>
+			<td rowspan=999><%smily_legend%>
+		<tr>
+			<td align=right>Body:
+			<td><%field_body%>
+			<td><%field_error_body%>
+		#if field_type
+			<tr>
+				<td align=right>Type:
+				<td><%field_type%>
+				<td><%field_error_type%>
+		#endif
+		#if field_allow_smilies
+			<tr>
+				<td>
+				<td><%field_allow_smilies%> Enable smilies
+		#endif
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Submit">
+	</table>
+</form>
+
+#define page_password
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Old password:
+			<td><%field_old_password%>
+			<td width="100%"><%field_error_old_password%>
+		<tr>
+			<td align=right>Password:
+			<td><%field_password%>
+			<td><%field_error_password%>
+		<tr>
+			<td align=right>Password (again):
+			<td><%field_password_again%>
+			<td><%field_error_password_again%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Submit">
+	</table>
+</form>
+
+#define page_preferences
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Custom CSS:
+			<td><%field_custom_css%>
+			<td width="100%"><%field_error_custom_css%>
+		<tr>
+			<td align=right>Language:
+			<td><%field_language%>
+		<tr>
+			<td align=right>Layout:
+			<td><%field_layout%>
+		<tr>
+			<td align=right>Style:
+			<td><%field_style%>
+		<tr>
+			<td align=right>Field height:
+			<td><%field_field_height%>
+			<td><%field_error_field_height%>
+		<tr>
+			<td align=right>Field length:
+			<td><%field_field_length%>
+			<td><%field_error_field_length%>
+		<tr>
+			<td align=right>Rows per page:
+			<td><%field_rows_per_page%>
+			<td><%field_error_rows_per_page%>
+		<tr>
+			<td align=right>Time offset:
+			<td><%field_time_offset%>
+			<td><%field_error_time_offset%>
+		<tr>
+			<td>
+			<td><%field_notify_mail%> Notify me by email when somebody replies to my messages
+			<td><%field_error_notify_mail%>
+		<tr>
+			<td>
+			<td><%field_notify_icq%> Notify me by ICQ when somebody replies to my messages
+			<td><%field_error_notify_icq%>
+		<tr>
+			<td>
+			<td><%field_enable_signatures%> Enable signatures
+		<tr>
+			<td>
+			<td><%field_enable_smilies%> Enable smilies
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Submit">
+	</table>
+</form>
+
+#define page_profile
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+			<td width="100%"><%field_error_name%>
+		<tr>
+			<td align=right>Private mail:
+			<td><%field_private_mail%>
+			<td><%field_error_private_mail%>
+		<tr>
+			<td align=right>Public mail:
+			<td><%field_public_mail%>
+			<td><%field_error_public_mail%>
+		<tr>
+			<td align=right>Signature:
+			<td><%field_signature%>
+			<td><%field_error_signature%>
+		<tr>
+			<td align=right>ICQ ID:
+			<td><%field_icq_id%>
+			<td><%field_error_icq_id%>
+		<tr>
+			<td align=right>Link title:
+			<td><%field_link_title%>
+			<td><%field_error_link_title%>
+		<tr>
+			<td align=right>Link:
+			<td><%field_link%>
+			<td><%field_error_link%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Submit">
+	</table>
+</form>
+
+#define page_register
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+			<td width="100%"><%field_error_name%>
+		<tr>
+			<td align=right>Password:
+			<td><%field_password%>
+			<td><%field_error_password%>
+		<tr>
+			<td align=right>Password (again):
+			<td><%field_password_again%>
+			<td><%field_error_password_again%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Register">
+	</table>
+</form>
+
+#define page_show_message
+<table width="100%">
+	<%list2%>
+	<tr>
+		<td><%subject%>
+		<td>
+			#if uid
+				<a href="<%url_show_user%>"><%name%></a>
+			#else
+				<%name%>
+			#endif
+			#if url_find_messages_by_name
+				<% %>(<a href="<%url_find_messages_by_name%>">messages</a>)
+			#endif
+		<td><%date%>
+		<td>
+		<td width="100%">
+			<%ipa%>
+			#if url_find_messages_by_ipa
+				<% %>(<a href="<%url_find_messages_by_ipa%>">messages</a>)
+			#endif
+</table>
+<hr>
+<div style="float: right">
+	#if can_moderate
+		#if link_allow_html
+			<a href="<%link_allow_html%>">Allow HTML</a>
+		#else
+			<a href="<%link_disallow_html%>">Disallow HTML</a>
+		#endif
+		<% %>|<% %>
+		#if 0
+			#if link_hide
+				<a href="<%link_hide%>">Hide</a> |
+			#else
+				<a href="<%link_unhide%>">Unhide</a> |
+			#endif
+		#endif
+		#if link_lock
+			<a href="<%link_lock%>">Lock</a>
+		#else
+			<a href="<%link_unlock%>">Unlock</a>
+		#endif
+		<% %>|<% %><a href="<%link_edit%>">Edit</a>
+	#endif
+	#if can_admin
+		<% %>|<% %>
+		#if link_create_forum
+			<a href="<%link_create_forum%>">Create forum</a>
+		#else
+			<a href="<%link_destroy_forum%>">Destroy forum</a>
+		#endif
+		<% %>|<% %>
+		#if link_moderate_forum
+			<a href="<%link_moderate_forum%>">Moderate forum</a>
+		#else
+			<a href="<%link_unmoderate_forum%>">Unmoderate</a>
+		#endif
+	#endif
+</div>
+
+<p class=body>
+	<%body%>
+
+#if signature
+<p class=signature>
+	<%signature%>
+#endif
+
+#if icq_id
+<p>
+	<a target=_top href="http://wwp.icq.com/<%icq_id%>"><img src="http://status.icq.com/online.gif?icq=<%icq_id%>&amp;img=2"></a>
+#endif
+
+#if link
+<p>
+	<a target=_top href="<%link%>"><%link_title%></a>
+#endif
+
+#if list
+<hr>
+
+<table width="100%">
+	<%list%>
+</table>
+#endif
+
+<hr>
+
+If you would like to post a reply, use the form below.
+
+<p>
+	<%page_message%>
+
+#define page_show_user
+<table>
+	<tr>
+		<td align=right>User ID:
+		<td><%uid%>
+	<tr>
+		<td align=right>Name:
+		<td><%name%>
+	<tr>
+		<td align=right>Mail:
+		<td><a href="mailto: <%name%> <<%public_mail%>>"><%public_mail%></a>
+	<tr>
+		<td align=right>Signature:
+		<td><%user_signature%>
+	<tr>
+		<td align=right>ICQ ID:
+		<td>
+			#if icq_id
+				<%icq_id%> <a target=_top href="http://wwp.icq.com/<%icq_id%>"><img src="http://status.icq.com/online.gif?icq=<%icq_id%>&amp;img=5"></a>
+			#endif
+	<tr>
+		<td align=right>Link:
+		<td>
+			#if link
+				<a target=_top href="<%link%>"><%link_title%></a>
+			#endif
+	<tr>
+		<td>
+		<td><a href="<%link_find_messages_by_user%>">Find messages</a>
+</table>
+
+#define entry_message
+<tr>
+	<td align=right><%mid%>
+	<td><a href="<%url_show_message%>"><%subject%></a>
+	<td>
+		#if uid
+			<a href="<%url_show_user%>"><%name%></a>
+		#else
+			<%name%>
+		#endif
+	<td align=right><%pid%>
+	<td align=right><%ipa%>
+	<td align=right><%ipa1%>
+	<td align=right><%flags%>
+	<td align=right><%type%>
+
+#define page_message_list
+<table width="100%">
+	<tr>
+		#if list
+			<th align=right>MID
+			<th align=left>Subject
+			<th align=left>Name
+			<th align=right>PID
+			<th align=right colspan=2>IPA
+			<th align=right>Flags
+			<th align=right>Type
+		#else
+			<th>Empty
+		#endif
+
+	<%list%>
+</table>
+
+#define entry_user
+<tr class="row<%row_index%>">
+	<td align=right><%uid%>
+	<td><a href="<%url_show_user%>"><%name%></a>
+	<td>
+		#if public_mail
+			<a href="mailto: <%name%> <<%public_mail%>>"><%public_mail%></a>
+		#endif
+	<td align=center>
+		#if icq_id
+			<a target=_top href="http://wwp.icq.com/<%icq_id%>"><img src="http://status.icq.com/online.gif?icq=<%icq_id%>&amp;img=5"></a>
+		#endif
+	<td>
+		#if link
+			<a target=_top href="<%link%>"><%link_title%></a>
+		#endif
+	<td><%user_ctime%>
+
+#define page_user_list
+<table width="100%">
+	<tr>
+		#if list
+			<th align=right><a href="<%url_order_by_uid%>">UID</a>
+			<th align=left><a href="<%url_order_by_name%>">Name</a>
+			<th align=left><a href="<%url_order_by_mail%>">Mail</a>
+			<th align=center><a href="<%url_order_by_icq%>">ICQ</a>
+			<th align=left><a href="<%url_order_by_link%>">Link</a>
+			<th align=left><a href="<%url_order_by_ctime%>">Joined</a>
+			<th width="100%">
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+</table>
+
+#define entry_recent_message
+<tr class="row<%row_index%>">
+	<td><a href="<%url_show_message%>"><%subject%></a>
+	<td><%name%>
+	<td width="100%"><%date%>
+
+#define page_recent_messages
+<table>
+	<tr>
+		<td colspan=5>
+			<%pager%>
+	<tr>
+		#if list
+			<th align=left><a href="<%url_order_by_subject%>">Subject</a>
+			<th align=left><a href="<%url_order_by_name%>">Name</a>
+			<th align=left><a href="<%url_order_by_ctime%>">Date</a>
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+	<tr>
+		<td colspan=5>
+			<%pager%>
+</table>
+
+#define entry_thread
+<tr class="row<%row_index%>">
+	<td><%indent%><a href="<%url_show_message%>"><%subject%></a>
+	<td><%name%>
+	<td><%date%>
+	<td align=right><%thread_size%>
+	<td width="100%">
+
+#define page_thread_list
+<table width="100%">
+	<tr>
+		<td colspan=5>
+			<%pager%>
+	<tr>
+		#if list
+			<th align=left>Subject
+			<th align=left>Name
+			<th align=left>Date
+			<th align=right>Posts
+			<th width="100%">
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+	<tr>
+		<td colspan=5>
+			<%pager%>
+</table>
+
+#define entry_history
+<tr class="row<%row_index%>">
+	<td align=right><a href="<%url_show_month%>"><%month%></a>
+	<td align=right><a href="<%url_show_year%>"><%year%></a>
+	<td align=right><%thread_size%>
+	<td>
+
+#define page_history
+<table width="100%">
+	<tr>
+		#if list
+			<th align=right>Month
+			<th align=right>Year
+			<th align=right>Posts
+			<th width="100%">
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+</table>
+
+
+#define page_config
+<form action="<%action%>" method=post>
+	<table width="100%">
+		<tr>
+			<td align=right>Forum title:
+			<td><%field_forum_title%>
+			<td width="100%"><%field_error_forum_title%>
+		<tr>
+			<td align=right>Local domain url:
+			<td><%field_local_domain_url%>
+			<td width="100%"><%field_error_local_domain_url%>
+		<tr>
+			<td align=right>Local forum_url:
+			<td><%field_local_forum_url%>
+			<td width="100%"><%field_error_local_forum_url%>
+		<tr>
+			<td align=right>Mail from:
+			<td><%field_mail_from%>
+			<td width="100%"><%field_error_mail_from%>
+		<tr>
+			<td align=right>Min name length:
+			<td><%field_min_name_length%>
+			<td width="100%"><%field_error_min_name_length%>
+		<tr>
+			<td align=right>Min pass length:
+			<td><%field_min_pass_length%>
+			<td width="100%"><%field_error_min_pass_length%>
+		<tr>
+			<td align=right>Max signature_length:
+			<td><%field_max_signature_length%>
+			<td width="100%"><%field_error_max_signature_length%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Submit">
+	</table>
+</form>
+
+#define entry_language
+<tr>
+	<td align=right><%lid%>
+	<td><%fname%>
+	<td><%name%>
+	<td><input type=checkbox name=remove_<%lid%>>
+
+#define page_languages
+<form action="<%action%>" method=post>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						#if list
+							<th align=right>LID
+							<th align=left>Fname
+							<th align=left>Name
+							<th align=left>Remove
+						#else
+							<th>Empty
+						#endif
+					<%list%>
+				</table>
+				<table>
+					<th colspan=3>Insert
+					<tr>
+						<td align=right>Fname:
+						<td><%field_fname%>
+						<td><%field_error_fname%>
+					<tr>
+						<td align=right>Name:
+						<td><%field_name%>
+						<td><%field_error_name%>
+					<tr>
+						<td><%field_hidden%>
+						<td><input type=submit name=submit value="Submit">
+				</table>
+	</table>
+</form>
+
+#define entry_layout
+<tr>
+	<td align=right><%lid%>
+	<td><%fname%>
+	<td><%name%>
+	<td><input type=checkbox name=remove_<%lid%>>
+
+#define page_layouts
+<form action="<%action%>" method=post>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						#if list
+							<th align=right>LID
+							<th align=left>Fname
+							<th align=left>Name
+							<th align=left>Remove
+						#else
+							<th>Empty
+						#endif
+					<%list%>
+				</table>
+				<table>
+					<th colspan=3>Insert
+					<tr>
+						<td align=right>Fname:
+						<td><%field_fname%>
+						<td><%field_error_fname%>
+					<tr>
+						<td align=right>Name:
+						<td><%field_name%>
+						<td><%field_error_name%>
+					<tr>
+						<td><%field_hidden%>
+						<td><input type=submit name=submit value="Submit">
+				</table>
+	</table>
+</form>
+
+#define entry_smily
+<tr>
+	<td align=right><%sid%>
+	<td><%fname%>
+	<td><%name%>
+	<td><input type=checkbox name=remove_<%sid%>>
+	<td><img src="/forum/<%fname%>">
+
+#define page_smilies
+<form action="<%action%>" method=post>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						#if list
+							<th align=right>SID
+							<th align=left>Fname
+							<th align=left>Name
+							<th align=left>Remove
+							<th align=left>Image
+						#else
+							<th>Empty
+						#endif
+					<%list%>
+				</table>
+				<table>
+					<th colspan=3>Insert
+					<tr>
+						<td align=right>Fname:
+						<td><%field_fname%>
+						<td><%field_error_fname%>
+
+					<tr>
+						<td align=right>Name:
+						<td><%field_name%>
+						<td><%field_error_name%>
+					<tr>
+						<td><%field_hidden%>
+						<td><input type=submit name=submit value="Submit">
+				</table>
+	</table>
+</form>
+
+#define entry_style
+<tr>
+	<td align=right><%sid%>
+	<td><%link%>
+	<td><%name%>
+	<td><input type=checkbox name=remove_<%sid%>>
+
+#define page_styles
+<form action="<%action%>" method=post>
+	<table>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						#if list
+							<th align=right>SID
+							<th align=left>Link
+							<th align=left>Name
+							<th align=left>Remove
+						#else
+							<th>Empty
+						#endif
+					<%list%>
+				</table>
+				<table>
+					<th colspan=3>Insert
+					<tr>
+						<td align=right>Link:
+						<td><%field_link%>
+						<td><%field_error_link%>
+
+					<tr>
+						<td align=right>Name:
+						<td><%field_name%>
+						<td><%field_error_name%>
+					<tr>
+						<td><%field_hidden%>
+						<td><input type=submit name=submit value="Submit">
+				</table>
+	</table>
+</form>
+
+#define page_search
+<form action="<%action%>">
+	<table width="100%">
+		<tr>
+			<td align=right>Subject:
+			<td><%field_subject%>
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+		<tr>
+			<td align=right>Body:
+			<td><%field_body%>
+		<tr>
+			<td align=right>Signature:
+			<td><%field_signature%>
+		#if field_ipa
+			<tr>
+				<td align=right>IPA:
+				<td><%field_ipa%>
+		#endif
+		#if field_uid
+			<tr>
+				<td align=right>UID:
+				<td><%field_uid%>
+		#endif
+		<tr>
+			<td align=right>Order by:
+			<td><%field_order%>
+		<tr>
+			<td align=right>Limit to:
+			<td><%field_limit%>
+		<tr>
+			<td align=right>Show bodies:
+			<td><%field_show_bodies%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Search">
+	</table>
+</form>
+
+#define entry_search_result
+<tr class="row<%row_index%>">
+	<td><a href="<%url_show_message%>"><%subject%></a>
+	<td><%name%>
+	<td><%date%>
+	#if ipa
+		<td><%ipa%>
+		<td width="100%"><%ipa1%>
+	#endif
+#if body
+	<tr class="row<%row_index%>">
+		<td colspan=4><%body%>
+#endif
+
+#define page_search_results
+<%form%>
+<hr>
+<table width="100%">
+	<tr>
+		#if list
+			<th align=left><a href="<%url_order_by_name%>">Subject</a>
+			<th align=left><a href="<%url_order_by_name%>">Name</a>
+			<th align=left><a href="<%url_order_by_ctime%>">Date</a>
+			<th width="100%" colspan=9>
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+</table>
+
+#define page_ipa_search
+<form action="<%action%>">
+	<table>
+		<tr>
+			<td align=right>Name:
+			<td><%field_name%>
+		<tr>
+			<td align=right>IPA:
+			<td><%field_ipa%>
+		<tr>
+			<td align=right>UID:
+			<td><%field_uid%>
+		<tr>
+			<td align=right>Order by:
+			<td><%field_order%>
+		<tr>
+			<td align=right>Domain Names:
+			<td><%field_show_domain_names%>
+		<tr>
+			<td><%field_hidden%>
+			<td><input type=submit name=submit value="Search">
+	</table>
+</form>
+
+#define entry_ipa_search_result
+<tr class="row<%row_index%>">
+	<td><a href="<%url_find_messages_by_name%>"><%name%></a>
+	<td><a href="<%url_find_messages_by_ipa%>"><%ipa%></a>
+	<td><a href="<%url_find_messages_by_ipa1%>"><%ipa1%></a>
+	<td align=right><%post_count%>
+	<td><%date%>
+	<td><%domain_name%>
+	<td><%domain_name1%>
+
+#define page_ipa_search_results
+<%form%>
+<hr>
+<table>
+	<tr>
+		#if list
+			<th align=left>Name
+			<th align=left colspan=2>IPA
+			<th align=right>Posts
+			<th align=left>Date
+			<th align=left colspan=2>Domain Name
+		#else
+			<th>Empty
+		#endif
+	<%list%>
+</table>
+
+#define entry_news
+<table width="100%">
+	<tr>
+		<td><img src="/Image2.gif"> <%subject%>
+		<td align=right><%date_long%>
+</table>
+<ul>
+	<%body%>
+	<p>
+		<a target=_top href="<%url_show_message%>">Comments</a> (<%thread_size%>)
+</ul>
+
+#define page_news
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<link rel=stylesheet href="/forum.css">
+<title>XCC News</title>
+<%list%>
+<hr>
+<center>
+	<a target=_top href="http://sourceforge.net/projects/xccf/"><img src="http://sourceforge.net/sflogo.php?group_id=38949;type=1"></a>
+	<a target=_top href="http://sourceforge.net/projects/xccu/"><img src="http://sourceforge.net/sflogo.php?group_id=14171;type=1"></a>
+</center>
+
+#define notification_icq
+http://xccu.sourceforge.net/cgi-bin/forum.cgi<%url_show_message%>
+
+#define notification_mail
+<html>
+	<base href="http://xccu.sourceforge.net/cgi-bin/forum.cgi">
+	<link rel=stylesheet href="/forum.css">
+	<table>
+		<tr>
+			<th align=left>Subject
+			<th align=left>Name
+			<th align=left>Date
+		<tr>
+			<td><%subject%>
+			<td><%name%>
+			<td><%date%>
+	</table>
+
+	<p class=body>
+		<%body%>
+
+	#if signature
+	<p class=signature>
+		<%signature%>
+	#endif
+
+	#if icq_id
+	<p>
+		<a target=_top href="http://wwp.icq.com/<%icq_id%>"><img src="http://status.icq.com/online.gif?icq=<%icq_id%>&amp;img=2"></a>
+	#endif
+
+	#if link
+	<p>
+		<a target=_top href="<%link%>"><%link_title%></a>
+	#endif
+
+	<hr>
+
+	If you would like to post a reply, use <a href="<%url_show_message%>">this</a> link.
+</html>
+
+#define pager
+#if list
+<table width="100%">
+	<tr>
+		<td align=left>
+			#if url_prev
+				<a href="<%url_prev%>">Prev</a>
+			#else
+				Prev
+			#endif
+		<td align=center><%list%>
+		<td align=right>
+			#if url_next
+				<a href="<%url_next%>">Next</a>
+			#else
+				Next
+			#endif
+</table>
+#endif

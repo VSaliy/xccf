@@ -1,0 +1,38 @@
+html_field_error <img src=/forum/error.gif>
+html_field_valid
+link_text_admin Admin
+link_text_allow_html Allow HTML
+link_text_create_forum Create forum
+link_text_destroy_forum Destroy forum
+link_text_disallow_html Disallow HTML
+link_text_edit Edit
+link_text_find_messages_by_user Find messages
+link_text_forum_options Forum options
+link_text_hide Hide
+link_text_history History
+link_text_home Home
+link_text_ipa_search IPA search
+link_text_languages Languages
+link_text_layouts Layouts
+link_text_lock Lock
+link_text_login Login
+link_text_logout Logout
+link_text_message_list Message list
+link_text_moderate Moderate
+link_text_moderate_forum Moderate forum
+link_text_password Password
+link_text_post Post
+link_text_preferences Preferences
+link_text_profile Profile
+link_text_recent_messages Recent messages
+link_text_register Register
+link_text_reply Reply
+link_text_search Search
+link_text_smilies Smilies
+link_text_unhide Unhide
+link_text_unlock Unlock
+link_text_unmoderate_forum Unmoderate forum
+link_text_user_list User list
+link_text_styles Styles
+link_text_config Config
+link_text_flush_template_cache Flush template cache
