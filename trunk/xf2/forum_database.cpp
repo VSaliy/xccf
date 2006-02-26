@@ -1124,7 +1124,7 @@ int Cforum_database::export_template_cache()
 
 int Cforum_database::import_template_cache()
 {
-	return m_template_cache2.load("xf_template_cache.dat");
+	return m_template_cache2.load("xf_template_cache.dat") || m_template_cache2.size() < sizeof(t_template_cache_header);
 }
 
 const char* Cforum_database::convert_date(time_t v, bool day_name)
