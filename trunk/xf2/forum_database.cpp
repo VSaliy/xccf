@@ -720,8 +720,7 @@ void Cforum_database::import_strings()
 {
 	query("delete from xf_strings");
 	Csql_result result = query("select lid, fname from xf_languages");
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 		import_strings(row.f_int(0, 0), row.f(1));
 	if (!result.c_rows())
 		import_strings(1, "xf_english.txt");
@@ -761,8 +760,7 @@ void Cforum_database::import_templates()
 {
 	query("delete from xf_templates");
 	Csql_result result = query("select lid, fname from xf_layouts");
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 		import_templates(row.f_int(0, 0), row.f(1));
 	if (!result.c_rows())
 		import_templates(1, "xf_templates.txt");
@@ -1006,8 +1004,7 @@ int Cforum_database::export_template_cache()
 	int cb_templates = 0;
 	{
 		Csql_result result = query("select lid, i, value from xf_strings");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Csql_row e = row;
 			int lid = e.f_int(0);
@@ -1022,8 +1019,7 @@ int Cforum_database::export_template_cache()
 	t_style_map style_map;
 	{
 		Csql_result result = query("select " + Cfd_style::fields(-1) + " from xf_styles");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_style e = row;
 			c_styles = max(c_styles, e.sid);
@@ -1036,8 +1032,7 @@ int Cforum_database::export_template_cache()
 	t_template_map template_map;
 	{
 		Csql_result result = query("select lid, i, value from xf_templates");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Csql_row e = row;
 			int lid = e.f_int(0);
@@ -1181,8 +1176,7 @@ void Cforum_database::prefetch_guests(const set<int>& v, int fm)
 	w.erase(w.length() - 1);
 	q.p(w);
 	Csql_result result = q.execute();
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 		fd_guest(Cfd_guest(row, fm));
 }
 
@@ -1203,8 +1197,7 @@ void Cforum_database::prefetch_users(const set<int>& v, int fm)
 	w.erase(w.length() - 1);
 	q.p(w);
 	Csql_result result = q.execute();
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 		fd_user(Cfd_user(row, fm));
 }
 

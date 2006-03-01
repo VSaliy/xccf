@@ -268,8 +268,7 @@ const char* page_news()
 	q.p(mt_news);
 	Csql_result result = q.execute();
 	page.reserve(result.c_rows() << 10);
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database.select_template(ti_entry_news);
 		Cfd_message(row, fields).r(t, database, 0);
@@ -327,22 +326,20 @@ const char* page_message_list()
 	{
 		int fields = Cfd_guest::fields(database.select_template(ti_entry_message));
 		Csql_result result = database.query("select " + Cfd_guest::fields(fields) + " from xf_guests");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 			database.fd_guest(Cfd_guest(row, fields));
 	}
 	{
 		int fields = Cfd_user::fields(database.select_template(ti_entry_message));
 		Csql_result result = database.query("select " + Cfd_user::fields(fields) + " from xf_users");
 		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 			database.fd_user(Cfd_user(row, fields));
 	}
 	int fields = Cfd_message::fields(database.select_template(ti_entry_message));
 	Csql_result result = database.query("select " + Cfd_message::fields(fields) + " from xf_messages order by mid desc");
 	page.reserve(256 * result.c_rows());
-	Csql_row row;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database.select_template(ti_entry_message);
 		database.fd_message(Cfd_message(row, fields)).r(t, database, 0);
@@ -386,8 +383,7 @@ const char* page_recent_messages(int order, int show_page)
 	{
 		set<int> guest_set;
 		set<int> user_set;
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
 			if (message.aid)
@@ -659,7 +655,7 @@ const char* page_languages()
 		Csql_result result = database.query("select " + Cfd_language::fields(-1) + " from xf_languages");
 		Csql_row row;
 		string list;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -692,9 +688,8 @@ const char* page_layouts()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
-		Csql_row row;
 		string list;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -727,9 +722,8 @@ const char* page_smilies()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
-		Csql_row row;
 		string list;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_smily e = static_cast<Cfd_smily>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))
@@ -762,9 +756,8 @@ const char* page_styles()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_style::fields(-1) + " from xf_styles");
-		Csql_row row;
 		string list;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_style e = static_cast<Cfd_style>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))

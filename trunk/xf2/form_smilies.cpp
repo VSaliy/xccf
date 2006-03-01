@@ -10,9 +10,8 @@ const char* Cform_smilies::read()
 {
 	Chtml_template t = select_template(ti_page_smilies);
 	Csql_result result = database().query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
-	Csql_row row;
 	string list;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database().select_template(ti_entry_smily);
 		static_cast<Cfd_smily>(row).r(t);

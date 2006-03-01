@@ -4,16 +4,14 @@
 Cform_styles::Cform_styles(Cforum_database& database):
 	Cform_base(database)
 {
-
 }
 
 const char* Cform_styles::read()
 {
 	Chtml_template t = select_template(ti_page_styles);
 	Csql_result result = database().query("select " + Cfd_style::fields(-1) + " from xf_styles");
-	Csql_row row;
 	string list;
-	while (row = result.fetch_row())
+	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database().select_template(ti_entry_style);
 		static_cast<Cfd_style>(row).r(t);
