@@ -17,8 +17,7 @@ const char* Cform_preferences::read()
 	{
 		string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_languages order by name");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			int i = row.f_int(0);
 			v += html_option(row.f(1), n(i), i == language);
@@ -28,8 +27,7 @@ const char* Cform_preferences::read()
 	{
 		string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_layouts order by name");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			int i = row.f_int(0);
 			v += html_option(row.f(1), n(i), i == layout);
@@ -39,8 +37,7 @@ const char* Cform_preferences::read()
 	{
 		string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select sid, name from xf_styles order by name");
-		Csql_row row;
-		while (row = result.fetch_row())
+		for (Csql_row row; row = result.fetch_row(); )
 		{
 			int i = row.f_int(0);
 			v += html_option(row.f(1), n(i), i == style);
