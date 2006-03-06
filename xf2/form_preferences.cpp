@@ -19,8 +19,8 @@ const char* Cform_preferences::read()
 		Csql_result result = database().query("select lid, name from xf_languages order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
-			int i = row.f_int(0);
-			v += html_option(row.f(1), n(i), i == language);
+			int i = row.f(0).i();
+			v += html_option(row.f(1).s(), n(i), i == language);
 		}
 		t.r(ti_field_language, html_select(v, "name=language"));
 	}
@@ -29,8 +29,8 @@ const char* Cform_preferences::read()
 		Csql_result result = database().query("select lid, name from xf_layouts order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
-			int i = row.f_int(0);
-			v += html_option(row.f(1), n(i), i == layout);
+			int i = row.f(0).i();
+			v += html_option(row.f(1).s(), n(i), i == layout);
 		}
 		t.r(ti_field_layout, html_select(v, "name=layout"));
 	}
@@ -39,8 +39,8 @@ const char* Cform_preferences::read()
 		Csql_result result = database().query("select sid, name from xf_styles order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
-			int i = row.f_int(0);
-			v += html_option(row.f(1), n(i), i == style);
+			int i = row.f(0).i();
+			v += html_option(row.f(1).s(), n(i), i == style);
 		}
 		t.r(ti_field_style, html_select(v, "name=style"));
 	}
