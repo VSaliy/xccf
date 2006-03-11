@@ -527,10 +527,6 @@ string list_thread(int mid, int l, bool forums_only, int show_page)
 
 string list_parents(int mid)
 {
-	const int fields = Cfd_message::fields(database.select_template(ti_entry_thread))
-		| Cfd_message::f_flags
-		| Cfd_message::f_pid
-		;
 	stack<int> stack;
 	mid = database.fd_message(mid).pid;
 	set<int> guest_set;
