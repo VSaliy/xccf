@@ -3,11 +3,8 @@
 
 #if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
-#pragma warning(disable: 4503)
-#pragma warning(disable: 4786)
 #pragma warning(disable: 4800)
+#endif // _MSC_VER > 1000
 
 #ifndef WIN32
 #include <sys/socket.h>
