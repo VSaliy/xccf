@@ -266,7 +266,7 @@ int Ctemplate_write::import_line(string s)
 			if (c == '<' && istarts_with(s.c_str() + i, "<%"))
 			{
 				i += 2;
-				int j = s.find("%>", i);
+				size_t j = s.find("%>", i);
 				assert(j != string::npos);
 				int p = m_database.get_string_i(s.substr(i, j - i));
 				if (j - i == 1 && s[i] == ' ')

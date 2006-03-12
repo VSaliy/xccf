@@ -217,7 +217,7 @@ t_cgi_input get_cgi_pairs(const string& pairs)
 	t_cgi_input r;
 	for (size_t i = 0; i < pairs.length(); )
 	{
-		int p = pairs.find_first_of(";&", i);
+		size_t p = pairs.find_first_of(";&", i);
 		string v;
 		if (p != string::npos)
 		{

@@ -66,14 +66,14 @@ string web_magic_anchors(const string& v, bool keep_protocol, const string& prot
 	string r;
 	for (size_t l = 0; l < v.length(); )
 	{
-		int p = v.find(protocol, l);
+		size_t p = v.find(protocol, l);
 		if (p == string::npos)
 		{
 			r += v.substr(l);
 			break;
 		}
 		r += v.substr(l, p - l);
-		int q = p;
+		size_t q = p;
 		while (q < v.length())
 		{
 			char c = v[q];

@@ -97,7 +97,7 @@ string trim_text(const string& v)
 	return r;
 }
 
-int text_cy(const string& v, bool ignore_quotes)
+size_t text_cy(const string& v, bool ignore_quotes)
 {
 	int r = 0;
 	for (size_t i = 0; i < v.length(); )
@@ -116,14 +116,6 @@ int text_cy(const string& v, bool ignore_quotes)
 		i = p + 1;
 	}
 	return r;
-}
-
-static bool tag_valid(const string& v)
-{
-	return *v.c_str() == '/'
-		|| iequals(v, "b")
-		|| iequals(v, "i")
-		|| iequals(v, "u");
 }
 
 static string encode_local_url(const string& url, const string& local_domain_url, const string& local_forum_url)
@@ -173,7 +165,7 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 		{
 			r += highlight(w, hl);
 			w.erase();
-			int p = i;
+			size_t p = i;
 			while (p < v.length()
 				&& v[p] != ' '
 				&& v[p] != '\"'
@@ -239,7 +231,7 @@ string encode_text(const string& v, const t_smily_map& smily_map, const string& 
 	r.reserve(v.length() << 1);
 	for (size_t i = 0; i < v.length(); )
 	{
-		int p = v.find('\n', i);
+		size_t p = v.find('\n', i);
 		if (p == string::npos)
 			p = v.length();
 		string line = v.substr(i, p - i);

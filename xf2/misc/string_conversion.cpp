@@ -32,7 +32,7 @@ string n(int v)
 
 void split_key(const string& key, string& name, string& value)
 {
-	int i = key.find('=');
+	size_t i = key.find('=');
 	if (i == string::npos)
 	{
 		name = key;

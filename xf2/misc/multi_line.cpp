@@ -23,7 +23,7 @@ Cmulti_line::Cmulti_line(const string &is)
 string Cmulti_line::get_next_line(const char separator, bool remove_ws)
 {
 	string r;
-	int p = s.find(separator);
+	size_t p = s.find(separator);
 	if (p == string::npos)
 	{
 		r = s;
@@ -47,7 +47,7 @@ int Cmulti_line::get_next_int(const char separator)
 string Cmulti_line::get_next_line(const string& separator, bool remove_ws)
 {
 	string r;
-	int p = s.find(separator);
+	size_t p = s.find(separator);
 	if (p == string::npos)
 	{
 		r = s;
