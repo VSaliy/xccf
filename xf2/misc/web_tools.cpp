@@ -64,8 +64,7 @@ string web_link(const string& link_title, const string& link, bool encode)
 string web_magic_anchors(const string& v, bool keep_protocol, const string& protocol)
 {
 	string r;
-	int l = 0;
-	while (l < v.length())
+	for (size_t l = 0; l < v.length(); )
 	{
 		int p = v.find(protocol, l);
 		if (p == string::npos)

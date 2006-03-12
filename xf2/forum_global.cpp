@@ -52,7 +52,7 @@ string trim_field(const string& v)
 {
 	string r;
 	bool copy_white = false;
-	for (int i = 0; i < v.length(); i++)
+	for (size_t i = 0; i < v.length(); i++)
 	{
 		if (isspace(v[i]))
 			copy_white = true;
@@ -74,7 +74,7 @@ string trim_text(const string& v)
 {
 	string r;
 	bool copy_white = false;
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		int p = v.find('\n', i);
 		if (p == string::npos)
@@ -100,8 +100,7 @@ string trim_text(const string& v)
 int text_cy(const string& v, bool ignore_quotes)
 {
 	int r = 0;
-	int i = 0;
-	while (i < v.length())
+	for (size_t i = 0; i < v.length(); )
 	{
 		int p = v.find('\n', i);
 		if (p == string::npos)
@@ -144,7 +143,7 @@ static string highlight(const string& v, const string& hl)
 		return v;
 	string r;
 	r.reserve(v.length() << 1);
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		int j = v.find(hl, i);
 		if (j == string::npos)
@@ -163,7 +162,7 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 	string r;
 	r.reserve(v.length() << 1);
 	string w;
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		if (istarts_with(v.c_str() + i, "ftp.")
 			|| istarts_with(v.c_str() + i, "ftp://")
@@ -238,7 +237,7 @@ string encode_text(const string& v, const t_smily_map& smily_map, const string& 
 {
 	string r;
 	r.reserve(v.length() << 1);
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		int p = v.find('\n', i);
 		if (p == string::npos)

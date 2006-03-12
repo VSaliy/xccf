@@ -28,7 +28,7 @@ bool Cform_base::bad_upper(const string& v, int limit)
 	if (v.length() < limit)
 		return false;
 	int c = 0;
-	for (int i = 0; i < v.length(); i++)
+	for (size_t i = 0; i < v.length(); i++)
 	{
 		if (v[i] != tolower(v[i]))
 			c++;
