@@ -260,7 +260,7 @@ int Ctemplate_write::import_line(string s)
 	}
 	else
 	{
-		for (int i = 0; i < s.length(); )
+		for (size_t i = 0; i < s.length(); )
 		{
 			char c = s[i];
 			if (c == '<' && istarts_with(s.c_str() + i, "<%"))

@@ -83,7 +83,7 @@ string uri_encode(const string& v)
 {
 	string r;
 	r.reserve(v.length());
-	for (int i = 0; i < v.length(); i++)
+	for (size_t i = 0; i < v.length(); i++)
 	{
 		char c = v[i];
 		if (isalpha(c) || isdigit(c))
@@ -113,7 +113,7 @@ string uri_encode(const string& v)
 string uri_decode(const string& v)
 {
 	string r;
-	for (int i = 0; i < v.length(); i++)
+	for (size_t i = 0; i < v.length(); i++)
 	{
 		char c = v[i];
 		switch (c)
@@ -193,7 +193,7 @@ const char* web_encode(const string& v)
 string web_decode(const string& v)
 {
 	string r;
-	for (int i = 0; i < v.length(); i++)
+	for (size_t i = 0; i < v.length(); i++)
 	{
 		if (v[i] == '&')
 		{
@@ -215,7 +215,7 @@ string web_decode(const string& v)
 t_cgi_input get_cgi_pairs(const string& pairs)
 {
 	t_cgi_input r;
-	for (int i = 0; i < pairs.length(); )
+	for (size_t i = 0; i < pairs.length(); )
 	{
 		int p = pairs.find_first_of(";&", i);
 		string v;

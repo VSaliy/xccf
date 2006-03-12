@@ -80,7 +80,7 @@ static string adjust_body(const string& v)
 {
 	string r;
 	r.reserve(v.length());
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		int p = v.find('\n', i);
 		string line;

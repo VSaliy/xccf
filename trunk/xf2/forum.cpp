@@ -80,7 +80,7 @@ static string strip_quotes(const string& v)
 {
 	string r;
 	r.reserve(v.length());
-	for (int i = 0; i < v.length(); )
+	for (size_t i = 0; i < v.length(); )
 	{
 		int p = v.find('\n', i);
 		string line;
