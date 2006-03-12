@@ -13,7 +13,7 @@ using namespace std;
 class Cvirtual_binary_source
 {
 public:
-	Cvirtual_binary_source(const void* d, int cb_d);
+	Cvirtual_binary_source(const void* d, size_t cb_d);
 	Cvirtual_binary_source* attach();
 	void detach();
 	Cvirtual_binary_source* pre_edit();
@@ -56,13 +56,13 @@ public:
 	int save(const string& fname) const;
 	int load(const string& fname);
 	void clear();
-	int read(void* d) const;
-	byte* write_start(int cb_d);
-	void write(const void* d, int cb_d);
+	size_t read(void* d) const;
+	byte* write_start(size_t cb_d);
+	void write(const void* d, size_t cb_d);
 	const Cvirtual_binary& operator=(const Cvirtual_binary& v);
 	Cvirtual_binary();
 	Cvirtual_binary(const Cvirtual_binary& v);
-	Cvirtual_binary(const void* d, int cb_d);
+	Cvirtual_binary(const void* d, size_t cb_d);
 	explicit Cvirtual_binary(const string& fname);
 	~Cvirtual_binary();
 
