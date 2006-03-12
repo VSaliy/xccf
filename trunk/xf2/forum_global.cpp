@@ -76,7 +76,7 @@ string trim_text(const string& v)
 	bool copy_white = false;
 	for (size_t i = 0; i < v.length(); )
 	{
-		int p = v.find('\n', i);
+		size_t p = v.find('\n', i);
 		if (p == string::npos)
 			p = v.length();
 		string line = trim_field(v.substr(i, p - i));
@@ -102,7 +102,7 @@ size_t text_cy(const string& v, bool ignore_quotes)
 	int r = 0;
 	for (size_t i = 0; i < v.length(); )
 	{
-		int p = v.find('\n', i);
+		size_t p = v.find('\n', i);
 		if (p == string::npos)
 			p = v.length();
 		if (ignore_quotes)
@@ -137,7 +137,7 @@ static string highlight(const string& v, const string& hl)
 	r.reserve(v.length() << 1);
 	for (size_t i = 0; i < v.length(); )
 	{
-		int j = v.find(hl, i);
+		size_t j = v.find(hl, i);
 		if (j == string::npos)
 		{
 			r += v.substr(i);
