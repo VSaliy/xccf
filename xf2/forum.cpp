@@ -76,28 +76,6 @@ const char* pager(t_action action, int current, int count, int order = 0)
 	return t;
 }
 
-static string strip_quotes(const string& v)
-{
-	string r;
-	r.reserve(v.length());
-	for (size_t i = 0; i < v.length(); )
-	{
-		int p = v.find('\n', i);
-		string line;
-		if (p == string::npos)
-		{
-			line = v.substr(i) + '\n';
-			p = v.length();
-		}
-		else
-			line = v.substr(i, p - i + 1);
-		if (!istarts_with(line, "> "))
-			r += line;
-		i = p + 1;
-	}
-	return r;
-}
-
 Chtml_template global_replace(int mid)
 {
 	Chtml_template t(database);

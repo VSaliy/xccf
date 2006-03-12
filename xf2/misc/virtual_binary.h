@@ -34,19 +34,19 @@ public:
 		return m_data;
 	}
 
-	int size() const
+	size_t size() const
 	{
 		return m_size;
 	}
 
-	void size(int v)
+	void size(size_t v)
 	{
 		assert(mc_references == 1 && v <= m_size);
 		m_size = v;
 	}
 private:
 	byte* m_data;
-	int m_size;
+	size_t m_size;
 	int mc_references;
 };
 
@@ -83,12 +83,12 @@ public:
 		return m_source->data_edit();
 	}
 
-	int size() const
+	size_t size() const
 	{
 		return m_source ? m_source->size() : 0;
 	}
 
-	void size(int v)
+	void size(size_t v)
 	{
 		assert(m_source);
 		m_source = m_source->pre_edit();
