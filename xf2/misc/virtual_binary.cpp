@@ -68,7 +68,7 @@ const Cvirtual_binary& Cvirtual_binary::operator=(const Cvirtual_binary& v)
 	if (this != &v)
 	{
 		m_source->detach();
-		m_source = v.m_source ? v.m_source->attach() : NULL;
+		m_source = v.m_source->attach();
 	}
 	return *this;
 }
