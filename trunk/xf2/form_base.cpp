@@ -23,11 +23,11 @@ int Cform_base::field_size()
 	return uid ? database().fd_user(uid).field_length : 60;
 }
 
-bool Cform_base::bad_upper(const string& v, int limit)
+bool Cform_base::bad_upper(const string& v, size_t limit)
 {
 	if (v.length() < limit)
 		return false;
-	int c = 0;
+	size_t c = 0;
 	for (size_t i = 0; i < v.length(); i++)
 	{
 		if (v[i] != tolower(v[i]))

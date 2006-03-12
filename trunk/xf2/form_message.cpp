@@ -82,7 +82,7 @@ static string adjust_body(const string& v)
 	r.reserve(v.length());
 	for (size_t i = 0; i < v.length(); )
 	{
-		int p = v.find('\n', i);
+		size_t p = v.find('\n', i);
 		string line;
 		if (p == string::npos)
 		{

@@ -92,7 +92,7 @@ string report_error(const string& user_msg, const string& admin_msg = "");
 string encode_field(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, const string& hl = "");
 string encode_text(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, bool add_br, bool add_span, bool remove_html, const string& hl = "");
 string select_fields(int field_mask, const char** field_names, const string& prefix = "");
-int text_cy(const string& v, bool ignore_quotes);
+size_t text_cy(const string& v, bool ignore_quotes);
 string trim_field(const string& v);
 string trim_text(const string& v);
 

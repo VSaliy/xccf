@@ -13,7 +13,7 @@
 class Cform_base  
 {
 public:
-	static bool bad_upper(const string& v, int limit);
+	static bool bad_upper(const string& v, size_t limit);
 	void field_error(Chtml_template& t, int i, bool valid);
 	int field_height();
 	int field_size();

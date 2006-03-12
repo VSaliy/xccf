@@ -457,37 +457,37 @@ public:
 		return m_mail_from;
 	}
 
-	int min_name_length() const
+	size_t min_name_length() const
 	{
 		return m_min_name_length;
 	}
 
-	int min_pass_length() const
+	size_t min_pass_length() const
 	{
 		return m_min_pass_length;
 	}
 
-	int min_subject_length() const
+	size_t min_subject_length() const
 	{
 		return m_min_subject_length;
 	}
 
-	int max_name_length() const
+	size_t max_name_length() const
 	{
 		return m_max_name_length;
 	}
 
-	int max_pass_length() const
+	size_t max_pass_length() const
 	{
 		return m_max_pass_length;
 	}
 
-	int max_signature_length() const
+	size_t max_signature_length() const
 	{
 		return m_max_signature_length;
 	}
 
-	int max_subject_length() const
+	size_t max_subject_length() const
 	{
 		return m_max_subject_length;
 	}
