@@ -100,8 +100,11 @@ Chtml_template global_replace(int mid)
 		}
 		t.r(ti_link_logout, url_self(ac_logout));
 		t.r(ti_link_password, url_self(ac_password));
+		t.r(ti_link_post, url_self(ac_post, "pid=" + n(database.fid(mid))));
 		t.r(ti_link_preferences, url_self(ac_preferences));
 		t.r(ti_link_profile, url_self(ac_profile));
+		if (mid && !database.fd_message(mid).forum())
+			t.r(ti_link_reply, url_self(ac_post, "pid=" + n(mid)));
 	}
 	else
 	{
@@ -117,10 +120,7 @@ Chtml_template global_replace(int mid)
 	t.r(ti_var_page_title, g_title);
 	t.r(ti_link_history, url_self(ac_history));
 	t.r(ti_link_home, url_self(ac_home));
-	t.r(ti_link_post, url_self(ac_post, "pid=" + n(database.fid(mid))));
 	t.r(ti_link_search, url_self(ac_search));
-	if (mid && !database.fd_message(mid).forum())
-		t.r(ti_link_reply, url_self(ac_post, "pid=" + n(mid)));
 	t.r(ti_link_message_list, url_self(ac_message_list));
 	t.r(ti_link_user_list, url_self(ac_user_list));
 	t.r(ti_link_recent_messages, url_self(ac_recent_messages));
@@ -1287,9 +1287,6 @@ int main()
 				case ac_logout:
 					page = page_logout();
 					break;
-				case ac_post:
-					page = page_message();
-					break;
 				case ac_news:
 					page = page_news();
 					break;
@@ -1318,6 +1315,9 @@ int main()
 						{
 						case ac_password:
 							page = page_password();
+							break;
+						case ac_post:
+							page = page_message();
 							break;
 						case ac_preferences:
 							page = page_preferences();
