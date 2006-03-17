@@ -9,6 +9,7 @@
 #include <netdb.h>
 #include <sys/types.h>
 #endif
+#include "sql/sql_query.h"
 #include "cookie.h"
 #include "form_config.h"
 #include "form_ipa_search.h"
