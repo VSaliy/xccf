@@ -1045,9 +1045,9 @@ const char* page_show_message(int mid, const string& hl)
 	form.write_cookie(cookie);
 	form.write_parent(e);
 	t.r(ti_link_reply, url_self(ac_post, "pid=" + n(mid)));
-	t.r(ti_page_message, form.read());
 	if (database.uid())
 	{
+		t.r(ti_page_message, form.read());
 		Csql_query q(database, "insert delayed ignore into xf_messages_read (uid, mid, ctime) values (?, ?, unix_timestamp())");
 		q.p(database.uid());
 		q.p(mid);
