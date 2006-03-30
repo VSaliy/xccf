@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="forum"
 	ProjectGUID="{70F43D27-97C6-4BEC-B869-0ACC41BEAFB7}"
+	RootNamespace="forum"
 	>
 	<Platforms>
 		<Platform
@@ -229,6 +230,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\config.cpp"
+				>
 			</File>
 			<File
 				RelativePath="misc\cookie.cpp"
@@ -919,6 +924,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\config.h"
+				>
+			</File>
 			<File
 				RelativePath="form_base.h"
 				>
