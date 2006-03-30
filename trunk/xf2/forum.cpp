@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #endif
 #include "sql/sql_query.h"
+#include "config.h"
 #include "cookie.h"
 #include "form_config.h"
 #include "form_ipa_search.h"
@@ -1245,12 +1246,15 @@ int main()
 	const char* cgi_data_fname = "cgi_data.txt";
 	try
 	{
+		Cconfig config;
+		if (config.load("xcc_forum.conf"))
+			throw Cxcc_error("Unable to read xcc_forum.conf");
 		Cxcc_error error;
 		const char* page;
 		t_cgi_error cgi_error = cgi.read();
 		if (cgi_error != cgi_error_none && cgi.load(cgi_data_fname))
 			throw Cxcc_error(cgi_error_text[cgi_error]);
-		else if (error = database.open("xf_config.ini"))
+		else if (error = database.open(config.m_host, config.m_user, config.m_password, config.m_database))
 			throw error;
 		else 
 		{
