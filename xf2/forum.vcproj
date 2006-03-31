@@ -166,7 +166,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/out:&quot;/is/apache2/cgi-bin/forum.cgi&quot;"
 				AdditionalDependencies="libmysql.lib zdll.lib ws2_32.lib odbc32.lib odbccp32.lib"
 				OutputFile=".\Release/forum.exe"
 				LinkIncremental="1"
