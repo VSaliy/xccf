@@ -151,27 +151,27 @@ const char* page_search()
 	int fields = Cfd_message::fields(database.select_template(ti_entry_search_result));
 	if (!form.show_bodies)
 		fields &= ~Cfd_message::f_body;
-	q.p(Cfd_message::fields(fields, "m."));
+	q.p_raw(Cfd_message::fields(fields, "m."));
 	if (!form.subject.empty())
 	{
 		q += " where subject like ?";
-		q.pe('%' + form.subject + '%');
+		q.p('%' + form.subject + '%');
 	}
 	else if (!form.name.empty())
 	{
 		q += " left join xf_guests g on m.aid = g.aid left join xf_users u on m.uid = u.uid where g.name like ? or u.name like ?";
-		q.pe('%' + form.name + '%');
-		q.pe('%' + form.name + '%');
+		q.p('%' + form.name + '%');
+		q.p('%' + form.name + '%');
 	}
 	else if (!form.body.empty())
 	{
 		q += " where body like ?";
-		q.pe('%' + form.body + '%');
+		q.p('%' + form.body + '%');
 	}
 	else if (!form.signature.empty())
 	{
 		q += " where signature like ?";
-		q.pe('%' + form.signature + '%');
+		q.p('%' + form.signature + '%');
 	}
 	else if (!form.ipa.empty())
 	{
@@ -244,7 +244,7 @@ const char* page_news()
 	string page;
 	int fields = Cfd_message::fields(database.select_template(ti_entry_news));
 	Csql_query q(database, "select ? from xf_messages where type = ? order by ctime desc");
-	q.p(Cfd_message::fields(fields));
+	q.p_raw(Cfd_message::fields(fields));
 	q.p(mt_news);
 	Csql_result result = q.execute();
 	page.reserve(result.c_rows() << 10);
@@ -290,8 +290,8 @@ const char* page_register()
 	if (database.uid(form.name))
 		return form.read("Name already in use");
 	Csql_query q(database, "insert into xf_users (name, password, ipa, ipa1, flags, mtime, ctime) values (?, md5(?), ?, ?, ?, unix_timestamp(), unix_timestamp())");
-	q.pe(form.name);
-	q.pe(form.password);
+	q.p(form.name);
+	q.p(form.password);
 	q.p(form.ipa0);
 	q.p(form.ipa1);
 	q.p(uf_default);
@@ -355,8 +355,8 @@ const char* page_recent_messages(int order, int show_page)
 	string page;
 	const int fields = Cfd_message::fields(database.select_template(ti_entry_recent_message));
 	Csql_query q(database, "select ? from xf_messages m left join xf_guests g on m.aid = g.aid left join xf_users u on m.uid = u.uid order by ? limit ?, ?");
-	q.p(Cfd_message::fields(fields, "m."));
-	q.p(message_list_order_i2a(order));
+	q.p_raw(Cfd_message::fields(fields, "m."));
+	q.p_raw(message_list_order_i2a(order));
 	q.p(database.rows_per_page() * show_page);
 	q.p(database.rows_per_page());
 	Csql_result result = q.execute();	
@@ -436,7 +436,7 @@ void list_thread(string& r, int mid, int l, bool forums_only, int row_index, int
 		set<int> guest_set;
 		set<int> user_set;
 		Csql_query q(database, "select ? from xf_messages a inner join xf_messages b using (tid) where a.pid = 0 and (a.mid = b.mid or a.thread_size <= ?)");
-		q.p(Cfd_message::fields(fields, "b."));
+		q.p_raw(Cfd_message::fields(fields, "b."));
 		q.p(8);
 		if (year)
 		{
@@ -610,10 +610,10 @@ const char* page_config()
 		return form.read();
 	database.query("delete from xf_config where name in ('forum_title', 'local_domain_url', 'local_forum_url', 'mail_from', 'min_name_length', 'min_pass_length', 'max_signature_length')");
 	Csql_query q(database, "insert into xf_config values ('forum_title', ?), ('local_domain_url', ?), ('local_forum_url', ?), ('mail_from', ?), ('min_name_length', ?), ('min_pass_length', ?), ('max_signature_length', ?)");
-	q.pe(form.forum_title);
-	q.pe(form.local_domain_url);
-	q.pe(form.local_forum_url);
-	q.pe(form.mail_from);
+	q.p(form.forum_title);
+	q.p(form.local_domain_url);
+	q.p(form.local_forum_url);
+	q.p(form.mail_from);
 	q.p(form.min_name_length);
 	q.p(form.min_pass_length);
 	q.p(form.max_signature_length);
@@ -646,8 +646,8 @@ const char* page_languages()
 			if (form.try_insert())
 			{
 				Csql_query q(database, "insert into xf_languages (fname, name) values (?, ?)");
-				q.pe(form.fname);
-				q.pe(form.name);
+				q.p(form.fname);
+				q.p(form.name);
 				q.execute();
 			}
 			return page_forward(url_self(ac_languages));
@@ -680,8 +680,8 @@ const char* page_layouts()
 			if (form.try_insert())
 			{
 				Csql_query q(database, "insert into xf_layouts (fname, name) values (?, ?)");
-				q.pe(form.fname);
-				q.pe(form.name);
+				q.p(form.fname);
+				q.p(form.name);
 				q.execute();
 			}
 			return page_forward(url_self(ac_layouts));
@@ -714,8 +714,8 @@ const char* page_smilies()
 			if (form.try_insert())
 			{
 				Csql_query q(database, "insert into xf_smilies (fname, name) values (?, ?)");
-				q.pe(form.fname);
-				q.pe(form.name);
+				q.p(form.fname);
+				q.p(form.name);
 				q.execute();
 			}
 			return page_forward(url_self(ac_smilies));
@@ -748,8 +748,8 @@ const char* page_styles()
 			if (form.try_insert())
 			{
 				Csql_query q(database, "insert into xf_styles (link, name) values (?, ?)");
-				q.pe(form.link);
-				q.pe(form.name);
+				q.p(form.link);
+				q.p(form.name);
 				q.execute();
 			}
 			return page_forward(url_self(ac_styles));
@@ -772,7 +772,7 @@ const char* page_password()
 	if (form.valid())
 	{
 		Csql_query q(database, "update xf_users set password = md5(?), mtime = unix_timestamp() where uid = ?");
-		q.pe(form.password);
+		q.p(form.password);
 		q.p(database.uid());
 		q.execute();
 		return page_login();
@@ -797,7 +797,7 @@ const char* page_preferences()
 		if (form.enable_smilies)
 			flags |= uf_enable_smilies;
 		Csql_query q(database, "update xf_users set custom_css = ?, language = ?, layout = ?, style = ?, field_height = ?, field_length = ?, rows_per_page = ?, time_offset = ?, flags = ?, mtime = unix_timestamp() where uid = ?");
-		q.pe(form.custom_css);
+		q.p(form.custom_css);
 		q.p(form.language);
 		q.p(form.layout);
 		q.p(form.style);
@@ -821,12 +821,12 @@ const char* page_profile()
 	if (form.submit && form.valid())
 	{
 		Csql_query q(database, "update xf_users set private_mail = ?, public_mail = ?, signature = ?, icq_id = ?, link_title = ?, link = ?, mtime = unix_timestamp() where uid = ?");
-		q.pe(form.private_mail);
-		q.pe(form.public_mail);
-		q.pe(form.signature);
+		q.p(form.private_mail);
+		q.p(form.public_mail);
+		q.p(form.signature);
 		q.p(form.icq_id);
-		q.pe(form.link_title);
-		q.pe(form.link);
+		q.p(form.link_title);
+		q.p(form.link);
 		q.p(database.uid());
 		q.execute();
 		return page_forward(url_self(ac_profile));
@@ -869,8 +869,8 @@ const char* page_message()
 				if (!database.can_admin())
 					form.type = e.type;
 				q = "update xf_messages set subject = ?, body = ?, flags = ?, type = ? where mid = ?";
-				q.pe(form.subject);
-				q.pe(form.body);
+				q.p(form.subject);
+				q.p(form.body);
 				q.p(form.flags);
 				q.p(form.type);
 				q.p(form.mid);
@@ -881,8 +881,8 @@ const char* page_message()
 		else 
 		{
 			q = "select mid from xf_messages where subject = ? and body = ? and pid = ?";
-			q.pe(form.subject);
-			q.pe(form.body);
+			q.p(form.subject);
+			q.p(form.body);
 			q.p(form.pid);
 			int mid;
 			Csql_row row = q.execute().fetch_row();
@@ -895,17 +895,17 @@ const char* page_message()
 					Cfd_user e = database.fd_user(database.uid());
 					q = "insert into xf_messages (uid, subject, body, signature, pid, tid, thread_size, ipa, ipa1, flags, type, mtime, ctime) values (?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, unix_timestamp(), unix_timestamp())";
 					q.p(database.uid());
-					q.pe(form.subject);
-					q.pe(form.body);
-					q.pe(e.signature);
+					q.p(form.subject);
+					q.p(form.body);
+					q.p(e.signature);
 				}
 				else
 				{
 					cookie.set_value("name", form.name);
 					q = "insert into xf_messages (aid, subject, body, pid, tid, thread_size, ipa, ipa1, flags, type, mtime, ctime) values (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, unix_timestamp(), unix_timestamp())";
 					q.p(database.aid(form.name));
-					q.pe(form.subject);
-					q.pe(form.body);
+					q.p(form.subject);
+					q.p(form.body);
 				}
 				q.p(form.pid);
 				q.p(form.pid ? database.fd_message(form.pid).tid : 0);
@@ -1018,7 +1018,7 @@ const char* page_show_message(int mid, const string& hl)
 			| Cfd_message::f_pid
 			;
 		Csql_query q(database, "select ? from xf_messages where mid != ? and tid = ?");
-		q.p(Cfd_message::fields(fields));
+		q.p_raw(Cfd_message::fields(fields));
 		q.p(e.mid);
 		q.p(e.tid);
 		Csql_result result = q.execute();
@@ -1156,8 +1156,8 @@ const char* page_ipa_search()
 	if (!form.name.empty())
 	{
 		q1 = "where g.name like ? or u.name like ?";
-		q1.pe('%' + form.name + '%');
-		q1.pe('%' + form.name + '%');
+		q1.p('%' + form.name + '%');
+		q1.p('%' + form.name + '%');
 	}
 	else if (!form.ipa.empty())
 	{
@@ -1181,7 +1181,7 @@ const char* page_ipa_search()
 		q1.p(form.uid);
 	}
 	Csql_query q0(database, "select distinct ifnull(g.name, u.name) name, m.ipa, count(*) posts, max(m.ctime) time, m.ipa1 from xf_messages m left join xf_guests g on m.aid = g.aid left join xf_users u on m.uid = u.uid ? group by name, ipa, ipa1 order by ?");
-	q0.p(q1.read());
+	q0.p_raw(q1.read());
 	switch (form.order)
 	{
 	case 1:
