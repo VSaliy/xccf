@@ -1,1 +1,4 @@
-database host user pass
+host = localhost
+user = xf2
+password = pass
+database = xf2
