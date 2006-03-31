@@ -708,7 +708,7 @@ void Cforum_database::import_strings(int lid, const string& fname)
 		Csql_query q(*this, " (?, ?, ?),");
 		q.p(lid);
 		q.p(i);
-		q.pe(value);
+		q.p(value);
 		qu += q.read();
 	}
 	if (qu.empty())
@@ -734,7 +734,7 @@ void Cforum_database::insert_template(int lid, int i, Cvirtual_binary value)
 	Csql_query q(*this, "replace into xf_templates (lid, i, value) values (?, ?, ?)");
 	q.p(lid);
 	q.p(i);
-	q.pe(value);
+	q.p(value);
 	q.execute();
 }
 
@@ -830,7 +830,7 @@ Chtml_template Cforum_database::select_template(int i)
 int Cforum_database::aid(const string& name)
 {
 	Csql_query q(*this, "select aid, name from xf_guests where name = ?");
-	q.pe(name);
+	q.p(name);
 	Csql_result result = q.execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
@@ -838,7 +838,7 @@ int Cforum_database::aid(const string& name)
 			return row.f(0).i();
 	}
 	q = "insert into xf_guests (name) values (?)";
-	q.pe(name);
+	q.p(name);
 	q.execute();
 	return insert_id();
 }
@@ -848,7 +848,7 @@ int Cforum_database::uid(const string& name)
 	if (name.empty())
 		return 0;
 	Csql_query q(*this, "select uid from xf_users where name = ?");
-	q.pe(name);
+	q.p(name);
 	Csql_row row = q.execute().fetch_row();
 	return row ? row.f(0).i() : 0;
 }
@@ -856,14 +856,14 @@ int Cforum_database::uid(const string& name)
 string Cforum_database::md5(const string& v)
 {
 	Csql_query q(*this, "select md5(?)");
-	q.pe(v);
+	q.p(v);
 	return q.execute().fetch_row().f(0).s();
 }
 
 bool Cforum_database::password_valid(int uid, const string& password)
 {
 	Csql_query q(*this, "select password = md5(?) from xf_users where uid = ?");
-	q.pe(password);
+	q.p(password);
 	q.p(uid);
 	return q.execute().fetch_row().f(0).i();
 }
@@ -880,9 +880,9 @@ void Cforum_database::token(const string& v)
 	string name, password;
 	split_key(v, name, password);
 	Csql_query q(*this, "select ? from xf_users where name = ? and password = ?");
-	q.p(Cfd_user::fields(-1));
-	q.pe(name);
-	q.pe(password);
+	q.p_raw(Cfd_user::fields(-1));
+	q.p(name);
+	q.p(password);
 	Csql_row row;
 	if (row = q.execute().fetch_row())
 	{
@@ -931,7 +931,7 @@ const Cfd_guest& Cforum_database::fd_guest(int aid)
 	if (m_guest_cache.has(aid))
 		return m_guest_cache.get(aid);
 	Csql_query q(*this, "select ? from xf_guests where aid = ?");
-	q.p(Cfd_guest::fields(-1));
+	q.p_raw(Cfd_guest::fields(-1));
 	q.p(aid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
@@ -950,7 +950,7 @@ const Cfd_message& Cforum_database::fd_message(int mid)
 	if (m_message_cache.has(mid))
 		return m_message_cache.get(mid);
 	Csql_query q(*this, "select ? from xf_messages where mid = ?");
-	q.p(Cfd_message::fields(-1));
+	q.p_raw(Cfd_message::fields(-1));
 	q.p(mid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
@@ -968,7 +968,7 @@ const Cfd_user& Cforum_database::fd_user(int uid)
 	if (m_user_cache.has(uid))
 		return m_user_cache.get(uid);
 	Csql_query q(*this, "select ? from xf_users where uid = ?");
-	q.p(Cfd_user::fields(-1));
+	q.p_raw(Cfd_user::fields(-1));
 	q.p(uid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
@@ -1165,7 +1165,7 @@ void Cforum_database::prefetch_guests(const set<int>& v, int fm)
 	if (v.empty())
 		return;
 	Csql_query q(*this, "select ? from xf_guests where aid in (?)");
-	q.p(Cfd_guest::fields(fm));
+	q.p_raw(Cfd_guest::fields(fm));
 	string w;
 	for (set<int>::const_iterator i = v.begin(); i != v.end(); i++)
 	{
@@ -1175,7 +1175,7 @@ void Cforum_database::prefetch_guests(const set<int>& v, int fm)
 	if (w.empty())
 		return;
 	w.erase(w.length() - 1);
-	q.p(w);
+	q.p_raw(w);
 	Csql_result result = q.execute();
 	for (Csql_row row; row = result.fetch_row(); )
 		fd_guest(Cfd_guest(row, fm));
@@ -1186,7 +1186,7 @@ void Cforum_database::prefetch_users(const set<int>& v, int fm)
 	if (v.empty())
 		return;
 	Csql_query q(*this, "select ? from xf_users where uid in (?)");
-	q.p(Cfd_user::fields(fm));
+	q.p_raw(Cfd_user::fields(fm));
 	string w;
 	for (set<int>::const_iterator i = v.begin(); i != v.end(); i++)
 	{
@@ -1196,7 +1196,7 @@ void Cforum_database::prefetch_users(const set<int>& v, int fm)
 	if (w.empty())
 		return;
 	w.erase(w.length() - 1);
-	q.p(w);
+	q.p_raw(w);
 	Csql_result result = q.execute();
 	for (Csql_row row; row = result.fetch_row(); )
 		fd_user(Cfd_user(row, fm));
