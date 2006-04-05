@@ -12,7 +12,7 @@
 class Cconfig_base
 {
 public:
-	virtual void set(const string& name, const string& value) = 0;
+	virtual int set(const string& name, const string& value) = 0;
 
 	template <class T>
 	struct t_attribute
@@ -47,7 +47,7 @@ public:
 		if (!is)
 			return 1;
 		load(is);
-		return is.bad();
+		return !is.eof();
 	}
 };
 
