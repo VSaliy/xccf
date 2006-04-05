@@ -10,9 +10,9 @@
 class Cconfig: public Cconfig_base
 {
 public:
-	void set(const string& name, const string& value);
-	void set(const string& name, int value);
-	void set(const string& name, bool value);
+	int set(const string& name, const string& value);
+	int set(const string& name, int value);
+	int set(const string& name, bool value);
 	Cconfig();
 
 	string m_database;
