@@ -390,7 +390,7 @@ const char* page_recent_messages(int order, int show_page)
 	t.r(ti_url_order_by_name, url_message_list(2, show_page));
 	t.r(ti_url_order_by_subject, url_message_list(3, show_page));
 	t.r(ti_var_list, page);
-	t.r(ti_var_pager, pager(ac_recent_messages, show_page, (database.query("select count(*) from xf_messages").fetch_row().f(0).i() + database.rows_per_page() - 1) / database.rows_per_page(), order));
+	t.r(ti_var_pager, pager(ac_recent_messages, show_page, (database.query("select count(*) from xf_messages").fetch_row()[0].i() + database.rows_per_page() - 1) / database.rows_per_page(), order));
 	g_refresh = "60";
 	return t;
 }
@@ -547,7 +547,7 @@ const char* page_thread_list(int mid, int show_page)
 	Chtml_template t = database.select_template(ti_page_thread_list);
 	t.r(ti_var_list, list_thread(mid, 0, false, show_page));
 	if (!mid)
-		t.r(ti_var_pager, pager(ac_home, show_page, database.query("select unix_timestamp() - min(mtime) from xf_messages where pid = 0").fetch_row().f(0).i() / (7 * 24 * 60 * 60) + 1));
+		t.r(ti_var_pager, pager(ac_home, show_page, database.query("select unix_timestamp() - min(mtime) from xf_messages where pid = 0").fetch_row()[0].i() / (7 * 24 * 60 * 60) + 1));
 	return t;
 }
 
@@ -887,7 +887,7 @@ const char* page_message()
 			int mid;
 			Csql_row row = q.execute().fetch_row();
 			if (row)
-				mid = row.f(0).i();
+				mid = row[0].i();
 			else
 			{				
 				if (database.uid())
@@ -1132,12 +1132,12 @@ const char* page_history()
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
 		Chtml_template t = database.select_template(ti_entry_history);
-		t.r(ti_var_month, row.f(0).i());
-		t.r(ti_var_year, row.f(1).i());
+		t.r(ti_var_month, row[0].i());
+		t.r(ti_var_year, row[1].i());
 		t.r(ti_var_row_index, row_index & 1);
-		t.r(ti_var_thread_size, row.f(2).i());
-		t.r(ti_url_show_month, url_self(ac_home, "month=" + n(row.f(0).i()) + "&year=" + n(row.f(1).i())));
-		t.r(ti_url_show_year, url_self(ac_home, "year=" + n(row.f(1).i())));
+		t.r(ti_var_thread_size, row[2].i());
+		t.r(ti_url_show_month, url_self(ac_home, "month=" + n(row[0].i()) + "&year=" + n(row[1].i())));
+		t.r(ti_url_show_year, url_self(ac_home, "year=" + n(row[1].i())));
 		page += t;
 	}
 	t.r(ti_var_list, page);
@@ -1204,9 +1204,9 @@ const char* page_ipa_search()
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
-		string name = row.f(0).s();
-		int ipa0 = row.f(1).i();
-		int ipa1 = row.f(4).i();
+		string name = row[0].s();
+		int ipa0 = row[1].i();
+		int ipa1 = row[4].i();
 		Chtml_template t = database.select_template(ti_entry_ipa_search_result);
 		if (form.show_domain_names)
 		{
@@ -1226,12 +1226,12 @@ const char* page_ipa_search()
 		if (ipa1)
 			t.r(ti_url_find_messages_by_ipa1, url_self(ac_search, "ipa=" + ip2a(ipa1)));
 		t.r(ti_url_find_messages_by_name, url_self(ac_search, "name=" + name));
-		t.r(ti_var_date, database.convert_date(row.f(3).i()));
+		t.r(ti_var_date, database.convert_date(row[3].i()));
 		t.r(ti_var_name, name);
 		t.r(ti_var_ipa0, ip2a(ipa0));
 		if (ipa1)
 			t.r(ti_var_ipa1, ip2a(ipa1));
-		t.r(ti_var_post_count, row.f(2).i());
+		t.r(ti_var_post_count, row[2].i());
 		t.r(ti_var_row_index, row_index & 1);
 		page += t;
 	}
