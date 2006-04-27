@@ -62,12 +62,16 @@ public:
 		return m_size;
 	}
 
-	int i(int d = 0) const
+	long long i(long long d = 0) const
 	{
-		return raw() ? atoi(raw()) : d;
+#ifdef WIN32
+		return raw() ? _atoi64(raw()) : d;
+#else
+		return raw() ? atoll(raw()) : d;
+#endif
 	}
 
-	string s(const string& d = "") const
+	const string s(const string& d = "") const
 	{
 		return raw() ? string(raw(), size()) : d;
 	}
@@ -95,7 +99,7 @@ public:
 		return m_data;
 	}
 
-	Csql_field f(int i) const
+	Csql_field operator[](size_t) const
 	{
 		return Csql_field(m_data[i], m_sizes[i]);
 	}
