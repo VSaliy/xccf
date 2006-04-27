@@ -7,7 +7,6 @@
 
 #include "string_conversion.h"
 #include "virtual_binary.h"
-#include "xcc_error.h"
 #include "xf2_mm.h"
 
 class Cforum_database;

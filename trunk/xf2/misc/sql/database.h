@@ -6,13 +6,12 @@
 #endif // _MSC_VER > 1000
 
 #include "sql_result.h"
-#include "xcc_error.h"
 
 class Cdatabase  
 {
 public:
-	Cxcc_error open(const char* host, const char* user, const char* password, const char* database, bool echo_errors = false);
-	Cxcc_error open(const string& host, const string& user, const string& password, const string& database, bool echo_errors = false);
+	void open(const char* host, const char* user, const char* password, const char* database, bool echo_errors = false);
+	void open(const string& host, const string& user, const string& password, const string& database, bool echo_errors = false);
 	Csql_result query(const string& q);
 	void set_query_log(const string&);
 	int insert_id();

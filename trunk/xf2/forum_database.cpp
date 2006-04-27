@@ -935,7 +935,7 @@ const Cfd_guest& Cforum_database::fd_guest(int aid)
 	q.p(aid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw Cxcc_error("Unable to fetch fd_guest");
+		throw runtime_error("Unable to fetch fd_guest");
 	return m_guest_cache.set(aid, Cfd_guest(row, -1));
 }
 
@@ -954,7 +954,7 @@ const Cfd_message& Cforum_database::fd_message(int mid)
 	q.p(mid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw Cxcc_error("Unable to fetch fd_message");
+		throw runtime_error("Unable to fetch fd_message");
 	return fd_message(Cfd_message(row, -1));
 }
 
@@ -972,7 +972,7 @@ const Cfd_user& Cforum_database::fd_user(int uid)
 	q.p(uid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw Cxcc_error("Unable to fetch fd_user");
+		throw runtime_error("Unable to fetch fd_user");
 	return m_user_cache.set(uid, Cfd_user(row, -1));
 }
 
