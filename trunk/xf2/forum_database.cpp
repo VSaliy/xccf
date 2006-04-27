@@ -2,6 +2,7 @@
 #include "forum_database.h"
 
 #include <ctime>
+#include <stdexcept>
 #include "sql/sql_query.h"
 #include "multi_line.h"
 #include "string_conversion.h"
