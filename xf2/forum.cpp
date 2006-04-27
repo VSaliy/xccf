@@ -1248,16 +1248,13 @@ int main()
 	{
 		Cconfig config;
 		if (config.load("xcc_forum.conf"))
-			throw Cxcc_error("Unable to read xcc_forum.conf");
-		Cxcc_error error;
+			throw runtime_error("Unable to read xcc_forum.conf");
 		const char* page;
 		t_cgi_error cgi_error = cgi.read();
 		if (cgi_error != cgi_error_none && cgi.load(cgi_data_fname))
-			throw Cxcc_error(cgi_error_text[cgi_error]);
-		else if (error = database.open(config.m_host, config.m_user, config.m_password, config.m_database))
-			throw error;
-		else 
+			throw runtime_error(cgi_error_text[cgi_error]);
 		{
+			database.open(config.m_host, config.m_user, config.m_password, config.m_database);
 			database.read_config();
 			database.token(cookie.get_value("xf_token"));
 			cgi.save(cgi_data_fname);
@@ -1266,9 +1263,9 @@ int main()
 				database.import_strings();
 				database.import_templates();
 				if (database.export_template_cache())
-					throw Cxcc_error("Unable to write template cache");
+					throw runtime_error("Unable to write template cache");
 				if (database.import_template_cache())
-					throw Cxcc_error("Unable to read template cache");
+					throw runtime_error("Unable to read template cache");
 			}
 			if (cgi.has_name("show_news"))
 				page = page_news();
@@ -1410,11 +1407,11 @@ int main()
 				<< endl;
 		}
 	}
-	catch (Cxcc_error error)
+	catch (exception& e)
 	{
 		cout << "Content-Type: text/html; charset=utf-8" << endl
 			<< endl
-			<< report_error(error.message());
+			<< report_error(e.what());
 	}
 	return 0;
 }
