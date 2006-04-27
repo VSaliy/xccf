@@ -223,9 +223,9 @@ Cfd_guest::Cfd_guest(const Csql_row& v, int fm)
 {
 	int i = 0;
 	if (fm & f_aid)
-		aid = v.f(i++).i();
+		aid = v[i++].i();
 	if (fm & f_name)
-		name = v.f(i++).s();
+		name = v[i++].s();
 }
 
 void Cfd_guest::r(Chtml_template& t) const
@@ -264,9 +264,9 @@ int Cfd_guest::fields(const Chtml_template& t)
 
 Cfd_language::Cfd_language(const Csql_row& v)
 {
-	lid = v.f(0).i();
-	fname = v.f(1).s();
-	name = v.f(2).s();
+	lid = v[0].i();
+	fname = v[1].s();
+	name = v[2].s();
 }
 
 string Cfd_language::fields(int fm, const string& prefix)
@@ -290,9 +290,9 @@ void Cfd_language::r(Chtml_template& t) const
 
 Cfd_layout::Cfd_layout(const Csql_row& v)
 {
-	lid = v.f(0).i();
-	fname = v.f(1).s();
-	name = v.f(2).s();
+	lid = v[0].i();
+	fname = v[1].s();
+	name = v[2].s();
 }
 
 string Cfd_layout::fields(int fm, const string& prefix)
@@ -316,9 +316,9 @@ void Cfd_layout::r(Chtml_template& t) const
 
 Cfd_smily::Cfd_smily(const Csql_row& v)
 {
-	sid = v.f(0).i();
-	fname = v.f(1).s();
-	name = v.f(2).s();
+	sid = v[0].i();
+	fname = v[1].s();
+	name = v[2].s();
 }
 
 string Cfd_smily::fields(int fm, const string& prefix)
@@ -342,9 +342,9 @@ void Cfd_smily::r(Chtml_template& t) const
 
 Cfd_style::Cfd_style(const Csql_row& v)
 {
-	sid = v.f(0).i();
-	link = v.f(1).s();
-	name = v.f(2).s();
+	sid = v[0].i();
+	link = v[1].s();
+	name = v[2].s();
 }
 
 string Cfd_style::fields(int fm, const string& prefix)
@@ -374,35 +374,35 @@ Cfd_message::Cfd_message(const Csql_row& v, int fm)
 {
 	int i = 0;
 	if (fm & f_aid)
-		aid = v.f(i++).i();
+		aid = v[i++].i();
 	if (fm & f_body)
-		body = v.f(i++).s();
+		body = v[i++].s();
 	if (fm & f_ctime)
-		ctime = v.f(i++).i();
+		ctime = v[i++].i();
 	if (fm & f_flags)
-		flags = static_cast<t_message_flags>(v.f(i++).i());
+		flags = static_cast<t_message_flags>(v[i++].i());
 	if (fm & f_ipa0)
-		ipa0 = v.f(i++).i();
+		ipa0 = v[i++].i();
 	if (fm & f_mid)
-		mid = v.f(i++).i();
+		mid = v[i++].i();
 	if (fm & f_mtime)
-		mtime = v.f(i++).i();
+		mtime = v[i++].i();
 	if (fm & f_pid)
-		pid = v.f(i++).i();
+		pid = v[i++].i();
 	if (fm & f_signature)
-		signature = v.f(i++).s();
+		signature = v[i++].s();
 	if (fm & f_subject)
-		subject = v.f(i++).s();
+		subject = v[i++].s();
 	if (fm & f_thread_size)
-		thread_size = v.f(i++).i();
+		thread_size = v[i++].i();
 	if (fm & f_type)
-		type = static_cast<t_message_type>(v.f(i++).i());
+		type = static_cast<t_message_type>(v[i++].i());
 	if (fm & f_uid)
-		uid = v.f(i++).i();
+		uid = v[i++].i();
 	if (fm & f_tid)
-		tid = v.f(i++).i();
+		tid = v[i++].i();
 	if (fm & f_ipa1)
-		ipa1 = v.f(i++).i();
+		ipa1 = v[i++].i();
 }
 
 bool Cfd_message::forum() const
@@ -537,45 +537,45 @@ Cfd_user::Cfd_user(const Csql_row& v, int fm)
 {
 	int i = 0;
 	if (fm & f_ctime)
-		ctime = v.f(i++).i();
+		ctime = v[i++].i();
 	if (fm & f_custom_css)
-		custom_css = v.f(i++).s();
+		custom_css = v[i++].s();
 	if (fm & f_field_height)
-		field_height = v.f(i++).i(15);
+		field_height = v[i++].i(15);
 	if (fm & f_field_length)
-		field_length = v.f(i++).i(60);
+		field_length = v[i++].i(60);
 	if (fm & f_flags)
-		flags = static_cast<t_user_flags>(v.f(i++).i(uf_default));
+		flags = static_cast<t_user_flags>(v[i++].i(uf_default));
 	if (fm & f_icq_id)
-		icq_id = v.f(i++).i();
+		icq_id = v[i++].i();
 	if (fm & f_ipa)
-		ipa = v.f(i++).i();
+		ipa = v[i++].i();
 	if (fm & f_language)
-		language = v.f(i++).i();
+		language = v[i++].i();
 	if (fm & f_layout)
-		layout = v.f(i++).i();
+		layout = v[i++].i();
 	if (fm & f_link)
-		link = v.f(i++).s();
+		link = v[i++].s();
 	if (fm & f_link_title)
-		link_title = v.f(i++).s();
+		link_title = v[i++].s();
 	if (fm & f_mtime)
-		mtime = v.f(i++).i();
+		mtime = v[i++].i();
 	if (fm & f_name)
-		name = v.f(i++).s();
+		name = v[i++].s();
 	if (fm & f_private_mail)
-		private_mail = v.f(i++).s();
+		private_mail = v[i++].s();
 	if (fm & f_public_mail)
-		public_mail = v.f(i++).s();
+		public_mail = v[i++].s();
 	if (fm & f_rows_per_page)
-		rows_per_page = v.f(i++).i(25);
+		rows_per_page = v[i++].i(25);
 	if (fm & f_signature)
-		signature = v.f(i++).s();
+		signature = v[i++].s();
 	if (fm & f_time_offset)
-		time_offset = v.f(i++).i();
+		time_offset = v[i++].i();
 	if (fm & f_uid)
-		uid = v.f(i++).i();
+		uid = v[i++].i();
 	if (fm & f_style)
-		style = v.f(i++).i();
+		style = v[i++].i();
 	rows_per_page = max(10, min(rows_per_page, 100));
 }
 
@@ -722,7 +722,7 @@ void Cforum_database::import_strings()
 	query("delete from xf_strings");
 	Csql_result result = query("select lid, fname from xf_languages");
 	for (Csql_row row; row = result.fetch_row(); )
-		import_strings(row.f(0).i(), row.f(1).s());
+		import_strings(row[0].i(), row[1].s());
 	if (!result.c_rows())
 		import_strings(1, "xf_english.txt");
 }
@@ -762,7 +762,7 @@ void Cforum_database::import_templates()
 	query("delete from xf_templates");
 	Csql_result result = query("select lid, fname from xf_layouts");
 	for (Csql_row row; row = result.fetch_row(); )
-		import_templates(row.f(0).i(), row.f(1).s());
+		import_templates(row[0].i(), row[1].s());
 	if (!result.c_rows())
 		import_templates(1, "xf_templates.txt");
 }
@@ -834,8 +834,8 @@ int Cforum_database::aid(const string& name)
 	Csql_result result = q.execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		if (row.f(1).s() == name)
-			return row.f(0).i();
+		if (row[1].s() == name)
+			return row[0].i();
 	}
 	q = "insert into xf_guests (name) values (?)";
 	q.p(name);
@@ -850,14 +850,14 @@ int Cforum_database::uid(const string& name)
 	Csql_query q(*this, "select uid from xf_users where name = ?");
 	q.p(name);
 	Csql_row row = q.execute().fetch_row();
-	return row ? row.f(0).i() : 0;
+	return row ? row[0].i() : 0;
 }
 
 string Cforum_database::md5(const string& v)
 {
 	Csql_query q(*this, "select md5(?)");
 	q.p(v);
-	return q.execute().fetch_row().f(0).s();
+	return q.execute().fetch_row()[0].s();
 }
 
 bool Cforum_database::password_valid(int uid, const string& password)
@@ -865,7 +865,7 @@ bool Cforum_database::password_valid(int uid, const string& password)
 	Csql_query q(*this, "select password = md5(?) from xf_users where uid = ?");
 	q.p(password);
 	q.p(uid);
-	return q.execute().fetch_row().f(0).i();
+	return q.execute().fetch_row()[0].i();
 }
 
 string Cforum_database::token(const string& name, const string& password)
@@ -1008,12 +1008,12 @@ int Cforum_database::export_template_cache()
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Csql_row e = row;
-			int lid = e.f(0).i();
-			int i = e.f(1).i();
+			int lid = e[0].i();
+			int i = e[1].i();
 			c_languages = max(c_languages, lid);
 			c_strings = max(c_strings, i + 1);
-			string_map[make_pair(lid, i)] = e.f(2).s();
-			cb_templates += e.f(2).size() + 7;
+			string_map[make_pair(lid, i)] = e[2].s();
+			cb_templates += e[2].size() + 7;
 		}
 	}
 	int c_styles = 0;
@@ -1036,12 +1036,12 @@ int Cforum_database::export_template_cache()
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Csql_row e = row;
-			int lid = e.f(0).i();
-			int i = e.f(1).i();
+			int lid = e[0].i();
+			int i = e[1].i();
 			c_layouts = max(c_layouts, lid);
 			c_templates = max(c_templates, i + 1);
-			template_map[make_pair(lid, i)] = e.f(2).vdata();
-			cb_templates += e.f(2).size();
+			template_map[make_pair(lid, i)] = e[2].vdata();
+			cb_templates += e[2].size();
 		}
 	}
 	Cvirtual_binary d;
@@ -1207,29 +1207,29 @@ void Cforum_database::read_config()
 	Csql_result result = query("select name, value from xf_config where value is not null");
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		if (row.f(0).s() == "forum_title")
-			m_forum_title = row.f(1).s();
-		else if (row.f(0).s() == "local_domain_url")
-			m_local_domain_url = row.f(1).s();
-		else if (row.f(0).s() == "local_forum_url")
-			m_local_forum_url = row.f(1).s();
-		else if (row.f(0).s() == "mail_from")
-			m_mail_from = row.f(1).s();
-		else if (row.f(0).s() == "min_name_length")
-			m_min_name_length = row.f(1).i();
-		else if (row.f(0).s() == "min_pass_length")
-			m_min_pass_length = row.f(1).i();
-		else if (row.f(0).s() == "min_subject_length")
-			m_min_subject_length = row.f(1).i();
-		else if (row.f(0).s() == "max_name_length")
-			m_max_name_length = row.f(1).i();
-		else if (row.f(0).s() == "max_pass_length")
-			m_max_pass_length = row.f(1).i();
-		else if (row.f(0).s() == "max_signature_length")
-			m_max_signature_length = row.f(1).i();
-		else if (row.f(0).s() == "max_subject_length")
-			m_max_subject_length = row.f(1).i();
-		else if (row.f(0).s() == "skip_template_cache")
-			m_skip_template_cache = row.f(1).i();
+		if (row[0].s() == "forum_title")
+			m_forum_title = row[1].s();
+		else if (row[0].s() == "local_domain_url")
+			m_local_domain_url = row[1].s();
+		else if (row[0].s() == "local_forum_url")
+			m_local_forum_url = row[1].s();
+		else if (row[0].s() == "mail_from")
+			m_mail_from = row[1].s();
+		else if (row[0].s() == "min_name_length")
+			m_min_name_length = row[1].i();
+		else if (row[0].s() == "min_pass_length")
+			m_min_pass_length = row[1].i();
+		else if (row[0].s() == "min_subject_length")
+			m_min_subject_length = row[1].i();
+		else if (row[0].s() == "max_name_length")
+			m_max_name_length = row[1].i();
+		else if (row[0].s() == "max_pass_length")
+			m_max_pass_length = row[1].i();
+		else if (row[0].s() == "max_signature_length")
+			m_max_signature_length = row[1].i();
+		else if (row[0].s() == "max_subject_length")
+			m_max_subject_length = row[1].i();
+		else if (row[0].s() == "skip_template_cache")
+			m_skip_template_cache = row[1].i();
 	}
 }
