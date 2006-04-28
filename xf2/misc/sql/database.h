@@ -10,13 +10,13 @@
 class Cdatabase  
 {
 public:
-	void open(const char* host, const char* user, const char* password, const char* database, bool echo_errors = false);
 	void open(const string& host, const string& user, const string& password, const string& database, bool echo_errors = false);
 	Csql_result query(const string& q);
 	void set_query_log(const string&);
 	int insert_id();
 	void close();
 	Cdatabase();
+	Cdatabase(const string& host, const string& user, const string& password, const string& database, bool echo_errors = false);
 	~Cdatabase();
 
 	MYSQL& handle()

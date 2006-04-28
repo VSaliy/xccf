@@ -10,27 +10,28 @@ Cdatabase::Cdatabase()
 	mysql_init(&m_handle);
 }
 
+
+Cdatabase::Cdatabase(const string& host, const string& user, const string& password, const string& database, bool echo_errors)
+{
+	open(host, user, password, database, echo_errors);
+}
+
 Cdatabase::~Cdatabase()
 {
 	close();
 }
 
-void Cdatabase::open(const char* host, const char* user, const char* password, const char* database, bool echo_errors)
+void Cdatabase::open(const string& host, const string& user, const string& password, const string& database, bool echo_errors)
 {
 	m_echo_errors = echo_errors;
 	bool a0 = true;
 	if (!mysql_init(&m_handle)
-		|| !mysql_real_connect(&m_handle, host, user, password, database, MYSQL_PORT, NULL, 0)
+		|| !mysql_real_connect(&m_handle, host.c_str(), user.c_str(), password.c_str(), database.c_str(), MYSQL_PORT, NULL, 0)
 #if MYSQL_VERSION_ID >= 50000
 		|| !mysql_options(&m_handle, MYSQL_OPT_RECONNECT, reinterpret_cast<const char*>(&a0))
 #endif
 		)
 		throw mysql_error(&m_handle);
-}
-
-void Cdatabase::open(const string& host, const string& user, const string& password, const string& database, bool echo_errors)
-{
-	open(host.c_str(), user.c_str(), password.c_str(), database.c_str(), echo_errors);
 }
 
 Csql_result Cdatabase::query(const string& q)
