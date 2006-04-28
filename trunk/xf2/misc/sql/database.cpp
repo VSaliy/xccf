@@ -5,11 +5,14 @@
 #include <iostream>
 #include <stdexcept>
 
+#ifdef WIN32
+#pragma comment(lib, "libmysql")
+#endif
+
 Cdatabase::Cdatabase()
 {
 	mysql_init(&m_handle);
 }
-
 
 Cdatabase::Cdatabase(const string& host, const string& user, const string& password, const string& database, bool echo_errors)
 {
@@ -31,7 +34,7 @@ void Cdatabase::open(const string& host, const string& user, const string& passw
 		|| !mysql_options(&m_handle, MYSQL_OPT_RECONNECT, reinterpret_cast<const char*>(&a0))
 #endif
 		)
-		throw mysql_error(&m_handle);
+		throw exception(mysql_error(&m_handle));
 }
 
 Csql_result Cdatabase::query(const string& q)
@@ -41,14 +44,14 @@ Csql_result Cdatabase::query(const string& q)
 		static ofstream f(m_query_log.c_str());
 		f << q << endl;
 	}
-	if (mysql_real_query(&m_handle, q.c_str(), q.size()))
+	if (mysql_real_query(&m_handle, q.data(), q.size()))
 	{
 		if (m_echo_errors)
 		{
 			cerr << mysql_error(&m_handle) << endl
 				<< q.substr(0, 79) << endl;
 		}
-		throw runtime_error(mysql_error(&m_handle));
+		throw exception(mysql_error(&m_handle));
 	}
 	return Csql_result(mysql_store_result(&m_handle));
 }
