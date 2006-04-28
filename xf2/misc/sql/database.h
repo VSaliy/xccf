@@ -7,9 +7,17 @@
 
 #include "sql_result.h"
 
-class Cdatabase  
+class Cdatabase
 {
 public:
+	class exception: public runtime_error
+	{
+	public:
+		exception(const string& s): runtime_error(s)
+		{
+		}
+	};
+
 	void open(const string& host, const string& user, const string& password, const string& database, bool echo_errors = false);
 	Csql_result query(const string& q);
 	void set_query_log(const string&);
