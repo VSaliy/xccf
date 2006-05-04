@@ -11,22 +11,22 @@
 class Cdatabase;
 class Csql_result;
 
-class Csql_query  
+class Csql_query
 {
 public:
 	Csql_result execute() const;
-	string read() const;
-	void operator=(const string&);
-	void operator+=(const string&);
-	void p_raw(const string&);
-	void p(__int64);
-	void p(const string&);
+	std::string read() const;
+	void operator=(const std::string&);
+	void operator+=(const std::string&);
+	void p_raw(const std::string&);
+	void p(long long);
+	void p(const std::string&);
 	void p(const Cvirtual_binary&);
-	Csql_query(Cdatabase&, const string& = "");
+	Csql_query(Cdatabase&, const std::string& = "");
 private:
-	typedef list<string> t_list;
+	typedef std::list<std::string> t_list;
 
-	string m_data;
+	std::string m_data;
 	Cdatabase& m_database;
 	t_list m_list;
 };
