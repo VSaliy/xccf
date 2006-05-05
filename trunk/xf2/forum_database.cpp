@@ -577,7 +577,7 @@ Cfd_user::Cfd_user(const Csql_row& v, int fm)
 		uid = v[i++].i();
 	if (fm & f_style)
 		style = v[i++].i();
-	rows_per_page = max(10, min(rows_per_page, 100));
+	rows_per_page = std::max(10, std::min(rows_per_page, 100));
 }
 
 bool Cfd_user::admin() const
@@ -1011,8 +1011,8 @@ int Cforum_database::export_template_cache()
 			Csql_row e = row;
 			int lid = e[0].i();
 			int i = e[1].i();
-			c_languages = max(c_languages, lid);
-			c_strings = max(c_strings, i + 1);
+			c_languages = std::max(c_languages, lid);
+			c_strings = std::max(c_strings, i + 1);
 			string_map[std::make_pair(lid, i)] = e[2].s();
 			cb_templates += e[2].size() + 7;
 		}
@@ -1024,7 +1024,7 @@ int Cforum_database::export_template_cache()
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_style e = row;
-			c_styles = max(c_styles, e.sid);
+			c_styles = std::max(c_styles, e.sid);
 			style_map[e.sid] = e.link;
 			cb_templates += e.link.size() + 7;
 		}
@@ -1039,8 +1039,8 @@ int Cforum_database::export_template_cache()
 			Csql_row e = row;
 			int lid = e[0].i();
 			int i = e[1].i();
-			c_layouts = max(c_layouts, lid);
-			c_templates = max(c_templates, i + 1);
+			c_layouts = std::max(c_layouts, lid);
+			c_templates = std::max(c_templates, i + 1);
 			template_map[std::make_pair(lid, i)] = e[2].vdata();
 			cb_templates += e[2].size();
 		}
