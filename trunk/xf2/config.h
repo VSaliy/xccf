@@ -10,15 +10,15 @@
 class Cconfig: public Cconfig_base
 {
 public:
-	int set(const string& name, const string& value);
-	int set(const string& name, int value);
-	int set(const string& name, bool value);
+	int set(const std::string& name, const std::string& value);
+	int set(const std::string& name, int value);
+	int set(const std::string& name, bool value);
 	Cconfig();
 
-	string m_database;
-	string m_host;
-	string m_password;
-	string m_user;
+	std::string m_database;
+	std::string m_host;
+	std::string m_password;
+	std::string m_user;
 };
 
 #endif

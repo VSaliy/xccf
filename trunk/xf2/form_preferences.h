@@ -16,7 +16,7 @@ public:
 	Cform_preferences(Cforum_database& database);
 
 	bool submit;
-	string custom_css;
+	std::string custom_css;
 	int language;
 	int layout;
 	int field_height;

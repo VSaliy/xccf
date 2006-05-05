@@ -10,16 +10,16 @@
 class Cform_register: public Cform_base
 {
 public:
-	const char* read(const string& error_msg = "");
+	const char* read(const std::string& error_msg = "");
 	bool valid();
 	void write(const Ccgi_input& v);
 	void write_cookie(const Ccookie& v);
 	Cform_register(Cforum_database& database);
 
 	bool submit;
-	string name;
-	string password;
-	string password_again;
+	std::string name;
+	std::string password;
+	std::string password_again;
 	int ipa0;
 	int ipa1;
 private:

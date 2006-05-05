@@ -20,9 +20,9 @@ public:
 	Cform_message(Cforum_database& database);
 
 	bool submit;
-	string name;
-	string subject;
-	string body;
+	std::string name;
+	std::string subject;
+	std::string body;
 	int mid;
 	int pid;
 	int ipa0;

@@ -9,8 +9,6 @@
 #include "web_tools.h"
 #include "xf2_mm.h"
 
-using namespace boost;
-
 const char* mt_name[] = 
 {
 	"Document",
@@ -21,17 +19,17 @@ const char* mt_name[] =
 	"News"
 };
 
-string url_self(t_action action)
+std::string url_self(t_action action)
 {
 	return "?a=" + n(action);
 }
 
-string url_self(t_action action, const string& elements)
+std::string url_self(t_action action, const std::string& elements)
 {
 	return elements.empty() ? "?a=" + n(action) : "?a=" + n(action) + ";" + elements;
 }
 
-const char* url_show_message(int mid, const string& hl)
+const char* url_show_message(int mid, const std::string& hl)
 {
 	char* b = g_mm.get(hl.size() + 63);
 	if (hl.empty())
@@ -48,9 +46,9 @@ const char* url_show_user(int uid)
 	return b;
 }
 
-string trim_field(const string& v)
+std::string trim_field(const std::string& v)
 {
-	string r;
+	std::string r;
 	bool copy_white = false;
 	for (size_t i = 0; i < v.length(); i++)
 	{
@@ -70,16 +68,16 @@ string trim_field(const string& v)
 	return r;
 }
 
-string trim_text(const string& v)
+std::string trim_text(const std::string& v)
 {
-	string r;
+	std::string r;
 	bool copy_white = false;
 	for (size_t i = 0; i < v.length(); )
 	{
 		size_t p = v.find('\n', i);
-		if (p == string::npos)
+		if (p == std::string::npos)
 			p = v.length();
-		string line = trim_field(v.substr(i, p - i));
+		std::string line = trim_field(v.substr(i, p - i));
 		if (line.empty())
 			copy_white = true;
 		else
@@ -97,18 +95,18 @@ string trim_text(const string& v)
 	return r;
 }
 
-size_t text_cy(const string& v, bool ignore_quotes)
+size_t text_cy(const std::string& v, bool ignore_quotes)
 {
 	int r = 0;
 	for (size_t i = 0; i < v.length(); )
 	{
 		size_t p = v.find('\n', i);
-		if (p == string::npos)
+		if (p == std::string::npos)
 			p = v.length();
 		if (ignore_quotes)
 		{
-			string line = v.substr(i, p - i);
-			if (!line.empty() && !istarts_with(line, "> "))
+			std::string line = v.substr(i, p - i);
+			if (!line.empty() && !boost::istarts_with(line, "> "))
 				r++;
 		}
 		else
@@ -118,27 +116,27 @@ size_t text_cy(const string& v, bool ignore_quotes)
 	return r;
 }
 
-static string encode_local_url(const string& url, const string& local_domain_url, const string& local_forum_url)
+static std::string encode_local_url(const std::string& url, const std::string& local_domain_url, const std::string& local_forum_url)
 {
-	if (!local_forum_url.empty() && istarts_with(url, local_forum_url))
+	if (!local_forum_url.empty() && boost::istarts_with(url, local_forum_url))
 	{
 		return url.substr(local_forum_url.length());
 	}
-	if (!local_domain_url.empty() && istarts_with(url, local_domain_url))
+	if (!local_domain_url.empty() && boost::istarts_with(url, local_domain_url))
 		return url.substr(local_domain_url.length());
 	return url;
 }
 
-static string highlight(const string& v, const string& hl)
+static std::string highlight(const std::string& v, const std::string& hl)
 {
 	if (v.empty() || hl.empty())
 		return v;
-	string r;
+	std::string r;
 	r.reserve(v.length() << 1);
 	for (size_t i = 0; i < v.length(); )
 	{
 		size_t j = v.find(hl, i);
-		if (j == string::npos)
+		if (j == std::string::npos)
 		{
 			r += v.substr(i);
 			return r;
@@ -149,19 +147,19 @@ static string highlight(const string& v, const string& hl)
 	return r;
 }
 
-string encode_field(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, const string& hl)
+std::string encode_field(const std::string& v, const t_smily_map& smily_map, const std::string& local_domain_url, const std::string& local_forum_url, const std::string& hl)
 {
-	string r;
+	std::string r;
 	r.reserve(v.length() << 1);
-	string w;
+	std::string w;
 	for (size_t i = 0; i < v.length(); )
 	{
-		if (istarts_with(v.c_str() + i, "ftp.")
-			|| istarts_with(v.c_str() + i, "ftp://")
-			|| istarts_with(v.c_str() + i, "http://")
-			|| istarts_with(v.c_str() + i, "https://")
-			|| istarts_with(v.c_str() + i, "mailto:")
-			|| istarts_with(v.c_str() + i, "www."))
+		if (boost::istarts_with(v.c_str() + i, "ftp.")
+			|| boost::istarts_with(v.c_str() + i, "ftp://")
+			|| boost::istarts_with(v.c_str() + i, "http://")
+			|| boost::istarts_with(v.c_str() + i, "https://")
+			|| boost::istarts_with(v.c_str() + i, "mailto:")
+			|| boost::istarts_with(v.c_str() + i, "www."))
 		{
 			r += highlight(w, hl);
 			w.erase();
@@ -178,13 +176,13 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 				p--;
 			if (v[p - 1] == ')')
 				p--;
-			string url = web_encode(v.substr(i, p - i));
-			if (istarts_with(v.c_str() + i, "ftp."))
+			std::string url = web_encode(v.substr(i, p - i));
+			if (boost::istarts_with(v.c_str() + i, "ftp."))
 				r += web_link(highlight(url, hl), "ftp://" + url, false);
-			else if (istarts_with(v.c_str() + i, "www."))
+			else if (boost::istarts_with(v.c_str() + i, "www."))
 				r += web_link(highlight(url, hl), "http://" + url, false);
 			else
-				r += web_link(highlight(istarts_with(v.c_str() + i, "mailto:") ? url.substr(7) : encode_local_url(url, local_domain_url, local_forum_url), hl), url, false);
+				r += web_link(highlight(boost::istarts_with(v.c_str() + i, "mailto:") ? url.substr(7) : encode_local_url(url, local_domain_url, local_forum_url), hl), url, false);
 			i = p;
 		}
 		else 
@@ -194,7 +192,7 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 			{
 				for (t_smily_map::const_iterator j = smily_map.begin(); j != smily_map.end(); j++)					
 				{
-					if (istarts_with(v.c_str() + i, j->first))
+					if (boost::istarts_with(v.c_str() + i, j->first))
 					{
 						r += highlight(w, hl);
 						w.erase();
@@ -225,19 +223,19 @@ string encode_field(const string& v, const t_smily_map& smily_map, const string&
 	return r + highlight(w, hl);
 }
 
-string encode_text(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, bool add_br, bool add_span, bool remove_html, const string& hl)
+std::string encode_text(const std::string& v, const t_smily_map& smily_map, const std::string& local_domain_url, const std::string& local_forum_url, bool add_br, bool add_span, bool remove_html, const std::string& hl)
 {
-	string r;
+	std::string r;
 	r.reserve(v.length() << 1);
 	for (size_t i = 0; i < v.length(); )
 	{
 		size_t p = v.find('\n', i);
-		if (p == string::npos)
+		if (p == std::string::npos)
 			p = v.length();
-		string line = v.substr(i, p - i);
+		std::string line = v.substr(i, p - i);
 		if (remove_html)
 			line = encode_field(line, smily_map, local_domain_url, local_forum_url, hl);
-		r += add_span && istarts_with(line, "> ")
+		r += add_span && boost::istarts_with(line, "> ")
 			? html_span(line, "class=quote")
 			: line;
 		if (add_br)
@@ -247,18 +245,18 @@ string encode_text(const string& v, const t_smily_map& smily_map, const string& 
 	return r;
 }
 
-string report_error(const string& user_msg, const string& admin_msg)
+std::string report_error(const std::string& user_msg, const std::string& admin_msg)
 {
-	string page = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><link rel=stylesheet href=\"/forum.css\">"
+	std::string page = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><link rel=stylesheet href=\"/forum.css\">"
 		+ user_msg + "<br>";
 	if (!admin_msg.empty())
 		page += admin_msg + "<br>";
 	return page;
 }
 
-string select_fields(int field_mask, const char** field_names, const string& prefix)
+std::string select_fields(int field_mask, const char** field_names, const std::string& prefix)
 {
-	string v;
+	std::string v;
 	for (const char** r = field_names; field_mask && *r; field_mask >>= 1, r++)
 	{
 		if (field_mask & 1)

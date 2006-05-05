@@ -17,8 +17,8 @@ public:
 	Cform_styles(Cforum_database& database);
 
 	bool submit;
-	string link;
-	string name;
+	std::string link;
+	std::string name;
 private:
 	bool link_valid() const;
 	bool name_valid() const;

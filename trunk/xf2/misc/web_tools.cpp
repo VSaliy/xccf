@@ -6,14 +6,12 @@
 #include "multi_line.h"
 #include "string_conversion.h"
 
-using namespace boost;
-
-bool web_is_protocol_name(const string& v)
+bool web_is_protocol_name(const std::string& v)
 {
-	return iequals(v, "ftp") || iequals(v, "http");
+	return boost::iequals(v, "ftp") || boost::iequals(v, "http");
 }
 
-bool web_is_server_name(const string& v)
+bool web_is_server_name(const std::string& v)
 {
 	int c_parts = 0;
 	Cmulti_line l = v;
@@ -26,7 +24,7 @@ bool web_is_server_name(const string& v)
 	return c_parts >= 2;
 }
 
-bool web_is_mail(const string& v)
+bool web_is_mail(const std::string& v)
 {
 	int a = v.find('@');
 	if (a < 1 || v.length() - a < 1)
@@ -37,7 +35,7 @@ bool web_is_mail(const string& v)
 	return true;
 }
 
-bool web_is_link(const string& v)
+bool web_is_link(const std::string& v)
 {
 	Cmulti_line l = v;
 	if (!web_is_protocol_name(l.get_next_line("://")))
@@ -47,27 +45,27 @@ bool web_is_link(const string& v)
 	return true;
 }
 
-string web_name(const string& name, const string& mail)
+std::string web_name(const std::string& name, const std::string& mail)
 {
 	if (name.empty())
-		return web_is_mail(mail) ? a("Anonymous", string("href=\"mailto:Anonymous <") + web_encode(mail) + ">\"") : "Anonymous";
-	return web_is_mail(mail) ? a(web_encode(name), string("href=\"mailto:") + web_encode(name) + " <" + web_encode(mail) + ">\"") : static_cast<string>(web_encode(name));
+		return web_is_mail(mail) ? a("Anonymous", std::string("href=\"mailto:Anonymous <") + web_encode(mail) + ">\"") : "Anonymous";
+	return web_is_mail(mail) ? a(web_encode(name), std::string("href=\"mailto:") + web_encode(name) + " <" + web_encode(mail) + ">\"") : static_cast<std::string>(web_encode(name));
 }
 
-string web_link(const string& link_title, const string& link, bool encode)
+std::string web_link(const std::string& link_title, const std::string& link, bool encode)
 {
 	return encode
 		? web_link(web_encode(link_title), web_encode(link), false)
-		: a(link_title.empty() ? link : link_title, string("target=_top href=\"") + link + "\"");
+		: a(link_title.empty() ? link : link_title, std::string("target=_top href=\"") + link + "\"");
 }
 
-string web_magic_anchors(const string& v, bool keep_protocol, const string& protocol)
+std::string web_magic_anchors(const std::string& v, bool keep_protocol, const std::string& protocol)
 {
-	string r;
+	std::string r;
 	for (size_t l = 0; l < v.length(); )
 	{
 		size_t p = v.find(protocol, l);
-		if (p == string::npos)
+		if (p == std::string::npos)
 		{
 			r += v.substr(l);
 			break;
@@ -85,14 +83,14 @@ string web_magic_anchors(const string& v, bool keep_protocol, const string& prot
 			q--;
 		if (v[q - 1] == ')')
 			q--;
-		string href = v.substr(p, q - p);
+		std::string href = v.substr(p, q - p);
 		r += web_link(keep_protocol ? href : href.substr(protocol.length()), href);
 		l = q;
 	}
 	return r;
 }
 
-string web_magic_anchors(const string& v)
+std::string web_magic_anchors(const std::string& v)
 {
 	return web_magic_anchors(web_magic_anchors(web_magic_anchors(v, true, "ftp://"), true, "http://"), false, "mailto:");
 }

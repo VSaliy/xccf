@@ -15,8 +15,8 @@ public:
 	void write(const Ccgi_input& v);
 	Cform_ipa_search(Cforum_database& database);
 
-	string name;
-	string ipa;
+	std::string name;
+	std::string ipa;
 	int uid;
 	int order;
 	bool show_domain_names;

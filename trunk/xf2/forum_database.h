@@ -234,59 +234,59 @@ public:
 	Cfd_guest();
 	Cfd_guest(const Csql_row& v, int fm);
 	static int fields(const Chtml_template&);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	void r(Chtml_template& t) const;
 
 	int aid;
-	string name;
+	std::string name;
 };
 
 class Cfd_language
 {
 public:
 	Cfd_language(const Csql_row& v);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	void r(Chtml_template& t) const;
 
 	int lid;
-	string fname;
-	string name;
+	std::string fname;
+	std::string name;
 };
 
 class Cfd_layout
 {
 public:
 	Cfd_layout(const Csql_row& v);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	void r(Chtml_template& t) const;
 
 	int lid;
-	string fname;
-	string name;
+	std::string fname;
+	std::string name;
 };
 
 class Cfd_smily
 {
 public:
 	Cfd_smily(const Csql_row& v);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	void r(Chtml_template& t) const;
 
 	int sid;
-	string fname;
-	string name;
+	std::string fname;
+	std::string name;
 };
 
 class Cfd_style
 {
 public:
 	Cfd_style(const Csql_row& v);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	void r(Chtml_template& t) const;
 
 	int sid;
-	string link;
-	string name;
+	std::string link;
+	std::string name;
 };
 
 class Cfd_message  
@@ -315,19 +315,19 @@ public:
 	Cfd_message(const Csql_row& v, int fm);
 	bool forum() const;
 	bool hidden() const;
-	void r(Chtml_template& t, Cforum_database& database, int fm, const string& hl = "") const;
-	string name(Cforum_database& database) const;
+	void r(Chtml_template& t, Cforum_database& database, int fm, const std::string& hl = "") const;
+	std::string name(Cforum_database& database) const;
 	static int fields(const Chtml_template&);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 
 	int aid;
 	int mid;
 	int pid;
 	int tid;
 	int uid;
-	string subject;
-	string body;
-	string signature;
+	std::string subject;
+	std::string body;
+	std::string signature;
 	int ipa0;
 	int ipa1;
 	t_message_flags flags;
@@ -368,19 +368,19 @@ public:
 	Cfd_user(const Csql_row& v, int fm);
 	bool admin() const;
 	static int fields(const Chtml_template&);
-	static string fields(int fm, const string& prefix = "");
+	static std::string fields(int fm, const std::string& prefix = "");
 	bool moderate() const;
 	void r(Chtml_template& t, Cforum_database& database) const;
 
 	int uid;
-	string name;
-	string private_mail;
-	string public_mail;
-	string signature;
+	std::string name;
+	std::string private_mail;
+	std::string public_mail;
+	std::string signature;
 	int icq_id;
-	string link_title;
-	string link;
-	string custom_css;
+	std::string link_title;
+	std::string link;
+	std::string custom_css;
 	int language;
 	int layout;
 	int style;
@@ -397,25 +397,25 @@ public:
 class Cforum_database: public Cdatabase
 {
 public:
-	typedef map<string, int> t_custom_identifiers;
-	typedef multimap<int, int> t_parent_map;
+	typedef std::map<std::string, int> t_custom_identifiers;
+	typedef std::multimap<int, int> t_parent_map;
 
-	void prefetch_guests(const set<int>& v, int fm);
-	void prefetch_users(const set<int>& v, int fm);
+	void prefetch_guests(const std::set<int>& v, int fm);
+	void prefetch_users(const std::set<int>& v, int fm);
 	void read_config();
 	int rows_per_page();
 	bool can_admin();
 	bool can_moderate(int mid);
-	string get_path(int mid);
+	std::string get_path(int mid);
 	const char* convert_date(time_t v, bool day_name = false);
 	bool enable_signatures();
 	bool enable_smilies();
 	int export_template_cache();
 	int import_template_cache();
-	int get_string_i(const string& name);
-	string md5(const string& v);
-	string token(const string& name, const string& password);
-	void token(const string& v);
+	int get_string_i(const std::string& name);
+	std::string md5(const std::string& v);
+	std::string token(const std::string& name, const std::string& password);
+	void token(const std::string& v);
 	int fid(int mid);
 	const Cfd_guest& fd_guest(const Cfd_guest& e);
 	const Cfd_guest& fd_guest(int aid);
@@ -423,36 +423,36 @@ public:
 	const Cfd_message& fd_message(int mid);
 	const Cfd_user& fd_user(const Cfd_user& e);
 	const Cfd_user& fd_user(int uid);
-	int aid(const string& name);
-	int uid(const string& name);
-	bool password_valid(int uid, const string& password);
+	int aid(const std::string& name);
+	int uid(const std::string& name);
+	bool password_valid(int uid, const std::string& password);
 	const char* select_string(int i);
 	const char* select_style();
 	Chtml_template select_template(int i);
-	void import_strings(int lid, const string& fname);
+	void import_strings(int lid, const std::string& fname);
 	void import_strings();
 	void insert_template(int lid, int i, Cvirtual_binary value);
-	void import_templates(int lid, const string& fname);
+	void import_templates(int lid, const std::string& fname);
 	void import_templates();
 	const t_smily_map& smily_map(bool v);
 	Cforum_database();
 
-	const string& forum_title() const
+	const std::string& forum_title() const
 	{
 		return m_forum_title;
 	}
 
-	const string& local_domain_url() const
+	const std::string& local_domain_url() const
 	{
 		return m_local_domain_url;
 	}
 
-	const string& local_forum_url() const
+	const std::string& local_forum_url() const
 	{
 		return m_local_forum_url;
 	}
 
-	const string& mail_from() const
+	const std::string& mail_from() const
 	{
 		return m_mail_from;
 	}
@@ -508,10 +508,10 @@ public:
 	}
 private:
 	Cvirtual_binary m_template_cache2;
-	string m_forum_title;
-	string m_local_domain_url;
-	string m_local_forum_url;
-	string m_mail_from;
+	std::string m_forum_title;
+	std::string m_local_domain_url;
+	std::string m_local_forum_url;
+	std::string m_mail_from;
 	int m_min_name_length;
 	int m_min_pass_length;
 	int m_min_subject_length;

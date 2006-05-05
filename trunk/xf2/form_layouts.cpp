@@ -10,7 +10,7 @@ const char* Cform_layouts::read()
 {
 	Chtml_template t = select_template(ti_page_layouts);
 	Csql_result result = database().query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
-	string list;
+	std::string list;
 	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database().select_template(ti_entry_layout);

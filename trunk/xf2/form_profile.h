@@ -16,12 +16,12 @@ public:
 	Cform_profile(Cforum_database& database);
 
 	bool submit;
-	string private_mail;
-	string public_mail;
-	string signature;
+	std::string private_mail;
+	std::string public_mail;
+	std::string signature;
 	int icq_id;
-	string link_title;
-	string link;
+	std::string link_title;
+	std::string link;
 private:
 	bool private_mail_valid() const;
 	bool public_mail_valid() const;

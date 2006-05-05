@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <ctime>
 
-int a2ip(const string& s)
+int a2ip(const std::string& s)
 {
 	int r = 0;
 	int l = 0;
@@ -18,22 +18,22 @@ int a2ip(const string& s)
 	return r;
 }
 
-string ip2a(int v)
+std::string ip2a(int v)
 {
 	return n(v >> 24 & 0xff) + '.' + n(v >> 16 & 0xff) + '.' + n(v >> 8 & 0xff) + '.' + n(v & 0xff);
 }
 
-string n(int v)
+std::string n(int v)
 {
 	char b[12];
 	sprintf(b, "%d", v);
 	return b;
 }
 
-void split_key(const string& key, string& name, string& value)
+void split_key(const std::string& key, std::string& name, std::string& value)
 {
 	size_t i = key.find('=');
-	if (i == string::npos)
+	if (i == std::string::npos)
 	{
 		name = key;
 		value.erase();
@@ -45,7 +45,7 @@ void split_key(const string& key, string& name, string& value)
 	}
 }
 
-string time2a(time_t v)
+std::string time2a(time_t v)
 {
 	char b[20];
 	const tm* date = gmtime(&v);

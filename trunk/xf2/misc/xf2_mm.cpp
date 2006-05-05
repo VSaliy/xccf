@@ -25,7 +25,7 @@ char* Cxf2_mm::get(int size)
 	return r;
 }
 
-const char* Cxf2_mm::strcpy(const string& v)
+const char* Cxf2_mm::strcpy(const std::string& v)
 {
 	return reinterpret_cast<const char*>(memcpy(get(v.length() + 1), v.c_str(), v.length() + 1));
 }

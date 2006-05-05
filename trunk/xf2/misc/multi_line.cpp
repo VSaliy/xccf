@@ -4,8 +4,6 @@
 #include <boost/algorithm/string.hpp>
 #include "string_conversion.h"
 
-using namespace boost;
-
 Cmulti_line::Cmulti_line()
 {
 }
@@ -15,16 +13,16 @@ Cmulti_line::Cmulti_line(const char* is)
 	s = is;
 }
 
-Cmulti_line::Cmulti_line(const string &is)
+Cmulti_line::Cmulti_line(const std::string& is)
 {
 	s = is;
 }
 
-string Cmulti_line::get_next_line(const char separator, bool remove_ws)
+std::string Cmulti_line::get_next_line(const char separator, bool remove_ws)
 {
-	string r;
+	std::string r;
 	size_t p = s.find(separator);
-	if (p == string::npos)
+	if (p == std::string::npos)
 	{
 		r = s;
 		s.erase();
@@ -35,7 +33,7 @@ string Cmulti_line::get_next_line(const char separator, bool remove_ws)
 		s.erase(0, p + 1);
 	}
 	if (remove_ws)
-		trim(r);
+		boost::trim(r);
 	return r;
 }
 
@@ -44,11 +42,11 @@ int Cmulti_line::get_next_int(const char separator)
 	return atoi(get_next_line(separator, true).c_str());
 }
 
-string Cmulti_line::get_next_line(const string& separator, bool remove_ws)
+std::string Cmulti_line::get_next_line(const std::string& separator, bool remove_ws)
 {
-	string r;
+	std::string r;
 	size_t p = s.find(separator);
-	if (p == string::npos)
+	if (p == std::string::npos)
 	{
 		r = s;
 		s.erase();
@@ -59,11 +57,11 @@ string Cmulti_line::get_next_line(const string& separator, bool remove_ws)
 		s.erase(0, p + separator.length());
 	}
 	if (remove_ws)
-		trim(r);
+		boost::trim(r);
 	return r;
 }
 
-int Cmulti_line::get_next_int(const string& separator)
+int Cmulti_line::get_next_int(const std::string& separator)
 {
 	return atoi(get_next_line(separator, true).c_str());
 }

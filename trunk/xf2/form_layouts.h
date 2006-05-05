@@ -18,8 +18,8 @@ public:
 	Cform_layouts(Cforum_database& database);
 
 	bool submit;
-	string fname;
-	string name;
+	std::string fname;
+	std::string name;
 private:
 	bool fname_valid() const;
 	bool name_valid() const;

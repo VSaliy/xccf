@@ -15,7 +15,7 @@ const char* Cform_preferences::read()
 	t.r(ti_var_action, "?a=" + n(ac_preferences));
 	t.r(ti_field_custom_css, html_input_text("custom_css", field_size(), 127, web_encode(custom_css)));
 	{
-		string v = html_option("Default", "0", false);
+		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_languages order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
@@ -25,7 +25,7 @@ const char* Cform_preferences::read()
 		t.r(ti_field_language, html_select(v, "name=language"));
 	}
 	{
-		string v = html_option("Default", "0", false);
+		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_layouts order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
@@ -35,7 +35,7 @@ const char* Cform_preferences::read()
 		t.r(ti_field_layout, html_select(v, "name=layout"));
 	}
 	{
-		string v = html_option("Default", "0", false);
+		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select sid, name from xf_styles order by name");
 		for (Csql_row row; row = result.fetch_row(); )
 		{
