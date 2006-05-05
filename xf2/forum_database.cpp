@@ -235,7 +235,7 @@ void Cfd_guest::r(Chtml_template& t) const
 	t.r(ti_var_name, web_encode(name));
 }
 
-string Cfd_guest::fields(int fm, const string& prefix)
+std::string Cfd_guest::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -243,7 +243,7 @@ string Cfd_guest::fields(int fm, const string& prefix)
 		"name", 
 		NULL
 	};
-	string v;
+	std::string v;
 	for (const char** r = a; fm && *r; fm >>= 1, r++)
 	{
 		if (fm & 1)
@@ -257,7 +257,7 @@ string Cfd_guest::fields(int fm, const string& prefix)
 int Cfd_guest::fields(const Chtml_template& t)
 {
 	int fm = f_aid;
-	set<int> vars = t.get_vars();
+	std::set<int> vars = t.get_vars();
 	if (vars.find(ti_var_name) != vars.end())
 		fm |= f_name;
 	return fm;
@@ -270,7 +270,7 @@ Cfd_language::Cfd_language(const Csql_row& v)
 	name = v[2].s();
 }
 
-string Cfd_language::fields(int fm, const string& prefix)
+std::string Cfd_language::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -296,7 +296,7 @@ Cfd_layout::Cfd_layout(const Csql_row& v)
 	name = v[2].s();
 }
 
-string Cfd_layout::fields(int fm, const string& prefix)
+std::string Cfd_layout::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -322,7 +322,7 @@ Cfd_smily::Cfd_smily(const Csql_row& v)
 	name = v[2].s();
 }
 
-string Cfd_smily::fields(int fm, const string& prefix)
+std::string Cfd_smily::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -348,7 +348,7 @@ Cfd_style::Cfd_style(const Csql_row& v)
 	name = v[2].s();
 }
 
-string Cfd_style::fields(int fm, const string& prefix)
+std::string Cfd_style::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -416,7 +416,7 @@ bool Cfd_message::hidden() const
 	return false; // flags & mf_hidden;
 }
 
-void Cfd_message::r(Chtml_template& t, Cforum_database& database, int fm, const string& hl) const
+void Cfd_message::r(Chtml_template& t, Cforum_database& database, int fm, const std::string& hl) const
 {
 	switch (fm)
 	{
@@ -466,12 +466,12 @@ void Cfd_message::r(Chtml_template& t, Cforum_database& database, int fm, const 
 		t.r(ti_var_thread_size, thread_size);
 }
 
-string Cfd_message::name(Cforum_database& database) const
+std::string Cfd_message::name(Cforum_database& database) const
 {
 	return aid ? database.fd_guest(aid).name : database.fd_user(uid).name;
 }
 
-string Cfd_message::fields(int fm, const string& prefix)
+std::string Cfd_message::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -492,7 +492,7 @@ string Cfd_message::fields(int fm, const string& prefix)
 		"ipa1",
 		NULL
 	};
-	string v;
+	std::string v;
 	for (const char** r = a; fm && *r; fm >>= 1, r++)
 	{
 		if (fm & 1)
@@ -506,7 +506,7 @@ string Cfd_message::fields(int fm, const string& prefix)
 int Cfd_message::fields(const Chtml_template& t)
 {
 	int fm = f_aid | f_mid | f_uid;
-	set<int> vars = t.get_vars();
+	std::set<int> vars = t.get_vars();
 	if (vars.find(ti_var_body) != vars.end())
 		fm |= f_body | f_flags;
 	else if (vars.find(ti_var_flags) != vars.end())
@@ -606,7 +606,7 @@ void Cfd_user::r(Chtml_template& t, Cforum_database& database) const
 	t.r(ti_url_show_user, url_show_user(uid));
 }
 
-string Cfd_user::fields(int fm, const string& prefix)
+std::string Cfd_user::fields(int fm, const std::string& prefix)
 {
 	const char* a[] =
 	{
@@ -632,7 +632,7 @@ string Cfd_user::fields(int fm, const string& prefix)
 		"style",
 		NULL
 	};
-	string v;
+	std::string v;
 	for (const char** r = a; fm && *r; fm >>= 1, r++)
 	{
 		if (fm & 1)
@@ -646,7 +646,7 @@ string Cfd_user::fields(int fm, const string& prefix)
 int Cfd_user::fields(const Chtml_template& t)
 {
 	int fm = f_uid;
-	set<int> vars = t.get_vars();
+	std::set<int> vars = t.get_vars();
 	if (vars.find(ti_var_user_ctime) != vars.end())
 		fm |= f_ctime;
 	if (vars.find(ti_var_flags) != vars.end())
@@ -694,16 +694,16 @@ Cforum_database::Cforum_database()
 	m_uid = 0;
 }
 
-void Cforum_database::import_strings(int lid, const string& fname)
+void Cforum_database::import_strings(int lid, const std::string& fname)
 {
-	string qu;
-	ifstream f(fname.c_str());
-	string s;
+	std::string qu;
+	std::ifstream f(fname.c_str());
+	std::string s;
 	while (getline(f, s))
 	{
 		Cmulti_line l = s;
 		int i = get_string_i(l.get_next_line(' '));
-		string value = l.get_next_line('\0');
+		std::string value = l.get_next_line('\0');
 		if (i == -1 || value.empty())
 			continue;
 		Csql_query q(*this, " (?, ?, ?),");
@@ -739,10 +739,10 @@ void Cforum_database::insert_template(int lid, int i, Cvirtual_binary value)
 	q.execute();
 }
 
-void Cforum_database::import_templates(int lid, const string& fname)
+void Cforum_database::import_templates(int lid, const std::string& fname)
 {
-	ifstream f(fname.c_str());
-	string s;
+	std::ifstream f(fname.c_str());
+	std::string s;
 	Ctemplate_write t(*this);
 	while (getline(f, s))
 	{
@@ -768,7 +768,7 @@ void Cforum_database::import_templates()
 		import_templates(1, "xf_templates.txt");
 }
 
-int Cforum_database::get_string_i(const string& name)
+int Cforum_database::get_string_i(const std::string& name)
 {
 	int i = 0;
 	for (const char** r = template_names; *r; r++)
@@ -828,7 +828,7 @@ Chtml_template Cforum_database::select_template(int i)
 		: Chtml_template(*this, select_string(i) - 5);
 }
 
-int Cforum_database::aid(const string& name)
+int Cforum_database::aid(const std::string& name)
 {
 	Csql_query q(*this, "select aid, name from xf_guests where name = ?");
 	q.p(name);
@@ -844,7 +844,7 @@ int Cforum_database::aid(const string& name)
 	return insert_id();
 }
 
-int Cforum_database::uid(const string& name)
+int Cforum_database::uid(const std::string& name)
 {
 	if (name.empty())
 		return 0;
@@ -854,14 +854,14 @@ int Cforum_database::uid(const string& name)
 	return row ? row[0].i() : 0;
 }
 
-string Cforum_database::md5(const string& v)
+std::string Cforum_database::md5(const std::string& v)
 {
 	Csql_query q(*this, "select md5(?)");
 	q.p(v);
 	return q.execute().fetch_row()[0].s();
 }
 
-bool Cforum_database::password_valid(int uid, const string& password)
+bool Cforum_database::password_valid(int uid, const std::string& password)
 {
 	Csql_query q(*this, "select password = md5(?) from xf_users where uid = ?");
 	q.p(password);
@@ -869,16 +869,16 @@ bool Cforum_database::password_valid(int uid, const string& password)
 	return q.execute().fetch_row()[0].i();
 }
 
-string Cforum_database::token(const string& name, const string& password)
+std::string Cforum_database::token(const std::string& name, const std::string& password)
 {
 	return name + '=' + md5(password);
 }
 
-void Cforum_database::token(const string& v)
+void Cforum_database::token(const std::string& v)
 {
 	if (v.empty())
 		return;
-	string name, password;
+	std::string name, password;
 	split_key(v, name, password);
 	Csql_query q(*this, "select ? from xf_users where name = ? and password = ?");
 	q.p_raw(Cfd_user::fields(-1));
@@ -936,7 +936,7 @@ const Cfd_guest& Cforum_database::fd_guest(int aid)
 	q.p(aid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw runtime_error("Unable to fetch fd_guest");
+		throw std::runtime_error("Unable to fetch fd_guest");
 	return m_guest_cache.set(aid, Cfd_guest(row, -1));
 }
 
@@ -955,7 +955,7 @@ const Cfd_message& Cforum_database::fd_message(int mid)
 	q.p(mid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw runtime_error("Unable to fetch fd_message");
+		throw std::runtime_error("Unable to fetch fd_message");
 	return fd_message(Cfd_message(row, -1));
 }
 
@@ -973,7 +973,7 @@ const Cfd_user& Cforum_database::fd_user(int uid)
 	q.p(uid);
 	Csql_row row = q.execute().fetch_row();
 	if (!row)
-		throw runtime_error("Unable to fetch fd_user");
+		throw std::runtime_error("Unable to fetch fd_user");
 	return m_user_cache.set(uid, Cfd_user(row, -1));
 }
 
@@ -996,9 +996,9 @@ const t_smily_map& Cforum_database::smily_map(bool v)
 
 int Cforum_database::export_template_cache()
 {
-	typedef map<pair<int, int>, string> t_string_map;
-	typedef map<int, string> t_style_map;
-	typedef map<pair<int, int>, Cvirtual_binary> t_template_map;
+	typedef std::map<std::pair<int, int>, std::string> t_string_map;
+	typedef std::map<int, std::string> t_style_map;
+	typedef std::map<std::pair<int, int>, Cvirtual_binary> t_template_map;
 
 	int c_languages = 0;
 	int c_strings = 0;
@@ -1013,7 +1013,7 @@ int Cforum_database::export_template_cache()
 			int i = e[1].i();
 			c_languages = max(c_languages, lid);
 			c_strings = max(c_strings, i + 1);
-			string_map[make_pair(lid, i)] = e[2].s();
+			string_map[std::make_pair(lid, i)] = e[2].s();
 			cb_templates += e[2].size() + 7;
 		}
 	}
@@ -1041,7 +1041,7 @@ int Cforum_database::export_template_cache()
 			int i = e[1].i();
 			c_layouts = max(c_layouts, lid);
 			c_templates = max(c_templates, i + 1);
-			template_map[make_pair(lid, i)] = e[2].vdata();
+			template_map[std::make_pair(lid, i)] = e[2].vdata();
 			cb_templates += e[2].size();
 		}
 	}
@@ -1063,7 +1063,7 @@ int Cforum_database::export_template_cache()
 		{
 			for (int i = 0; i < c_strings; i++)
 			{
-				t_string_map::const_iterator it = string_map.find(make_pair(lid, i));
+				t_string_map::const_iterator it = string_map.find(std::make_pair(lid, i));
 				if (it == string_map.end())
 					*w2++ = lid == 1 ? 0 : *(w2 - c_strings);
 				else
@@ -1104,7 +1104,7 @@ int Cforum_database::export_template_cache()
 		{
 			for (int i = 0; i < c_templates; i++)
 			{
-				t_template_map::const_iterator it = template_map.find(make_pair(lid, i));
+				t_template_map::const_iterator it = template_map.find(std::make_pair(lid, i));
 				if (it == template_map.end())
 					*w2++ = lid == 1 ? 0 : *(w2 - c_templates);
 				else
@@ -1144,9 +1144,9 @@ const char* Cforum_database::convert_date(time_t v, bool day_name)
 	return b;
 }
 
-string Cforum_database::get_path(int mid)
+std::string Cforum_database::get_path(int mid)
 {
-	string v;
+	std::string v;
 	while (mid)
 	{
 		if (fd_message(mid).forum())
@@ -1161,14 +1161,14 @@ int Cforum_database::rows_per_page()
 	return uid() ? fd_user(uid()).rows_per_page : 25;
 }
 
-void Cforum_database::prefetch_guests(const set<int>& v, int fm)
+void Cforum_database::prefetch_guests(const std::set<int>& v, int fm)
 {
 	if (v.empty())
 		return;
 	Csql_query q(*this, "select ? from xf_guests where aid in (?)");
 	q.p_raw(Cfd_guest::fields(fm));
-	string w;
-	for (set<int>::const_iterator i = v.begin(); i != v.end(); i++)
+	std::string w;
+	for (std::set<int>::const_iterator i = v.begin(); i != v.end(); i++)
 	{
 		if (!m_guest_cache.has(*i))
 			w += n(*i) + ',';
@@ -1182,14 +1182,14 @@ void Cforum_database::prefetch_guests(const set<int>& v, int fm)
 		fd_guest(Cfd_guest(row, fm));
 }
 
-void Cforum_database::prefetch_users(const set<int>& v, int fm)
+void Cforum_database::prefetch_users(const std::set<int>& v, int fm)
 {
 	if (v.empty())
 		return;
 	Csql_query q(*this, "select ? from xf_users where uid in (?)");
 	q.p_raw(Cfd_user::fields(fm));
-	string w;
-	for (set<int>::const_iterator i = v.begin(); i != v.end(); i++)
+	std::string w;
+	for (std::set<int>::const_iterator i = v.begin(); i != v.end(); i++)
 	{
 		if (!m_user_cache.has(*i))
 			w += n(*i) + ',';

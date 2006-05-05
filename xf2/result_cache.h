@@ -24,7 +24,7 @@ public:
 		return m_map[id] = v;		
 	}
 private:
-	map<T, U> m_map;
+	std::map<T, U> m_map;
 };
 
 #endif // !defined(AFX_RESULT_CACHE_H__D378EAC0_3515_11D5_B606_0000B4936994__INCLUDED_)

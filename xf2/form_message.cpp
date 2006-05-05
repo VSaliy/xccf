@@ -3,8 +3,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-using namespace boost;
-
 Cform_message::Cform_message(Cforum_database& database):
 	Cform_base(database)
 {
@@ -20,7 +18,7 @@ const char* Cform_message::read()
 	t.r(ti_field_body, html_text_area("body", field_size(), field_height(), web_encode(body)));
 	if (mid && database().can_admin())
 	{
-		string v;
+		std::string v;
 		for (int i = 0; i < mt_count; i++)
 			v += html_option(mt_name[i], n(i), i == type);
 		t.r(ti_field_type, html_select(v, "name=type"));
@@ -29,7 +27,7 @@ const char* Cform_message::read()
 	}
 	{
 		const t_smily_map& map = database().smily_map(database().enable_smilies());
-		string list;
+		std::string list;
 		for (t_smily_map::const_iterator i = map.begin(); i != map.end(); i++)
 			list += "<img src=\"/forum/" + i->second + "\" alt=\"" + i->first + "\"> " + i->first + "<br>";
 		t.r(ti_field_allow_smilies, html_input_check("allow_smilies", flags & mf_allow_smilies));
@@ -71,20 +69,20 @@ void Cform_message::write_cookie(const Ccookie& v)
 		name = v.get_value("name");
 }
 
-static string adjust_subject(const string& v)
+static std::string adjust_subject(const std::string& v)
 {
-	return istarts_with(v, "Re: ") ? v : "Re: " + v;
+	return boost::istarts_with(v, "Re: ") ? v : "Re: " + v;
 }
 
-static string adjust_body(const string& v)
+static std::string adjust_body(const std::string& v)
 {
-	string r;
+	std::string r;
 	r.reserve(v.length());
 	for (size_t i = 0; i < v.length(); )
 	{
 		size_t p = v.find('\n', i);
-		string line;
-		if (p == string::npos)
+		std::string line;
+		if (p == std::string::npos)
 		{
 			line = v.substr(i) + '\n';
 			p = v.length();
@@ -92,7 +90,7 @@ static string adjust_body(const string& v)
 		else
 			line = v.substr(i, p - i + 1);
 		i = p + 1;
-		if (istarts_with(line, "> > > > "))
+		if (boost::istarts_with(line, "> > > > "))
 			continue;
 		if (!trim_field(line).empty())
 			r += "> ";

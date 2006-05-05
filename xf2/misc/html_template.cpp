@@ -7,8 +7,6 @@
 #include "../forum_global.h"
 #include "multi_line.h"
 
-using namespace boost;
-
 enum t_template_element {te_if, te_else, te_endif, te_echo, te_literal, te_end};
 
 Chtml_template::Chtml_template(Cforum_database& database):
@@ -54,7 +52,7 @@ void Chtml_template::r(int i, int value)
 	r(i, b);
 }
 
-void Chtml_template::r(int i, const string& value)
+void Chtml_template::r(int i, const std::string& value)
 {
 	r(i, g_mm.strcpy(value));
 }
@@ -178,9 +176,9 @@ Chtml_template::operator const char*() const
 	}
 }
 
-set<int> Chtml_template::get_vars() const
+std::set<int> Chtml_template::get_vars() const
 {
-	set<int> d;
+	std::set<int> d;
 	const char* r = m_value;
 	while (1)
 	{
@@ -215,17 +213,17 @@ Ctemplate_write::Ctemplate_write(Cforum_database& database):
 	clear();
 }
 
-int Ctemplate_write::import_line(string s)
+int Ctemplate_write::import_line(std::string s)
 {
 	m_repeat_line = false;
 	s = trim_field(s);
-	if (istarts_with(s, "#"))
+	if (boost::istarts_with(s, "#"))
 	{
 		close_literal();
 		Cmulti_line l = s.substr(1);
-		string c = l.get_next_line(' ');
-		string p = l.get_next_line(' ');
-		if (iequals(c, "define"))
+		std::string c = l.get_next_line(' ');
+		std::string p = l.get_next_line(' ');
+		if (boost::iequals(c, "define"))
 		{
 			if (!m_name.empty())
 			{
@@ -241,17 +239,17 @@ int Ctemplate_write::import_line(string s)
 				return 1;
 			}
 		}
-		else if (istarts_with(c, "if"))
+		else if (boost::istarts_with(c, "if"))
 		{
 			*m_w++ = te_if;
 			*reinterpret_cast<int*>(m_w) = p == "1" ? -2 : m_database.get_string_i(p);
 			m_w += sizeof(int);
 		}
-		else if (istarts_with(c, "else"))
+		else if (boost::istarts_with(c, "else"))
 		{
 			*m_w++ = te_else;
 		}
-		else if (istarts_with(c, "endif"))
+		else if (boost::istarts_with(c, "endif"))
 		{
 			*m_w++ = te_endif;
 		}
@@ -263,11 +261,11 @@ int Ctemplate_write::import_line(string s)
 		for (size_t i = 0; i < s.length(); )
 		{
 			char c = s[i];
-			if (c == '<' && istarts_with(s.c_str() + i, "<%"))
+			if (c == '<' && boost::istarts_with(s.c_str() + i, "<%"))
 			{
 				i += 2;
 				size_t j = s.find("%>", i);
-				assert(j != string::npos);
+				assert(j != std::string::npos);
 				int p = m_database.get_string_i(s.substr(i, j - i));
 				if (j - i == 1 && s[i] == ' ')
 				{

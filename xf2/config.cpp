@@ -6,9 +6,9 @@ Cconfig::Cconfig()
 	m_host = "localhost";
 }
 
-int Cconfig::set(const string& name, const string& value)
+int Cconfig::set(const std::string& name, const std::string& value)
 {
-	t_attribute<string> attributes[] =
+	t_attribute<std::string> attributes[] =
 	{
 		"database", &m_database,
 		"host", &m_host, 
@@ -16,14 +16,14 @@ int Cconfig::set(const string& name, const string& value)
 		"user", &m_user,
 		NULL
 	};
-	if (t_attribute<string>* i = find(attributes, name))
+	if (t_attribute<std::string>* i = find(attributes, name))
 		*i->value = value;
 	else
 		return set(name, atoi(value.c_str()));
 	return 0;
 }
 
-int Cconfig::set(const string& name, int value)
+int Cconfig::set(const std::string& name, int value)
 {
 	t_attribute<int> attributes[] =
 	{
@@ -36,7 +36,7 @@ int Cconfig::set(const string& name, int value)
 	return 0;
 }
 
-int Cconfig::set(const string& name, bool value)
+int Cconfig::set(const std::string& name, bool value)
 {
 	t_attribute<bool> attributes[] =
 	{

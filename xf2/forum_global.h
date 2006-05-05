@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-typedef map<string, string> t_smily_map;
+typedef std::map<std::string, std::string> t_smily_map;
 
 enum t_action 
 {
@@ -83,17 +83,17 @@ enum t_user_flags
 	uf_default = uf_enable_signatures | uf_enable_smilies,
 };
 
-string an_self(const char* title, t_action action, const string& elements);
-string url_self(t_action action);
-string url_self(t_action action, const string& elements);
-const char* url_show_message(int mid, const string& hl = "");
+std::string an_self(const char* title, t_action action, const std::string& elements);
+std::string url_self(t_action);
+std::string url_self(t_action, const std::string& elements);
+const char* url_show_message(int mid, const std::string& hl = "");
 const char* url_show_user(int uid);
-string report_error(const string& user_msg, const string& admin_msg = "");
-string encode_field(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, const string& hl = "");
-string encode_text(const string& v, const t_smily_map& smily_map, const string& local_domain_url, const string& local_forum_url, bool add_br, bool add_span, bool remove_html, const string& hl = "");
-string select_fields(int field_mask, const char** field_names, const string& prefix = "");
-size_t text_cy(const string& v, bool ignore_quotes);
-string trim_field(const string& v);
-string trim_text(const string& v);
+std::string report_error(const std::string& user_msg, const std::string& admin_msg = "");
+std::string encode_field(const std::string& v, const t_smily_map& smily_map, const std::string& local_domain_url, const std::string& local_forum_url, const std::string& hl = "");
+std::string encode_text(const std::string& v, const t_smily_map& smily_map, const std::string& local_domain_url, const std::string& local_forum_url, bool add_br, bool add_span, bool remove_html, const std::string& hl = "");
+std::string select_fields(int field_mask, const char** field_names, const std::string& prefix = "");
+size_t text_cy(const std::string& v, bool ignore_quotes);
+std::string trim_field(const std::string&);
+std::string trim_text(const std::string&);
 
 #endif // !defined(AFX_FORUM_GLOBAL_H__FA58498B_2EA1_11D5_B606_0000B4936994__INCLUDED_)

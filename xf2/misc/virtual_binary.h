@@ -9,8 +9,6 @@
 #include <string>
 #include "vartypes.h"
 
-using namespace std;
-
 class Cvirtual_binary_source
 {
 public:
@@ -51,11 +49,11 @@ private:
 	int mc_references;
 };
 
-class Cvirtual_binary  
+class Cvirtual_binary
 {
 public:
-	int save(const string& fname) const;
-	int load(const string& fname);
+	int save(const std::string& fname) const;
+	int load(const std::string& fname);
 	void clear();
 	size_t read(void* d) const;
 	byte* write_start(size_t cb_d);
@@ -64,7 +62,7 @@ public:
 	Cvirtual_binary();
 	Cvirtual_binary(const Cvirtual_binary& v);
 	Cvirtual_binary(const void* d, size_t cb_d);
-	explicit Cvirtual_binary(const string& fname);
+	explicit Cvirtual_binary(const std::string& fname);
 	~Cvirtual_binary();
 
 	const byte* data() const

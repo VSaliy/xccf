@@ -15,11 +15,11 @@ public:
 	void write(const Ccgi_input& v);
 	Cform_search(Cforum_database& database);
 
-	string subject;
-	string name;
-	string body;
-	string signature;
-	string ipa;
+	std::string subject;
+	std::string name;
+	std::string body;
+	std::string signature;
+	std::string ipa;
 	int uid;
 	int order;
 	int limit;

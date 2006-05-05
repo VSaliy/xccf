@@ -17,8 +17,8 @@ public:
 	Cform_login(Cforum_database& database);
 
 	bool submit;
-	string name;
-	string password;
+	std::string name;
+	std::string password;
 private:
 	bool name_valid();
 	bool password_valid();

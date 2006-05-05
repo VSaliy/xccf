@@ -10,7 +10,7 @@ const char* Cform_languages::read()
 {
 	Chtml_template t = select_template(ti_page_languages);
 	Csql_result result = database().query("select " + Cfd_language::fields(-1) + " from xf_languages");
-	string list;
+	std::string list;
 	for (Csql_row row; row = result.fetch_row(); )
 	{
 		Chtml_template t = database().select_template(ti_entry_language);

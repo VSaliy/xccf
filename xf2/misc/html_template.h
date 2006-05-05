@@ -18,15 +18,15 @@ public:
 	const char* apply(const char* v);
 	void r(int i, const char* value);
 	void r(int i, int value);
-	void r(int i, const string& value);
+	void r(int i, const std::string& value);
 	int compute_len() const;
-	set<int> get_vars() const;
+	std::set<int> get_vars() const;
 	operator const char*() const;
 	Chtml_template operator=(const char* v);
 	Chtml_template(Cforum_database& database);
 	Chtml_template(Cforum_database& database, const char* v);
 private:
-	typedef map<int, const char*> t_map;
+	typedef std::map<int, const char*> t_map;
 
 	Cforum_database& m_database;
 	t_map m_map;
@@ -37,11 +37,11 @@ class Ctemplate_write
 {
 public:
 	void clear();
-	int import_line(string s);
+	int import_line(std::string s);
 	Cvirtual_binary value();
 	Ctemplate_write(Cforum_database& database);
 	
-	string name() const
+	std::string name() const
 	{
 		return m_name;
 	}
@@ -57,7 +57,7 @@ private:
 	Cvirtual_binary m_d;
 	Cforum_database& m_database;
 	char* m_literal_begin;
-	string m_name;
+	std::string m_name;
 	bool m_repeat_line;
 	char* m_w;
 };

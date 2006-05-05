@@ -17,10 +17,10 @@ public:
 	Cform_config(Cforum_database& database);
 
 	bool submit;
-	string forum_title;
-	string local_domain_url;
-	string local_forum_url;
-	string mail_from;
+	std::string forum_title;
+	std::string local_domain_url;
+	std::string local_forum_url;
+	std::string mail_from;
 	int min_name_length;
 	int min_pass_length;
 	int max_signature_length;

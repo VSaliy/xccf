@@ -8,7 +8,7 @@ Cform_register::Cform_register(Cforum_database& database):
 {
 }
 
-const char* Cform_register::read(const string& error_msg)
+const char* Cform_register::read(const std::string& error_msg)
 {
 	Chtml_template t = select_template(ti_page_register);
 	t.r(ti_var_action, "?a=" + n(ac_register));

@@ -33,26 +33,24 @@
 #include "xcc_z.h"
 #include "xf2_mm.h"
 
-using namespace boost;
-
 Ccgi_input cgi;
 Ccookie cookie = static_cast<Cmulti_line>(cgi.get_cookie());
 Cforum_database database;
-string g_location;
-string g_refresh = "600";
-string g_title;
+std::string g_location;
+std::string g_refresh = "600";
+std::string g_title;
 
-string an_self(const char* title, t_action action, const string& elements)
+std::string an_self(const char* title, t_action action, const std::string& elements)
 {
 	return a(title, "href=\"" + url_self(action, elements) + '\"');
 }
 
-string url_message(t_action action, int mid)
+std::string url_message(t_action action, int mid)
 {
 	return url_self(action, "mid=" + n(mid));
 }
 
-string pager_entry(t_action action, int current, int i, int order)
+std::string pager_entry(t_action action, int current, int i, int order)
 {
 	return i == current
 		? " >" + n(i) + '<'
@@ -64,7 +62,7 @@ const char* pager(t_action action, int current, int count, int order = 0)
 	Chtml_template t = database.select_template(ti_var_pager);
 	if (count < 2)
 		return t;
-	string r;
+	std::string r;
 	r.reserve(1 << 10);
 	r += pager_entry(action, current, 0, order);
 	for (int i = max(1, current - 10); i < min(current + 11, count - 1); i++)
@@ -128,7 +126,7 @@ Chtml_template global_replace(int mid)
 	return t;
 }
 
-const char* final_replace(const string& v, int mid)
+const char* final_replace(const std::string& v, int mid)
 {
 	Chtml_template t = database.select_template(ti_html_file);
 	Chtml_template u = global_replace(mid);
@@ -146,7 +144,7 @@ const char* page_search()
 	form.write(cgi);
 	if (!form.valid())
 		return form.read();
-	string page;
+	std::string page;
 	Csql_query q(database, "select ? from xf_messages m");
 	int fields = Cfd_message::fields(database.select_template(ti_entry_search_result));
 	if (!form.show_bodies)
@@ -206,8 +204,8 @@ const char* page_search()
 	q.p(form.limit ? max(25, min(form.limit, 250)) : 250);
 	Csql_result result = q.execute();
 	{
-		set<int> guest_set;
-		set<int> user_set;
+		std::set<int> guest_set;
+		std::set<int> user_set;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
@@ -241,7 +239,7 @@ const char* page_search()
 const char* page_news()
 {
 	g_title = "News";
-	string page;
+	std::string page;
 	int fields = Cfd_message::fields(database.select_template(ti_entry_news));
 	Csql_query q(database, "select ? from xf_messages where type = ? order by ctime desc");
 	q.p_raw(Cfd_message::fields(fields));
@@ -260,7 +258,7 @@ const char* page_news()
 	return t;
 }
 
-const char* page_forward(const string& l)
+const char* page_forward(const std::string& l)
 {
 	g_location = l;
 	return "";
@@ -302,7 +300,7 @@ const char* page_register()
 const char* page_message_list()
 {
 	g_title = "Message list";
-	string page;
+	std::string page;
 	{
 		int fields = Cfd_guest::fields(database.select_template(ti_entry_message));
 		Csql_result result = database.query("select " + Cfd_guest::fields(fields) + " from xf_guests");
@@ -344,7 +342,7 @@ const char* message_list_order_i2a(int v)
 	return "mid desc";
 }
 
-string url_message_list(int order, int page)
+std::string url_message_list(int order, int page)
 {
 	return url_self(ac_recent_messages, "o=" + n(order == cgi.get_value_int("o") ? - order : order));
 }
@@ -352,7 +350,7 @@ string url_message_list(int order, int page)
 const char* page_recent_messages(int order, int show_page)
 {
 	g_title = "Recent messages";
-	string page;
+	std::string page;
 	const int fields = Cfd_message::fields(database.select_template(ti_entry_recent_message));
 	Csql_query q(database, "select ? from xf_messages m left join xf_guests g on m.aid = g.aid left join xf_users u on m.uid = u.uid order by ? limit ?, ?");
 	q.p_raw(Cfd_message::fields(fields, "m."));
@@ -361,8 +359,8 @@ const char* page_recent_messages(int order, int show_page)
 	q.p(database.rows_per_page());
 	Csql_result result = q.execute();	
 	{
-		set<int> guest_set;
-		set<int> user_set;
+		std::set<int> guest_set;
+		std::set<int> user_set;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
@@ -408,7 +406,7 @@ const char* get_spaces(int count)
 	return b;
 }
 
-typedef multimap<int, int, greater<int> > t_sort_map;
+typedef std::multimap<int, int, std::greater<int> > t_sort_map;
 
 void fill_sort_map(t_sort_map& sort_map, const Cforum_database::t_parent_map& parent_map, int mid)
 {
@@ -422,7 +420,7 @@ void fill_sort_map(t_sort_map& sort_map, const Cforum_database::t_parent_map& pa
 	}
 }
 
-void list_thread(string& r, int mid, int l, bool forums_only, int row_index, int show_page)
+void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index, int show_page)
 {
 	const int fields = Cfd_message::fields(database.select_template(ti_entry_thread))
 		| Cfd_message::f_flags
@@ -433,8 +431,8 @@ void list_thread(string& r, int mid, int l, bool forums_only, int row_index, int
 	{
 		int month = cgi.get_value_int("month");
 		int year = cgi.get_value_int("year");
-		set<int> guest_set;
-		set<int> user_set;
+		std::set<int> guest_set;
+		std::set<int> user_set;
 		Csql_query q(database, "select ? from xf_messages a inner join xf_messages b using (tid) where a.pid = 0 and (a.mid = b.mid or a.thread_size <= ?)");
 		q.p_raw(Cfd_message::fields(fields, "b."));
 		q.p(8);
@@ -497,20 +495,20 @@ void list_thread(string& r, int mid, int l, bool forums_only, int row_index, int
 	}
 }
 
-string list_thread(int mid, int l, bool forums_only, int show_page)
+std::string list_thread(int mid, int l, bool forums_only, int show_page)
 {
-	string r;
+	std::string r;
 	r.reserve(256 << 10);
 	list_thread(r, mid, l, forums_only, 0, show_page);
 	return r;
 }
 
-string list_parents(int mid)
+std::string list_parents(int mid)
 {
-	stack<int> stack;
+	std::stack<int> stack;
 	mid = database.fd_message(mid).pid;
-	set<int> guest_set;
-	set<int> user_set;
+	std::set<int> guest_set;
+	std::set<int> user_set;
 	while (mid)
 	{
 		const Cfd_message& e = database.fd_message(mid);
@@ -525,7 +523,7 @@ string list_parents(int mid)
 	}
 	database.prefetch_guests(guest_set, Cfd_guest::fields(database.select_template(ti_entry_thread)));
 	database.prefetch_users(user_set, Cfd_user::fields(database.select_template(ti_entry_thread)));
-	string r;
+	std::string r;
 	r.reserve(256 * stack.size());
 	for (int row_index = 0; !stack.empty(); )
 	{
@@ -571,7 +569,7 @@ const char* user_list_order_i2a(int v)
 	return "uid desc";
 }
 
-string url_user_list(int order)
+std::string url_user_list(int order)
 {
 	return url_self(ac_user_list, "o=" + n(order == cgi.get_value_int("o") ? - order : order));
 }
@@ -579,7 +577,7 @@ string url_user_list(int order)
 const char* page_user_list(int order)
 {
 	g_title = "User list";
-	string page;
+	std::string page;
 	const int fields = Cfd_user::fields(database.select_template(ti_entry_user));
 	Csql_result result = database.query("select " + Cfd_user::fields(fields) + " from xf_users order by " + user_list_order_i2a(order));
 	Csql_row row;
@@ -630,7 +628,7 @@ const char* page_languages()
 	{
 		Csql_result result = database.query("select " + Cfd_language::fields(-1) + " from xf_languages");
 		Csql_row row;
-		string list;
+		std::string list;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
@@ -664,7 +662,7 @@ const char* page_layouts()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
-		string list;
+		std::string list;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
@@ -698,7 +696,7 @@ const char* page_smilies()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
-		string list;
+		std::string list;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_smily e = static_cast<Cfd_smily>(row);
@@ -732,7 +730,7 @@ const char* page_styles()
 	if (form.submit)
 	{
 		Csql_result result = database.query("select " + Cfd_style::fields(-1) + " from xf_styles");
-		string list;
+		std::string list;
 		for (Csql_row row; row = result.fetch_row(); )
 		{
 			Cfd_style e = static_cast<Cfd_style>(row);
@@ -834,7 +832,7 @@ const char* page_profile()
 	return form.read();
 }
 
-static void send_mail(const string& from, const string& to, const string& subject, const string& body)
+static void send_mail(const std::string& from, const std::string& to, const std::string& subject, const std::string& body)
 {
 #ifndef WIN32
 	FILE* mail = popen("/usr/sbin/sendmail -oi -t", "w");
@@ -968,7 +966,7 @@ const char* page_message()
 	return form.read();
 }
 
-const char* page_show_message(int mid, const string& hl)
+const char* page_show_message(int mid, const std::string& hl)
 {
 	const Cfd_message& e = database.fd_message(mid);
 	if (e.forum())
@@ -1022,8 +1020,8 @@ const char* page_show_message(int mid, const string& hl)
 		q.p(e.mid);
 		q.p(e.tid);
 		Csql_result result = q.execute();
-		set<int> guest_set;
-		set<int> user_set;
+		std::set<int> guest_set;
+		std::set<int> user_set;
 		if (e.aid)
 			guest_set.insert(e.aid);
 		else
@@ -1126,7 +1124,7 @@ const char* page_history()
 {
 	g_title = "History";
 	Chtml_template t = database.select_template(ti_page_history);
-	string page;
+	std::string page;
 	Csql_result result = database.query("select month(from_unixtime(ctime)), year(from_unixtime(ctime)), count(*) from xf_messages group by year(from_unixtime(ctime)), month(from_unixtime(ctime))");
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
@@ -1151,7 +1149,7 @@ const char* page_ipa_search()
 	form.write(cgi);
 	if (!form.valid())
 		return form.read();
-	string page;
+	std::string page;
 	Csql_query q1(database);
 	if (!form.name.empty())
 	{
@@ -1204,7 +1202,7 @@ const char* page_ipa_search()
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
-		string name = row[0].s();
+		std::string name = row[0].s();
 		int ipa0 = row[1].i();
 		int ipa1 = row[4].i();
 		Chtml_template t = database.select_template(ti_entry_ipa_search_result);
@@ -1248,11 +1246,11 @@ int main()
 	{
 		Cconfig config;
 		if (config.load("xcc_forum.conf"))
-			throw runtime_error("Unable to read xcc_forum.conf");
+			throw std::runtime_error("Unable to read xcc_forum.conf");
 		const char* page;
 		t_cgi_error cgi_error = cgi.read();
 		if (cgi_error != cgi_error_none && cgi.load(cgi_data_fname))
-			throw runtime_error(cgi_error_text[cgi_error]);
+			throw std::runtime_error(cgi_error_text[cgi_error]);
 		{
 			database.open(config.m_host, config.m_user, config.m_password, config.m_database);
 			database.read_config();
@@ -1263,16 +1261,16 @@ int main()
 				database.import_strings();
 				database.import_templates();
 				if (database.export_template_cache())
-					throw runtime_error("Unable to write template cache");
+					throw std::runtime_error("Unable to write template cache");
 				if (database.import_template_cache())
-					throw runtime_error("Unable to read template cache");
+					throw std::runtime_error("Unable to read template cache");
 			}
 			if (cgi.has_name("show_news"))
 				page = page_news();
 			else
 			{
 				t_action action = static_cast<t_action>(cgi.get_value_int("a"));
-				string hl = cgi.get_value("hl");
+				std::string hl = cgi.get_value("hl");
 				int mid = cgi.get_value_int("mid");
 				int order = cgi.get_value_int("o");
 				int show_page = cgi.get_value_int("p");
@@ -1379,22 +1377,22 @@ int main()
 			}
 			database.close();
 		}
-		cout << "Content-Type: text/html; charset=utf-8" << endl
+		std::cout << "Content-Type: text/html; charset=utf-8" << std::endl
 			<< cookie;
 		if (g_location.empty())
 		{
 			if (!g_refresh.empty())
-				cout << "Refresh: " << g_refresh << endl;
-			if (get_env("HTTP_ACCEPT_ENCODING").find("gzip") == string::npos)
+				std::cout << "Refresh: " << g_refresh << std::endl;
+			if (get_env("HTTP_ACCEPT_ENCODING").find("gzip") == std::string::npos)
 			{
-				cout << endl
+				std::cout << std::endl
 					<< page;
 			}
 			else
 			{
-				cout << "Content-Encoding: gzip" << endl
-					<< endl;
-				cout.flush();
+				std::cout << "Content-Encoding: gzip" << std::endl
+					<< std::endl;
+				std::cout.flush();
 #ifdef WIN32
 				_setmode(fileno(stdout), _O_BINARY);
 #endif
@@ -1403,14 +1401,14 @@ int main()
 		}
 		else
 		{
-			cout << "Location: " << g_location << endl
-				<< endl;
+			std::cout << "Location: " << g_location << std::endl
+				<< std::endl;
 		}
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cout << "Content-Type: text/html; charset=utf-8" << endl
-			<< endl
+		std::cout << "Content-Type: text/html; charset=utf-8" << std::endl
+			<< std::endl
 			<< report_error(e.what());
 	}
 	return 0;

@@ -16,9 +16,9 @@ public:
 	Cform_password(Cforum_database& database);
 
 	bool submit;
-	string old_password;
-	string password;
-	string password_again;
+	std::string old_password;
+	std::string password;
+	std::string password_again;
 private:
 	bool old_password_valid();
 	bool password_valid() const;

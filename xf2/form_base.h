@@ -13,13 +13,13 @@
 class Cform_base  
 {
 public:
-	static bool bad_upper(const string& v, size_t limit);
+	static bool bad_upper(const std::string& v, size_t limit);
 	void field_error(Chtml_template& t, int i, bool valid);
 	int field_height();
 	int field_size();
-	bool name_valid(const string& name) const;
-	bool password_valid(const string& password) const;
-	bool signature_valid(const string& signature) const;
+	bool name_valid(const std::string& name) const;
+	bool password_valid(const std::string& password) const;
+	bool signature_valid(const std::string& signature) const;
 	Chtml_template select_template(int i);
 	Cform_base(Cforum_database& database);
 

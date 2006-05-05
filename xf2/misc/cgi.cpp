@@ -9,8 +9,6 @@
 #include "string_conversion.h"
 #include "xf2_mm.h"
 
-using namespace boost;
-
 const char* cgi_error_text[] = {
 	"Error: none",
 	"Error: unsupported request method",
@@ -20,7 +18,7 @@ const char* cgi_error_text[] = {
 	"Error: server name unavailable",
 	"Error: script name unavailable"};
 
-string get_env(const string& name)
+std::string get_env(const std::string& name)
 {
 	const char* p = getenv(name.c_str());
 	return p ? p : "";
@@ -28,18 +26,18 @@ string get_env(const string& name)
 
 static t_request_method get_request_method()
 {
-	const string v = get_env("REQUEST_METHOD");
-	if (iequals(v, "get"))
+	const std::string v = get_env("REQUEST_METHOD");
+	if (boost::iequals(v, "get"))
 		return rm_get;
-	if (iequals(v, "post"))
+	if (boost::iequals(v, "post"))
 		return rm_post;
 	return rm_unknown;
 }
 
 static t_content_type get_content_type()
 {
-	const string v = get_env("CONTENT_TYPE");
-	if (iequals(v, "application/x-www-form-urlencoded"))
+	const std::string v = get_env("CONTENT_TYPE");
+	if (boost::iequals(v, "application/x-www-form-urlencoded"))
 		return ct_application;
 	return ct_unknown;
 }
@@ -67,9 +65,9 @@ static int hex_decode(char v)
 	}
 };
 
-static string hex_encode(int l, int v)
+static std::string hex_encode(int l, int v)
 {
-	string r;
+	std::string r;
 	r.resize(l);
 	while (l--)
 	{
@@ -79,9 +77,9 @@ static string hex_encode(int l, int v)
 	return r;
 };
 
-string uri_encode(const string& v)
+std::string uri_encode(const std::string& v)
 {
-	string r;
+	std::string r;
 	r.reserve(v.length());
 	for (size_t i = 0; i < v.length(); i++)
 	{
@@ -110,9 +108,9 @@ string uri_encode(const string& v)
 	return r;
 };
 
-string uri_decode(const string& v)
+std::string uri_decode(const std::string& v)
 {
-	string r;
+	std::string r;
 	for (size_t i = 0; i < v.length(); i++)
 	{
 		char c = v[i];
@@ -136,7 +134,7 @@ string uri_decode(const string& v)
 	return r;
 };
 
-const char* web_encode(const string& v)
+const char* web_encode(const std::string& v)
 {
 	int l = 0;
 	{
@@ -190,16 +188,16 @@ const char* web_encode(const string& v)
 	return b;
 }
 
-string web_decode(const string& v)
+std::string web_decode(const std::string& v)
 {
-	string r;
+	std::string r;
 	for (size_t i = 0; i < v.length(); i++)
 	{
 		if (v[i] == '&')
 		{
 			const char* a = v.c_str() + i + 1;
 			int j = v.find(';', i + 1);
-			if (istarts_with(a, "nbsp;"))
+			if (boost::istarts_with(a, "nbsp;"))
 			{
 				i = j;
 				r += ' ';
@@ -212,14 +210,14 @@ string web_decode(const string& v)
 	return r;
 }
 
-t_cgi_input get_cgi_pairs(const string& pairs)
+t_cgi_input get_cgi_pairs(const std::string& pairs)
 {
 	t_cgi_input r;
 	for (size_t i = 0; i < pairs.length(); )
 	{
 		size_t p = pairs.find_first_of(";&", i);
-		string v;
-		if (p != string::npos)
+		std::string v;
+		if (p != std::string::npos)
 		{
 			v = pairs.substr(i, p - i);
 			i = p + 1;
@@ -230,7 +228,7 @@ t_cgi_input get_cgi_pairs(const string& pairs)
 			i = pairs.length();
 		}
 		p = v.find('=');
-		if (p == string::npos)
+		if (p == std::string::npos)
 			r[uri_decode(v)] = "";
 		else
 			r[uri_decode(v.substr(0, p))] = uri_decode(v.substr(p + 1));
@@ -240,8 +238,8 @@ t_cgi_input get_cgi_pairs(const string& pairs)
 
 t_cgi_error Ccgi_input::read()
 {
-	const string server_name = get_env("SERVER_NAME");
-	const string script_name = get_env("SCRIPT_NAME");
+	const std::string server_name = get_env("SERVER_NAME");
+	const std::string script_name = get_env("SCRIPT_NAME");
 	if (server_name.empty())
 		return cgi_error_server_name_unavailable;
 	if (script_name.empty())
@@ -263,8 +261,8 @@ t_cgi_error Ccgi_input::read()
 				if (cb_data > 64 << 10)
 					return cgi_error_unsupported_content_length;
 				char* data = new char[cb_data + 1];
-				cin.read(data, cb_data);
-				if (cin.good())
+				std::cin.read(data, cb_data);
+				if (std::cin.good())
 				{
 					data[cb_data] = 0;
 					m_input = get_cgi_pairs(data);
@@ -292,41 +290,41 @@ t_cgi_error Ccgi_input::read()
 	return cgi_error_none;
 }
 
-string Ccgi_input::get_cookie()
+std::string Ccgi_input::get_cookie()
 {
 	return get_env("HTTP_COOKIE");
 }
 
-string Ccgi_input::get_value(const string& name) const
+std::string Ccgi_input::get_value(const std::string& name) const
 {
 	t_cgi_input::const_iterator i = m_input.find(name);
 	return i == m_input.end() ? "" : i->second;
 }
 
-int Ccgi_input::get_value_int(const string& name) const
+int Ccgi_input::get_value_int(const std::string& name) const
 {
 	return atoi(get_value(name).c_str());
 }
 
-bool Ccgi_input::has_name(const string& name) const
+bool Ccgi_input::has_name(const std::string& name) const
 {
 	t_cgi_input::const_iterator i = m_input.find(name);
 	return i != m_input.end();
 }
 
-bool Ccgi_input::has_value(const string& name) const
+bool Ccgi_input::has_value(const std::string& name) const
 {
 	t_cgi_input::const_iterator i = m_input.find(name);
 	return i != m_input.end() && !i->second.empty();
 }
 
-int Ccgi_input::load(const string& fname)
+int Ccgi_input::load(const std::string& fname)
 {
-	ifstream f(fname.c_str());
-	string cookie;
+	std::ifstream f(fname.c_str());
+	std::string cookie;
 	f >> m_url;
 	getline(f, cookie);
-	string key, name, value;
+	std::string key, name, value;
 	while (getline(f, key))
 	{
 		split_key(key, name, value);
@@ -335,12 +333,12 @@ int Ccgi_input::load(const string& fname)
 	return f.bad();
 }
 
-int Ccgi_input::save(const string& fname) const
+int Ccgi_input::save(const std::string& fname) const
 {
-	ofstream f(fname.c_str());
-	f << m_url << endl
-		<< get_cookie() << endl;
+	std::ofstream f(fname.c_str());
+	f << m_url << std::endl
+		<< get_cookie() << std::endl;
 	for (t_cgi_input::const_iterator i = m_input.begin(); i != m_input.end(); i++)
-		f << i->first << '=' << i->second << endl;
+		f << i->first << '=' << i->second << std::endl;
 	return f.bad();
 }
