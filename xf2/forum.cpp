@@ -65,7 +65,7 @@ const char* pager(t_action action, int current, int count, int order = 0)
 	std::string r;
 	r.reserve(1 << 10);
 	r += pager_entry(action, current, 0, order);
-	for (int i = max(1, current - 10); i < min(current + 11, count - 1); i++)
+	for (int i = std::max(1, current - 10); i < std::min(current + 11, count - 1); i++)
 		r += pager_entry(action, current, i, order);
 	r += pager_entry(action, current, count - 1, order);
 	if (current > 0)
@@ -201,7 +201,7 @@ const char* page_search()
 		q += " order by ctime desc";
 	}
 	q += " limit ?";
-	q.p(form.limit ? max(25, min(form.limit, 250)) : 250);
+	q.p(form.limit ? std::max(25, std::min(form.limit, 250)) : 250);
 	Csql_result result = q.execute();
 	{
 		std::set<int> guest_set;
