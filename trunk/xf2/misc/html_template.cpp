@@ -314,7 +314,7 @@ Cvirtual_binary Ctemplate_write::value()
 {
 	close_literal();
 	*m_w++ = te_end;
-	m_d.size(m_w - reinterpret_cast<const char*>(m_d.data()));
+	m_d.resize(m_w - reinterpret_cast<const char*>(m_d.data()));
 	return m_d;
 }
 

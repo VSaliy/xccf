@@ -1396,7 +1396,7 @@ int main()
 #ifdef WIN32
 				_setmode(fileno(stdout), _O_BINARY);
 #endif
-				xcc_z::gzip_out(page);
+				xcc_z::gzip_out(const_memory_range(page, strlen(page)));
 			}
 		}
 		else
