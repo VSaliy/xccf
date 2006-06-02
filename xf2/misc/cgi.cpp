@@ -49,14 +49,14 @@ static int hex_decode(char v)
 	{
 		if (v < '0')
 		{
-			return -1;			
+			return -1;
 		}
 		else
 		{
 			v -= '0';
 			return v < 10 ? v : -1;
 		}
-		
+
 	}
 	else
 	{
@@ -254,7 +254,7 @@ t_cgi_error Ccgi_input::read()
 		{
 			int cb_data = atoi(get_env("CONTENT_LENGTH").c_str());
 			if (!cb_data)
-				return cgi_error_unsupported_content_length;		
+				return cgi_error_unsupported_content_length;
 			t_content_type ct = get_content_type();
 			if (ct == ct_application)
 			{
