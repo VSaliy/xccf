@@ -71,7 +71,7 @@ void Ccookie::set_session_value(const std::string& name, const std::string& valu
 std::ostream& operator<<(std::ostream& os, const Ccookie& v)
 {
 	Ccookie::t_keys::const_iterator i;
-	for (i = v.m_write_keys.begin(); i != v.m_write_keys.end(); i++)		
+	for (i = v.m_write_keys.begin(); i != v.m_write_keys.end(); i++)
 		os << "Set-cookie: " << uri_encode(i->first) << '=' << uri_encode(i->second) << "; expires=Friday, 31-Dec-2010 12:00:00 GMT; path=/" << std::endl;
 	for (i = v.m_write_session_keys.begin(); i != v.m_write_session_keys.end(); i++)
 		os << "Set-cookie: " << uri_encode(i->first) << "=" << uri_encode(i->second) << std::endl;		
