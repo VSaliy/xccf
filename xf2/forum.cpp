@@ -357,7 +357,7 @@ const char* page_recent_messages(int order, int show_page)
 	q.p_raw(message_list_order_i2a(order));
 	q.p(database.rows_per_page() * show_page);
 	q.p(database.rows_per_page());
-	Csql_result result = q.execute();	
+	Csql_result result = q.execute();
 	{
 		std::set<int> guest_set;
 		std::set<int> user_set;
@@ -415,7 +415,7 @@ void fill_sort_map(t_sort_map& sort_map, const Cforum_database::t_parent_map& pa
 		const Cfd_message& e = database.fd_message(i->second);
 		if (e.forum())
 			fill_sort_map(sort_map, parent_map, e.mid);
-		else 
+		else
 			sort_map.insert(t_sort_map::value_type(e.mtime, e.mid));
 	}
 }
@@ -467,7 +467,7 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 	t_sort_map sort_map;
 	fill_sort_map(sort_map, database.parent_map(), mid);
 	{
-		r.reserve(r.size() + 256 * sort_map.size());	
+		r.reserve(r.size() + 256 * sort_map.size());
 		for (t_sort_map::const_iterator i = sort_map.begin(); i != sort_map.end(); i++)
 		{
 			const Cfd_message& e = database.fd_message(i->second);
@@ -587,7 +587,7 @@ const char* page_user_list(int order)
 		Cfd_user(row, fields).r(t, database);
 		t.r(ti_var_row_index, row_index & 1);
 		page += t;
-	}	
+	}
 	Chtml_template t = database.select_template(ti_page_user_list);
 	t.r(ti_url_order_by_ctime, url_user_list(1));
 	t.r(ti_url_order_by_icq, url_user_list(2));
@@ -876,7 +876,7 @@ const char* page_message()
 			}
 			return page_forward(url_show_message(form.mid));
 		}
-		else 
+		else
 		{
 			q = "select mid from xf_messages where subject = ? and body = ? and pid = ?";
 			q.p(form.subject);
@@ -887,7 +887,7 @@ const char* page_message()
 			if (row)
 				mid = row[0].i();
 			else
-			{				
+			{
 				if (database.uid())
 				{
 					Cfd_user e = database.fd_user(database.uid());
@@ -931,7 +931,7 @@ const char* page_message()
 					}
 				}
 			}
-			{				
+			{
 				if (form.pid)
 				{
 					Cfd_message message = database.fd_message(form.pid);
@@ -989,7 +989,7 @@ const char* page_show_message(int mid, const std::string& hl)
 				t.r(ti_link_moderate_forum, url_message(ac_moderate_forum, mid));
 			else
 				t.r(ti_link_unmoderate_forum, url_message(ac_unmoderate_forum, mid));
-		}	
+		}
 		if (database.can_moderate(mid))
 		{
 			t.r(ti_can_moderate, 1);
@@ -1372,7 +1372,7 @@ int main()
 					}
 					else
 						page = page_thread_list(mid, show_page);
-				}		
+				}
 				page = final_replace(page, mid);
 			}
 			database.close();

@@ -54,12 +54,12 @@ std::string trim_field(const std::string& v)
 	{
 		if (isspace(v[i]))
 			copy_white = true;
-		else 
+		else
 		{
 			if (copy_white)
 			{
 				if (!r.empty())
-					r += ' ';				
+					r += ' ';
 				copy_white = false;
 			}
 			r += v[i];
@@ -185,12 +185,12 @@ std::string encode_field(const std::string& v, const t_smily_map& smily_map, con
 				r += web_link(highlight(boost::istarts_with(v.c_str() + i, "mailto:") ? url.substr(7) : encode_local_url(url, local_domain_url, local_forum_url), hl), url, false);
 			i = p;
 		}
-		else 
+		else
 		{
 			bool done = false;
 			if (!smily_map.empty())
 			{
-				for (t_smily_map::const_iterator j = smily_map.begin(); j != smily_map.end(); j++)					
+				for (t_smily_map::const_iterator j = smily_map.begin(); j != smily_map.end(); j++)
 				{
 					if (boost::istarts_with(v.c_str() + i, j->first))
 					{
