@@ -102,6 +102,12 @@ public:
 		end = begin + size;
 	}
 
+	const_memory_range_base(const char* v)
+	{
+		begin = reinterpret_cast<T>(v);
+		end = reinterpret_cast<T>(v + strlen(v));
+	}
+
 	const_memory_range_base(const std::string& v)
 	{
 		begin = reinterpret_cast<T>(v.data());
