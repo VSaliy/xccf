@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+typedef unsigned char byte;
+
 //{{AFX_INSERT_LOCATION}}
 
 #endif // !defined(AFX_STDAFX_H__FA584982_2EA1_11D5_B606_0000B4936994__INCLUDED_)
