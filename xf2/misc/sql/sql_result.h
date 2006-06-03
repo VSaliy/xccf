@@ -78,7 +78,7 @@ public:
 
 	Cvirtual_binary vdata() const
 	{
-		return Cvirtual_binary(raw(), size());
+		return Cvirtual_binary(const_memory_range(raw(), size()));
 	}
 private:
 	const char* m_begin;

@@ -1115,7 +1115,7 @@ int Cforum_database::export_template_cache()
 			}
 		}
 	}
-	assert(d.data_end() == w);
+	assert(d.end() == w);
 	return d.save("xf_template_cache.dat");
 }
 
