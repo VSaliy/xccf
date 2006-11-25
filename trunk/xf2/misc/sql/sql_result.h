@@ -6,6 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include <boost/intrusive_ptr.hpp>
+#include <boost/utility.hpp>
 #ifdef _MSC_VER
 #include <winsock.h>
 #include <mysql.h>
@@ -14,7 +15,7 @@
 #endif
 #include "const_memory_range.h"
 
-class Csql_result_source
+class Csql_result_source: boost::noncopyable
 {
 public:
 	Csql_result_source(MYSQL_RES* h)
