@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_PROFILE_H__E20FF881_2F34_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORM_PROFILE_H__E20FF881_2F34_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 
@@ -30,5 +25,3 @@ private:
 	bool link_title_valid() const;
 	bool link_valid() const;
 };
-
-#endif // !defined(AFX_FORM_PROFILE_H__E20FF881_2F34_11D5_B606_0000B4936994__INCLUDED_)

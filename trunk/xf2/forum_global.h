@@ -1,9 +1,4 @@
-#if !defined(AFX_FORUM_GLOBAL_H__FA58498B_2EA1_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORUM_GLOBAL_H__FA58498B_2EA1_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 typedef std::map<std::string, std::string> t_smily_map;
 
@@ -95,5 +90,3 @@ std::string select_fields(int field_mask, const char** field_names, const std::s
 size_t text_cy(const std::string& v, bool ignore_quotes);
 std::string trim_field(const std::string&);
 std::string trim_text(const std::string&);
-
-#endif // !defined(AFX_FORUM_GLOBAL_H__FA58498B_2EA1_11D5_B606_0000B4936994__INCLUDED_)

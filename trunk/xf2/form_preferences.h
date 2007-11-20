@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_PREFERENCES_H__E20FF880_2F34_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORM_PREFERENCES_H__E20FF880_2F34_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 
@@ -31,5 +26,3 @@ public:
 private:
 	bool custom_css_valid() const;
 };
-
-#endif // !defined(AFX_FORM_PREFERENCES_H__E20FF880_2F34_11D5_B606_0000B4936994__INCLUDED_)

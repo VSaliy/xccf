@@ -1,9 +1,4 @@
-#if !defined(AFX_FORUM_DATABASE_H__FA584989_2EA1_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORUM_DATABASE_H__FA584989_2EA1_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "sql/database.h"
 #include "cgi.h"
@@ -528,5 +523,3 @@ private:
 	t_smily_map m_smily_map;
 	Cresult_cache<int, Cfd_user> m_user_cache;
 };
-
-#endif // !defined(AFX_FORUM_DATABASE_H__FA584989_2EA1_11D5_B606_0000B4936994__INCLUDED_)

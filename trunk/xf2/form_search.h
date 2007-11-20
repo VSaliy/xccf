@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_SEARCH_H__EDA788D7_C298_4F58_AD33_7C47F6BF884B__INCLUDED_)
-#define AFX_FORM_SEARCH_H__EDA788D7_C298_4F58_AD33_7C47F6BF884B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 
@@ -25,5 +20,3 @@ public:
 	int limit;
 	bool show_bodies;
 };
-
-#endif // !defined(AFX_FORM_SEARCH_H__EDA788D7_C298_4F58_AD33_7C47F6BF884B__INCLUDED_)

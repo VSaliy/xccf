@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_IPA_SEARCH_H__9D2E18C1_29B7_4D4E_AF83_2DD90502511D__INCLUDED_)
-#define AFX_FORM_IPA_SEARCH_H__9D2E18C1_29B7_4D4E_AF83_2DD90502511D__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 
@@ -21,5 +16,3 @@ public:
 	int order;
 	bool show_domain_names;
 };
-
-#endif // !defined(AFX_FORM_IPA_SEARCH_H__9D2E18C1_29B7_4D4E_AF83_2DD90502511D__INCLUDED_)
