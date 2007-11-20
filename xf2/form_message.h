@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_MESSAGE_H__B5084A82_2F7B_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORM_MESSAGE_H__B5084A82_2F7B_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 #include "forum_global.h"
@@ -34,5 +29,3 @@ private:
 	bool subject_valid();
 	bool body_valid() const;
 };
-
-#endif // !defined(AFX_FORM_MESSAGE_H__B5084A82_2F7B_11D5_B606_0000B4936994__INCLUDED_)

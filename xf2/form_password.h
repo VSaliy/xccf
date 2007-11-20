@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_PASSWORD_H__B5084A81_2F7B_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORM_PASSWORD_H__B5084A81_2F7B_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 
@@ -24,5 +19,3 @@ private:
 	bool password_valid() const;
 	bool password_again_valid() const;
 };
-
-#endif // !defined(AFX_FORM_PASSWORD_H__B5084A81_2F7B_11D5_B606_0000B4936994__INCLUDED_)

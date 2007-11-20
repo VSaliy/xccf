@@ -1,9 +1,4 @@
-#if !defined(XCC_WOL_BATCH_PROCESSOR_CONFIG_H__INCLUDED)
-#define XCC_WOL_BATCH_PROCESSOR_CONFIG_H__INCLUDED
-
-#if _MSC_VER > 1000
 #pragma once
-#endif
 
 #include "config_base.h"
 
@@ -20,5 +15,3 @@ public:
 	std::string m_password;
 	std::string m_user;
 };
-
-#endif

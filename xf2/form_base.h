@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_BASE_H__FA58498C_2EA1_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_FORM_BASE_H__FA58498C_2EA1_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "cgi.h"
 #include "cookie.h"
@@ -35,5 +30,3 @@ public:
 private:
 	Cforum_database& m_database;
 };
-
-#endif // !defined(AFX_FORM_BASE_H__FA58498C_2EA1_11D5_B606_0000B4936994__INCLUDED_)

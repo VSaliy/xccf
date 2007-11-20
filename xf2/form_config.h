@@ -1,9 +1,4 @@
-#if !defined(AFX_FORM_CONFIG_H__28FA328E_920E_4414_89A5_EAA98B8E2BD0__INCLUDED_)
-#define AFX_FORM_CONFIG_H__28FA328E_920E_4414_89A5_EAA98B8E2BD0__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "form_base.h"
 #include "forum_global.h"
@@ -25,5 +20,3 @@ public:
 	int min_pass_length;
 	int max_signature_length;
 };
-
-#endif // !defined(AFX_FORM_CONFIG_H__28FA328E_920E_4414_89A5_EAA98B8E2BD0__INCLUDED_)
