@@ -1,9 +1,4 @@
-#if !defined(AFX_HTML_TEMPLATE_H__FA584987_2EA1_11D5_B606_0000B4936994__INCLUDED_)
-#define AFX_HTML_TEMPLATE_H__FA584987_2EA1_11D5_B606_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "string_conversion.h"
 #include "virtual_binary.h"
@@ -61,6 +56,3 @@ private:
 	bool m_repeat_line;
 	char* m_w;
 };
-
-
-#endif // !defined(AFX_HTML_TEMPLATE_H__FA584987_2EA1_11D5_B606_0000B4936994__INCLUDED_)
