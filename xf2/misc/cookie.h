@@ -1,9 +1,4 @@
-#if !defined(AFX_COOKIE_H__8AD9C520_EC76_11D3_B605_0000B4936994__INCLUDED_)
-#define AFX_COOKIE_H__8AD9C520_EC76_11D3_B605_0000B4936994__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include <map>
 #include <string>
@@ -37,5 +32,3 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const Ccookie& v);
-
-#endif // !defined(AFX_COOKIE_H__8AD9C520_EC76_11D3_B605_0000B4936994__INCLUDED_)

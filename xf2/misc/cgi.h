@@ -1,9 +1,4 @@
-#if !defined(AFX_CGI_INPUT_H__BA6CFA71_E9CA_11D3_B81A_0000F81AF3F7__INCLUDED_)
-#define AFX_CGI_INPUT_H__BA6CFA71_E9CA_11D3_B81A_0000F81AF3F7__INCLUDED_
-
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
 
 #include <map>
 #include <string>
@@ -57,5 +52,3 @@ std::string uri_decode(const std::string&);
 std::string uri_encode(const std::string&);
 std::string web_decode(const std::string&);
 const char* web_encode(const std::string&);
-
-#endif // !defined(AFX_CGI_INPUT_H__BA6CFA71_E9CA_11D3_B81A_0000F81AF3F7__INCLUDED_)
