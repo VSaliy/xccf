@@ -58,12 +58,25 @@ int xf_request::handle_topic(int fid, int tid, google::TemplateDictionary* dict0
 			req_.location_ = "..";
 			return 0;
 		}
-		std::string name = trim_field(req_.get_post_argument("name"));
-		if (!name.empty())
+		int fid = req_.get_post_argument_int("fid");
+		std::string title = trim_field(req_.get_post_argument("title"));
+		if (database_.is_title_valid(title))
 		{
-			Csql_query(database_, "update xf_topics set name = ? where tid = ?").p(name).p(tid).execute();
+			Csql_query(database_, "update xf_topics set fid = ?, title = ? where tid = ?").p(fid).p(title).p(tid).execute();
 			req_.location_ = ".";
 			return 0;
+		}
+	}
+	if (edit)
+	{
+		Csql_result result = Csql_query(database_, "select fid, title from xf_forums order by title").execute();
+		for (Csql_row row; row = result.fetch_row(); )
+		{
+			google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("forum");
+			if (row[0].i() == fid)
+				dict1->SetValue("selected", "selected");
+			dict1->SetIntValue("fid", row[0].i());
+			dict1->SetValue("title", row[1].s());
 		}
 	}
 	dict0 = dict0->AddSectionDictionary(edit ? "edit" : "topic");

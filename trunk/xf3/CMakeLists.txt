@@ -19,6 +19,7 @@ add_executable(
 	request_handler.cpp
 	server.cpp
 	topics_request.cpp
+	user_control_panel_request.cpp
 	users_request.cpp
 	"XCC Forum.cpp"
 	xf_misc.cpp

@@ -18,7 +18,8 @@
 {{#edit}}
 <form method=post>
 	<table>
-		<tr><th align=left>Title<td><input name=t type=text value="{{title:h}}">
+		<tr><th align=left>Title<td><input name=title type=text value="{{title:h}}">
+		<tr><th align=left>Forum<td><select name=fid>{{#forum}}<option value={{fid}} {{selected}}>{{title:h}}</option>{{/forum}}</select>
 		<tr><th align=left>Modified<td>{{mtime}}
 		<tr><th align=left>Created<td>{{ctime}}
 		<tr><th align=left>Delete<td><input type=checkbox name=delete>

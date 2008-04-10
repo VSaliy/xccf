@@ -176,8 +176,6 @@ int xf_request::handle_user(int uid, google::TemplateDictionary* dict0, bool edi
 	dict0->SetValue("name", row[1].s());
 	if (edit)
 	{
-		dict0->SetValue("uploaded", row[2].s());
-		dict0->SetValue("downloaded", row[3].s());
 		Csql_result result = Csql_query(database_, "select gid, name from xf_groups order by name").execute();
 		for (Csql_row row; row = result.fetch_row(); )
 		{

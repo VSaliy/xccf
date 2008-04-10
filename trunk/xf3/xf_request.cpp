@@ -104,7 +104,20 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 		return 1;
 	bool edit = req_.has_post_argument("edit");
 	std::string q0 = trim_field(req_.get_argument1("q"));
-	if (uri[0] == "users")
+	if (uri[0] == "control_panel")
+	{
+		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("user_control_panel");
+		dict1->SetFilename("user_control_panel.tpl");
+		if (uri.size() == 1)
+		{
+			if (!uid_)
+				return 401;
+			handle_ucp(dict1->AddSectionDictionary("index"));
+		}
+		title_ += " - Control Panel";
+		header->SetValue("form_action", "/control_panel/");
+	}
+	else if (uri[0] == "users")
 	{
 		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("users");
 		dict1->SetFilename("users.tpl");
