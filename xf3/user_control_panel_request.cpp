@@ -37,7 +37,7 @@ void xf_request::handle_ucp(google::TemplateDictionary* dict0)
 				dict0->ShowSection("e_error");
 				return;
 			}
-			if (!Csql_query(database_, "select fe_pass = ? from xf_users where uid = ?").p(Csha1(p).read()).p(uid_).execute().fetch_row()[0].i())
+			if (!Csql_query(database_, "select pass = ? from xf_users where uid = ?").p(Csha1(p).read()).p(uid_).execute().fetch_row()[0].i())
 			{
 				dict0->SetValue("e", e);
 				dict0->ShowSection("p_error");
@@ -79,12 +79,12 @@ void xf_request::handle_ucp(google::TemplateDictionary* dict0)
 				dict0->ShowSection("p2_error");
 				return;
 			}
-			if (!Csql_query(database_, "select fe_pass = ? from xf_users where uid = ?").p(Csha1(password0).read()).p(uid_).execute().fetch_row()[0].i())
+			if (!Csql_query(database_, "select pass = ? from xf_users where uid = ?").p(Csha1(password0).read()).p(uid_).execute().fetch_row()[0].i())
 			{
 				dict0->ShowSection("p0_error");
 				return;
 			}
-			Csql_query(database_, "update xf_users set fe_pass = ? where uid = ? and fe_pass = ?").p(Csha1(password1).read()).p(uid_).p(Csha1(password0).read()).execute();
+			Csql_query(database_, "update xf_users set pass = ? where uid = ? and pass = ?").p(Csha1(password1).read()).p(uid_).p(Csha1(password0).read()).execute();
 			Csql_query(database_, "delete from xf_sessions where uid = ? and sid != ?").p(uid_).p(sid_).execute();
 			dict0->SetValue("message", "Your password has been updated.");
 			return;

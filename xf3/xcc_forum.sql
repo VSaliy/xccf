@@ -97,16 +97,24 @@ drop trigger if exists xf_users_delete;
 delimiter ;;
 
 create trigger xf_posts_insert after insert on xf_posts for each row
-	update xf_topics set posts_count = posts_count + 1 where tid = new.tid;;
+	begin
+		update xf_topics set posts_count = posts_count + 1 where tid = new.tid;
+		update xf_users set posts_count = posts_count + 1 where uid = new.uid;
+	end;;
 
 create trigger xf_posts_update after update on xf_posts for each row
 	begin
 		update xf_topics set posts_count = posts_count - 1 where tid = old.tid;
 		update xf_topics set posts_count = posts_count + 1, mtime = unix_timestamp() where tid = new.tid;
+		update xf_users set posts_count = posts_count - 1 where uid = old.uid;
+		update xf_users set posts_count = posts_count + 1 where uid = new.uid;
 	end;;
 
 create trigger xf_posts_delete after delete on xf_posts for each row
-	update xf_topics set posts_count = posts_count - 1 where tid = old.tid;;
+	begin
+		update xf_topics set posts_count = posts_count - 1 where tid = old.tid;
+		update xf_users set posts_count = posts_count - 1 where uid = old.uid;
+	end;;
 
 create trigger xf_users_insert after insert on xf_users for each row
 	update xf_groups set users_count = users_count + 1 where gid = new.gid;;
@@ -122,7 +130,7 @@ create trigger xf_users_delete after delete on xf_users for each row
 
 delimiter ;
 
-insert into xf_groups (gid, name, privileges, ctime) values
+insert ignore into xf_groups (gid, name, privileges, ctime) values
 (1, 'Administrators', -1, unix_timestamp()),
 (2, 'Guests', 0, unix_timestamp()),
 (3, 'Users', 0, unix_timestamp());
