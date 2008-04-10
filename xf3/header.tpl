@@ -8,18 +8,6 @@
 		<td><a href="/groups/">Groups</a>
 		<td><a href="/users/">Users</a>
 		{{#logout}}
-		{{#can_create_forum}}
-		<td><a href="/forums/_create/">Create Forum</a>
-		{{/can_create_forum}}
-		{{#can_create_group}}
-		<td><a href="/groups/_create/">Create Group</a>
-		{{/can_create_group}}
-		{{#can_create_label}}
-		<td><a href="/labels/_create/">Create Label</a>
-		{{/can_create_label}}
-		{{#can_upload_torrent}}
-		<td><a href="/torrents/_create/">Upload Torrent</a>
-		{{/can_upload_torrent}}
 		{{#is_administrator}}
 		<td><a href="/admin_control_panel/">Admin Control Panel</a>
 		{{/is_administrator}}

@@ -66,6 +66,8 @@ void xf_request::handle()
 			title_.erase(0, 3);
 		title_ += " - " + config().site_title_;
 		header->SetValue("title", title_);
+		if (is_administrator())
+			header->ShowSection("is_administrator");
 		if (uid_)
 			header->ShowSection("logout");
 		else
