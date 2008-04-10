@@ -1,10 +1,7 @@
 {{#create}}
-<span style="background-color: yellow;">
-	{{message}}
-</span>
 <form method=post>
 	<table>
-		<tr><th align=left>Message<td><textarea name=m cols=80 rows=20></textarea>
+		<tr><th align=left>Message<td><textarea name=m cols=80 rows=20>{{message:p}}</textarea>
 		<tr><th><td><input type=submit value="Post">
 	</table>
 </form>

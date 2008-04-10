@@ -11,6 +11,9 @@
 {{/create}}
 {{#forum}}
 <a href="..">Up</a> | <a href="_create/">New Topic</a>
+{{#can_edit_forum}}
+{{BI_SPACE}}| <form action="{{link}}" method=post><input type=hidden name=edit><input type=submit value="Edit"></form>
+{{/can_edit_forum}}
 {{>topics_table}}
 <a href="..">Up</a> | <a href="_create/">New Topic</a>
 {{/forum}}
@@ -20,7 +23,7 @@
 		<tr><th align=left>Title<td><input name=title type=text value="{{title:h}}">
 		<tr><th align=left>Modified<td>{{mtime}}
 		<tr><th align=left>Delete<td><input type=checkbox name=delete>
-		<tr><th><td><input type=submit title=edit value="Edit">
+		<tr><th><td><input type=submit name=edit value="Edit">
 	</table>
 </form>
 {{/edit}}

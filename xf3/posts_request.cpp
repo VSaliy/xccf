@@ -7,6 +7,31 @@
 #include "xf_misc.h"
 #include "xf_request.h"
 
+static std::string adjust_body(const std::string& v)
+{
+	std::string r;
+	r.reserve(v.length());
+	for (size_t i = 0; i < v.length(); )
+	{
+		size_t p = v.find('\n', i);
+		std::string line;
+		if (p == std::string::npos)
+		{
+			line = v.substr(i) + '\n';
+			p = v.length();
+		}
+		else
+			line = v.substr(i, p - i + 1);
+		i = p + 1;
+		if (boost::istarts_with(line, "> "))
+			continue;
+		if (!trim_field(line).empty())
+			r += "> ";
+		r += line;
+	}
+	return trim_text(r);
+}
+
 void xf_request::handle_post_create(int tid, google::TemplateDictionary* dict0)
 {
 	title_ = "Reply";
@@ -21,12 +46,16 @@ void xf_request::handle_post_create(int tid, google::TemplateDictionary* dict0)
 		Csql_query(database_, "insert into xf_posts (tid, uid, message, mtime, ctime) values (?, ?, ?, unix_timestamp(), unix_timestamp())").p(tid).p(uid_).p(m).execute();
 		int pid = database_.insert_id();
 		req_.location_ = (boost::format("../#%d") % pid).str();
+		return;
 	}
+	int pid = req_.get_argument1_int("pid");
+	if (Csql_row row = Csql_query(database_, "select message from xf_posts where pid = ?").p(pid).execute().fetch_row())
+		dict0->SetValue("message", adjust_body(row[0].s()));
 }
 
 int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0, bool edit)
 {
-	Csql_row row = Csql_query(database_, "select pid, message, mtime, ctime, uid from xf_posts where pid = ?").p(pid).execute().fetch_row();
+	Csql_row row = Csql_query(database_, "select pid, message, mtime, ctime, uid, tid from xf_posts where pid = ?").p(pid).execute().fetch_row();
 	if (!row)
 		return 1;
 	if (edit)
@@ -37,6 +66,11 @@ int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0,
 		{
 			Csql_query(database_, "delete from xf_posts where pid = ?").p(pid).execute();
 			req_.location_ = "..";
+			if (!Csql_query(database_, "select count(*) from xf_posts where tid = ?").p(row[5].i()).execute().fetch_row()[0].i())
+			{
+				Csql_query(database_, "delete from xf_topics where tid = ?").p(row[5].i()).execute();
+				req_.location_ = "../..";
+			}
 			return 0;
 		}
 		std::string m = trim_text(req_.get_post_argument("m"));

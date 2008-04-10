@@ -10,7 +10,6 @@ public:
 	config_c(const config_c&);
 	const config_c& operator=(const config_c&);
 
-	bool anonymous_announce_;
 	int rows_per_page_;
 	std::string email_from_;
 	std::string site_title_;
