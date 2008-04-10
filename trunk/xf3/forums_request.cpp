@@ -33,7 +33,7 @@ int xf_request::handle_forum(int fid, google::TemplateDictionary* dict0, bool ed
 	{
 		if (!is_administrator())
 			return 1;
-		if (req_.has_post_argument("delete")) // && !Csql_query(database_, "select count(*) from xf_topics where fid = ?").p(fid).execute().fetch_row()[0].i())
+		if (req_.has_post_argument("delete") && !Csql_query(database_, "select count(*) from xf_topics where fid = ?").p(fid).execute().fetch_row()[0].i())
 		{
 			Csql_query(database_, "delete from xf_forums where fid = ?").p(fid).execute();
 			req_.location_ = "..";

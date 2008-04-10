@@ -10,7 +10,7 @@
 			{{#can_edit_post}}
 			<form action="{{link}}" method=post><input type=hidden name=edit><input type=submit value="Edit"></form> |{{BI_SPACE}}
 			{{/can_edit_post}}
-			<a href="_create/">Reply</a>
+			<a href="_create/?pid={{pid}}">Reply</a>
 	<tr>
 		<td>
 		<td colspan=9>{{message}}

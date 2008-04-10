@@ -22,7 +22,6 @@ void config_c::fill_maps(const config_c* v)
 	{
 		t_attribute<bool> attributes[] =
 		{
-			"anonymous_announce", &anonymous_announce_, true,
 			NULL
 		};
 		fill_map(attributes, v ? &v->m_attributes_bool : NULL, m_attributes_bool);
