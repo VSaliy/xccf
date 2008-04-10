@@ -103,7 +103,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	if (uri.empty())
 		return 1;
 	bool edit = req_.has_post_argument("edit");
-	std::string q0 = boost::trim_copy(req_.get_argument1("q"));
+	std::string q0 = trim_field(req_.get_argument1("q"));
 	if (uri[0] == "users")
 	{
 		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("users");

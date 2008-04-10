@@ -22,6 +22,7 @@ void database_c::repair_counts()
 {
 	query("delete from xf_email_verification where ctime < unix_timestamp() - 24 * 60 * 60");
 	query("delete from xf_sessions where mtime < unix_timestamp() - 31 * 24 * 60 * 60");
+	query("delete t from xf_topics t left join xf_posts p using (tid) where p.tid is null");
 	{
 		Csql_result result = query("select gid, users_count, count(uid) from xf_groups left join xf_users using (gid) group by gid having users_count != count(uid)");
 		for (Csql_row row; row = result.fetch_row(); )
@@ -72,4 +73,14 @@ bool database_c::is_name_valid(const std::string& v) const
 bool database_c::is_password_valid(const std::string& v) const
 {
 	return v.size() >= 8 && v.size() < 128;
+}
+
+bool database_c::is_title_valid(const std::string& v) const
+{
+	return v.size() >= 3 && v.size() < 64;
+}
+
+bool database_c::is_body_valid(const std::string& v) const
+{
+	return v.size() >= 4;
 }

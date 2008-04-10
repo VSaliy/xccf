@@ -11,7 +11,7 @@
 void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 {
 	title_ = "Create";
-	std::string e = boost::trim_copy(req_.get_post_argument("e"));
+	std::string e = trim_field(req_.get_post_argument("e"));
 	if (!e.empty())
 	{
 		if (!database_.is_email_valid(e))
@@ -37,8 +37,8 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 		database_.send_mail(dict9);
 		return;
 	}
-	std::string n = boost::trim_copy(req_.get_post_argument("n"));
-	std::string p = boost::trim_copy(req_.get_post_argument("p"));
+	std::string n = trim_field(req_.get_post_argument("n"));
+	std::string p = trim_field(req_.get_post_argument("p"));
 	if (!n.empty() || !p.empty())
 	{
 		if (!database_.is_name_valid(n))
@@ -72,8 +72,8 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 void xf_request::handle_login(google::TemplateDictionary* dict0)
 {
 	title_ = "Login";
-	std::string n = boost::trim_copy(req_.get_post_argument("n"));
-	std::string p = boost::trim_copy(req_.get_post_argument("p"));
+	std::string n = trim_field(req_.get_post_argument("n"));
+	std::string p = trim_field(req_.get_post_argument("p"));
 	if (!n.empty() || !p.empty())
 	{
 		Csql_row row = Csql_query(database_, "select uid, pass = ? from xf_users where name = ?").p(Csha1(p).read()).p(n).execute().fetch_row();
@@ -116,7 +116,7 @@ void xf_request::handle_logout(google::TemplateDictionary* dict0)
 void xf_request::handle_user_recover(google::TemplateDictionary* dict0)
 {
 	title_ = "Recover";
-	std::string e = boost::trim_copy(req_.get_post_argument("e"));
+	std::string e = trim_field(req_.get_post_argument("e"));
 	if (!e.empty())
 	{
 		if (!database_.is_email_valid(e))
