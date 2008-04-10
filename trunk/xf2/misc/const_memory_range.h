@@ -1,5 +1,9 @@
 #pragma once
 
+#include <boost/array.hpp>
+#include <string>
+#include <vector>
+
 template <class T>
 class memory_range_base
 {
@@ -10,23 +14,66 @@ public:
 		end = NULL;
 	}
 
-	template <class U>
-	memory_range_base(U v)
+	template<class U>
+	memory_range_base(const memory_range_base<U>& v)
 	{
-		begin = reinterpret_cast<T>(v.begin);
-		end = reinterpret_cast<T>(v.end);
+		assign(v.begin, v.end);
 	}
 
 	memory_range_base(void* begin_, void* end_)
 	{
-		begin = reinterpret_cast<T>(begin_);
-		end = reinterpret_cast<T>(end_);
+		assign(begin_, end_);
 	}
 
 	memory_range_base(void* begin_, size_t size)
 	{
+		assign(begin_, size);
+	}
+
+	template<size_t U>
+	memory_range_base(boost::array<char, U>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	template<size_t U>
+	memory_range_base(boost::array<unsigned char, U>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	memory_range_base(std::vector<char>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	memory_range_base(std::vector<unsigned char>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	memory_range_base assign(void* begin_, void* end_)
+	{
+		begin = reinterpret_cast<T>(begin_);
+		end = reinterpret_cast<T>(end_);
+		return *this;
+	}
+	
+	memory_range_base assign(void* begin_, size_t size)
+	{
 		begin = reinterpret_cast<T>(begin_);
 		end = begin + size;
+		return *this;
+	}
+	
+	void clear()
+	{
+		begin = end = NULL;
+	}
+	
+	bool empty() const
+	{
+		return begin == end;
 	}
 
 	size_t size() const
@@ -78,35 +125,77 @@ public:
 		end = NULL;
 	}
 
-	template <class U>
-	const_memory_range_base(U v)
+	template<class U>
+	const_memory_range_base(const const_memory_range_base<U>& v)
 	{
-		begin = reinterpret_cast<T>(v.begin);
-		end = reinterpret_cast<T>(v.end);
+		assign(v.begin, v.end);
+	}
+
+	template<class U>
+	const_memory_range_base(const memory_range_base<U>& v)
+	{
+		assign(v.begin, v.end);
 	}
 
 	const_memory_range_base(const void* begin_, const void* end_)
 	{
-		begin = reinterpret_cast<T>(begin_);
-		end = reinterpret_cast<T>(end_);
+		assign(begin_, end_);
 	}
 
 	const_memory_range_base(const void* begin_, size_t size)
 	{
-		begin = reinterpret_cast<T>(begin_);
-		end = begin + size;
-	}
-
-	const_memory_range_base(const char* v)
-	{
-		begin = reinterpret_cast<T>(v);
-		end = reinterpret_cast<T>(v + strlen(v));
+		assign(begin_, size);
 	}
 
 	const_memory_range_base(const std::string& v)
 	{
-		begin = reinterpret_cast<T>(v.data());
-		end = reinterpret_cast<T>(v.data() + v.size());
+		assign(v.data(), v.size());
+	}
+
+	template<size_t U>
+	const_memory_range_base(const boost::array<char, U>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	template<size_t U>
+	const_memory_range_base(const boost::array<unsigned char, U>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	const_memory_range_base(const std::vector<char>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	const_memory_range_base(const std::vector<unsigned char>& v)
+	{
+		assign(&v.front(), v.size());
+	}
+
+	const_memory_range_base assign(const void* begin_, const void* end_)
+	{
+		begin = reinterpret_cast<T>(begin_);
+		end = reinterpret_cast<T>(end_);
+		return *this;
+	}
+	
+	const_memory_range_base assign(const void* begin_, size_t size)
+	{
+		begin = reinterpret_cast<T>(begin_);
+		end = begin + size;
+		return *this;
+	}
+	
+	void clear()
+	{
+		begin = end = NULL;
+	}
+	
+	bool empty() const
+	{
+		return begin == end;
 	}
 
 	size_t size() const
