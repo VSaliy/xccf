@@ -8,6 +8,7 @@ add_executable(
 	../xf2/misc/sql/sql_result.cpp
 	../xf2/misc/virtual_binary.cpp
 	../xf2/misc/xcc_z.cpp
+	admin_control_panel_request.cpp
 	config.cpp
 	connection.cpp
 	database.cpp
