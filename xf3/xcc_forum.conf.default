@@ -1,0 +1,4 @@
+mysql_host = localhost
+mysql_user = xf3
+mysql_password =
+mysql_database = xf3
