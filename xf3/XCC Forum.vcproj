@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\xbt\misc\sql\database.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\database.cpp"
 				>
 				<FileConfiguration
@@ -208,10 +212,6 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\xbt\misc\sql\database.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\forums_request.cpp"
@@ -255,6 +255,10 @@
 			</File>
 			<File
 				RelativePath=".\topics_request.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\user_control_panel_request.cpp"
 				>
 			</File>
 			<File
