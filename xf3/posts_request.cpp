@@ -35,22 +35,29 @@ static std::string adjust_body(const std::string& v)
 void xf_request::handle_post_create(int tid, google::TemplateDictionary* dict0)
 {
 	title_ = "Reply";
-	std::string m = boost::trim_copy(req_.get_post_argument("m"));
-	if (!m.empty())
+	std::string body = trim_text(req_.get_post_argument("body"));
+	if (body.empty())
 	{
-		if (0) // Csql_query(database_, "select count(*) from xf_posts where title = ?").p(n).execute().fetch_row()[0].i())
-		{
-			dict0->SetValue("message", "post exists already");
-			return;
-		}
-		Csql_query(database_, "insert into xf_posts (tid, uid, message, mtime, ctime) values (?, ?, ?, unix_timestamp(), unix_timestamp())").p(tid).p(uid_).p(m).execute();
-		int pid = database_.insert_id();
-		req_.location_ = (boost::format("../#%d") % pid).str();
+		int pid = req_.get_argument1_int("pid");
+		if (Csql_row row = Csql_query(database_, "select message from xf_posts where pid = ?").p(pid).execute().fetch_row())
+			dict0->SetValue("message", adjust_body(row[0].s()) + "\n");
 		return;
 	}
-	int pid = req_.get_argument1_int("pid");
-	if (Csql_row row = Csql_query(database_, "select message from xf_posts where pid = ?").p(pid).execute().fetch_row())
-		dict0->SetValue("message", adjust_body(row[0].s()));
+	dict0->SetValue("body", body);
+	if (!database_.is_body_valid(body))
+	{
+		dict0->ShowSection("body_error");
+		return;
+	}
+	if (0) // Csql_query(database_, "select count(*) from xf_posts where title = ?").p(n).execute().fetch_row()[0].i())
+	{
+		dict0->SetValue("message", "post exists already");
+		return;
+	}
+	Csql_query(database_, "insert into xf_posts (tid, uid, message, mtime, ctime) values (?, ?, ?, unix_timestamp(), unix_timestamp())").p(tid).p(uid_).p(body).execute();
+	int pid = database_.insert_id();
+	req_.location_ = (boost::format("../#%d") % pid).str();
+	return;
 }
 
 int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0, bool edit)
@@ -62,7 +69,7 @@ int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0,
 	{
 		if (!can_edit_post(row[4].i()))
 			return 1;
-		if (req_.has_post_argument("delete"))
+		if (req_.has_post_argument("delete") && is_administrator())
 		{
 			Csql_query(database_, "delete from xf_posts where pid = ?").p(pid).execute();
 			req_.location_ = "..";
@@ -73,10 +80,10 @@ int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0,
 			}
 			return 0;
 		}
-		std::string m = trim_text(req_.get_post_argument("m"));
-		if (!m.empty())
+		std::string body = trim_text(req_.get_post_argument("body"));
+		if (database_.is_body_valid(body))
 		{
-			Csql_query(database_, "update xf_posts set message = ? where pid = ?").p(m).p(pid).execute();
+			Csql_query(database_, "update xf_posts set message = ?, mtime = unix_timestamp() where pid = ?").p(body).p(pid).execute();
 			req_.location_ = (boost::format("../#%d") % pid).str();
 			return 0;
 		}
@@ -87,6 +94,8 @@ int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0,
 	dict0->SetValue("mtime", format_time(row[2].i()));
 	dict0->SetValue("ctime", format_time(row[3].i()));
 	if (is_administrator())
+		dict0->ShowSection("can_delete_post");
+	if (can_edit_post(row[4].i()))
 		dict0->ShowSection("can_edit_post");
 	return 0;
 }

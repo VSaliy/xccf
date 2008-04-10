@@ -10,15 +10,10 @@
 void xf_request::handle_forum_create(google::TemplateDictionary* dict0)
 {
 	title_ = "Create";
-	std::string t = boost::trim_copy(req_.get_post_argument("n"));
-	if (!t.empty())
+	std::string title = trim_field(req_.get_post_argument("title"));
+	if (!title.empty())
 	{
-		if (Csql_query(database_, "select count(*) from xf_forums where title = ?").p(t).execute().fetch_row()[0].i())
-		{
-			dict0->SetValue("message", "forum exists already");
-			return;
-		}
-		Csql_query(database_, "insert into xf_forums (title, mtime) values (?, unix_timestamp())").p(t).execute();
+		Csql_query(database_, "insert into xf_forums (title, mtime) values (?, unix_timestamp())").p(title).execute();
 		int fid = database_.insert_id();
 		req_.location_ = (boost::format("../%d/") % fid).str();
 	}

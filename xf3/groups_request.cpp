@@ -10,7 +10,7 @@
 void xf_request::handle_group_create(google::TemplateDictionary* dict0)
 {
 	title_ = "Create";
-	std::string n = boost::trim_copy(req_.get_post_argument("n"));
+	std::string n = trim_field(req_.get_post_argument("n"));
 	if (!n.empty())
 	{
 		if (Csql_query(database_, "select count(*) from xf_groups where name = ?").p(n).execute().fetch_row()[0].i())

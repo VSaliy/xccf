@@ -1,5 +1,5 @@
 set(CMAKE_BUILD_TYPE release)
-include_directories(. ../xf2/misc)
+include_directories(. ../xbt/misc ../xf2/misc)
 add_executable(
 	xcc_forum
 	../xbt/misc/sha1.cpp
@@ -21,6 +21,7 @@ add_executable(
 	topics_request.cpp
 	users_request.cpp
 	"XCC Forum.cpp"
+	xf_misc.cpp
 	xf_request.cpp
 )
 target_link_libraries(xcc_forum boost_program_options-mt ctemplate mysqlclient)

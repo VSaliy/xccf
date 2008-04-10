@@ -1,10 +1,7 @@
 {{#create}}
-<span style="background-color: yellow;">
-	{{message}}
-</span>
 <form method=post>
 	<table>
-		<tr><th align=left>Title<td><input name=n type=text>
+		<tr><th align=left>Title<td><input name=title type=text>
 		<tr><th><td><input type=submit value="Create">
 	</table>
 </form>
