@@ -193,6 +193,7 @@ int xf_request::handle_user(int uid, google::TemplateDictionary* dict0, bool edi
 	dict0->SetValue("gname", row[5].s());
 	if (can_edit_user())
 		dict0->ShowSection("can_edit_user");
+	handle_topics(0, uid, dict0->AddIncludeDictionary("topics_table"));
 	return 0;
 }
 

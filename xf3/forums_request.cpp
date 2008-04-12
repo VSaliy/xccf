@@ -50,7 +50,7 @@ int xf_request::handle_forum(int fid, google::TemplateDictionary* dict0, bool ed
 	dict0->SetValue("mtime", format_time(row[2].i()));
 	if (is_administrator())
 		dict0->ShowSection("can_edit_forum");
-	handle_topics(fid, dict0->AddIncludeDictionary("topics_table"));
+	handle_topics(fid, 0, dict0->AddIncludeDictionary("topics_table"));
 	return 0;
 }
 

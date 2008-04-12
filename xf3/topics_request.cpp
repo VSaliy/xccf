@@ -90,20 +90,31 @@ int xf_request::handle_topic(int fid, int tid, google::TemplateDictionary* dict0
 	return 0;
 }
 
-void xf_request::handle_topics(int fid, google::TemplateDictionary* dict0)
+void xf_request::handle_topics(int fid, int uid, google::TemplateDictionary* dict0)
 {
 	unsigned int page = req_.get_argument1_int("p");
 	int rows_per_page = config().rows_per_page_;
 	dict0->SetFilename("topics_table.tpl");
-	int rows = Csql_query(database_, "select count(*) from xf_topics where fid = ?").p(fid).execute().fetch_row()[0].i();
+	Csql_query q(database_);
+	if (fid)
+	{
+		q += " where fid = ?";
+		q.p(fid);
+	}
+	else if (uid)
+	{
+		q += " where uid = ?";
+		q.p(uid);
+	}
+	int rows = Csql_query(database_, "select count(*) from xf_topics" + q.read()).execute().fetch_row()[0].i();
 	dict0->SetIntValue("count", rows);
 	if (rows > rows_per_page)
 		pager(dict0->AddIncludeDictionary("pager"), page, rows, rows_per_page);
-	Csql_result result = Csql_query(database_, "select tid, title, t.mtime, t.posts_count, name from xf_topics t left join xf_users using (uid) where fid = ? order by mtime desc limit ?, ?").p(fid).p(rows_per_page * page).p(rows_per_page).execute();
+	Csql_result result = Csql_query(database_, "select tid, title, t.mtime, t.posts_count, name, fid from xf_topics t left join xf_users using (uid)" + q.read() + " order by mtime desc limit ?, ?").p(rows_per_page * page).p(rows_per_page).execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
 		google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
-		dict1->SetValue("link", row[0].s() + "/");
+		dict1->SetValue("link", "/forums/" + row[5].s() + "/" + row[0].s() + "/");
 		dict1->SetValue("title", row[1].s());
 		dict1->SetValue("mtime", format_time(row[2].i()));
 		dict1->SetIntValue("reply_count", row[3].i() - 1);
