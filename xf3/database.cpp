@@ -24,6 +24,16 @@ void database_c::repair_counts()
 	query("delete from xf_sessions where mtime < unix_timestamp() - 31 * 24 * 60 * 60");
 	query("delete t from xf_topics t left join xf_posts p using (tid) where p.tid is null");
 	{
+		Csql_result result = query("select fid, topics_count, count(tid) from xf_forums left join xf_topics using (fid) group by fid having topics_count != count(tid)");
+		for (Csql_row row; row = result.fetch_row(); )
+			Csql_query(*this, "update xf_forums set topics_count = ? where fid = ?").p(row[2].i()).p(row[0].i()).execute();
+	}
+	{
+		Csql_result result = query("select fid, f.posts_count, count(pid) from xf_forums f left join xf_topics using (fid) left join xf_posts using (tid) group by fid having f.posts_count != count(pid)");
+		for (Csql_row row; row = result.fetch_row(); )
+			Csql_query(*this, "update xf_forums set posts_count = ? where fid = ?").p(row[2].i()).p(row[0].i()).execute();
+	}
+	{
 		Csql_result result = query("select gid, users_count, count(uid) from xf_groups left join xf_users using (gid) group by gid having users_count != count(uid)");
 		for (Csql_row row; row = result.fetch_row(); )
 			Csql_query(*this, "update xf_groups set users_count = ? where gid = ?").p(row[2].i()).p(row[0].i()).execute();

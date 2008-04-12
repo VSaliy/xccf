@@ -16,6 +16,9 @@ create table if not exists xf_forums
 (
 	fid int not null auto_increment,
 	title varchar(255) not null,
+	description text not null,
+	topics_count int not null,
+	posts_count int not null,
 	mtime int not null,
 	primary key (fid)
 );
@@ -90,6 +93,9 @@ create table if not exists xf_users
 drop trigger if exists xf_posts_insert;
 drop trigger if exists xf_posts_update;
 drop trigger if exists xf_posts_delete;
+drop trigger if exists xf_topics_insert;
+drop trigger if exists xf_topics_update;
+drop trigger if exists xf_topics_delete;
 drop trigger if exists xf_users_insert;
 drop trigger if exists xf_users_update;
 drop trigger if exists xf_users_delete;
@@ -114,6 +120,22 @@ create trigger xf_posts_delete after delete on xf_posts for each row
 	begin
 		update xf_topics set posts_count = posts_count - 1 where tid = old.tid;
 		update xf_users set posts_count = posts_count - 1 where uid = old.uid;
+	end;;
+
+create trigger xf_topics_insert after insert on xf_topics for each row
+	begin
+		update xf_forums set topics_count = topics_count + 1 where fid = new.fid;
+	end;;
+
+create trigger xf_topics_update after update on xf_topics for each row
+	begin
+		update xf_forums set topics_count = topics_count - 1 where fid = old.fid;
+		update xf_forums set topics_count = topics_count + 1, mtime = unix_timestamp() where fid = new.fid;
+	end;;
+
+create trigger xf_topics_delete after delete on xf_topics for each row
+	begin
+		update xf_forums set topics_count = topics_count - 1 where fid = old.fid;
 	end;;
 
 create trigger xf_users_insert after insert on xf_users for each row

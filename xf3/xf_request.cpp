@@ -153,6 +153,8 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	{
 		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("forums");
 		dict1->SetFilename("forums.tpl");
+		if (is_administrator())
+			dict1->ShowSection("can_create_forum");
 		if (uri.size() == 1)
 			handle_forums(dict1->AddSectionDictionary("forums"));
 		else if (uri.size() == 2)
