@@ -20,6 +20,8 @@ request_handler::request_handler(database_c& database, const std::string& templa
 	handle("/forums/");
 	handle("/forums/1/");
 	handle("/forums/1/1/");
+	handle("/groups/");
+	handle("/groups/1/");
 	handle("/users/");
 	handle("/users/1/");
 }

@@ -38,7 +38,7 @@
 	<tr><th><td><form method=post><input type=submit name=edit value="Edit"></form>
 	{{/can_edit_user}}
 </table>
-{{>torrents_table}}
+{{>topics_table}}
 {{/user}}
 {{#edit}}
 <form method=post>

@@ -49,7 +49,7 @@ private:
 	void handle_posts(int ftid, google::TemplateDictionary*);
 	int handle_topic(int fid, int ftid, google::TemplateDictionary*, bool edit);
 	void handle_topic_create(int fid, google::TemplateDictionary*);
-	void handle_topics(int fid, google::TemplateDictionary*);
+	void handle_topics(int fid, int uid, google::TemplateDictionary*);
 	void handle_torrent_create(google::TemplateDictionary*);
 	void handle_torrent_download(int tid);
 	int handle_torrent(int, google::TemplateDictionary*, bool edit);
