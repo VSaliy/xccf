@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "database.h"
+
 #include <boost/format.hpp>
-#include "sql/sql_query.h"
+#include <sql/sql_query.h>
 
 void database_c::read_config()
 {

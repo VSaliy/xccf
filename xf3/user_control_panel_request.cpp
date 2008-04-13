@@ -1,18 +1,19 @@
 #include "stdafx.h"
 #include "xf_request.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include "sql/sql_query.h"
-#include "bt_misc.h"
+
 #include "database.h"
 #include "request.h"
 #include "xf_misc.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
+#include <bt_misc.h>
+#include <sql/sql_query.h>
 
 void xf_request::handle_ucp(google::TemplateDictionary* dict0)
 {
 	Csql_row row = Csql_query(database_, "select uid, email from xf_users where uid = ?").p(uid_).execute().fetch_row();
 	if (!row)
-		return;	
+		return;
 	dict0->SetValue("e", row[1].s());
 	if (req_.has_post_argument("update"))
 	{

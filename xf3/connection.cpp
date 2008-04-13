@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "connection.h"
+
+#include "server.h"
+#include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
-#include <algorithm>
-#include "server.h"
-#include "stream_int.h"
+#include <stream_int.h>
 
 enum
 {

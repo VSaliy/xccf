@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "server.h"
+
 #include <boost/bind.hpp>
 #include "connection.h"
 

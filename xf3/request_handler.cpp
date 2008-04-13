@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "request_handler.h"
+
+#include "database.h"
+#include "http_cookie.h"
+#include "request.h"
+#include "xf_misc.h"
+#include "xf_request.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <google/template.h>
-#include "sql/sql_query.h"
-#include "http_cookie.h"
-#include "request.h"
-#include "database.h"
-#include "sha1.h"
-#include "xcc_z.h"
-#include "xf_misc.h"
-#include "xf_request.h"
+#include <sha1.h>
+#include <sql/sql_query.h>
+#include <xcc_z.h>
 
 request_handler::request_handler(database_c& database, const std::string& templates_dir):
 	database_(database)
@@ -59,7 +60,7 @@ std::string xf_request::format_time(time_t v) const
 void request_handler::handle(request& req)
 {
 	try
-	{		
+	{
 		google::Template::ReloadAllIfChanged();
 		std::string request_uri = req.request_uri();
 #ifdef NDEBUG

@@ -1,7 +1,7 @@
 #pragma once
 
+#include <config_base.h>
 #include <string>
-#include "config_base.h"
 
 class config_c: public Cconfig_base
 {

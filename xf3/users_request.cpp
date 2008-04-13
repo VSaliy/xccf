@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "xf_request.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include "sql/sql_query.h"
+
 #include "database.h"
 #include "request.h"
-#include "sha1.h"
 #include "xf_misc.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
+#include <sha1.h>
+#include <sql/sql_query.h>
 
 void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 {
