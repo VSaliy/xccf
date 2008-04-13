@@ -1,11 +1,12 @@
 #include "stdafx.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include "sql/sql_query.h"
+#include "xf_request.h"
+
 #include "database.h"
 #include "request.h"
 #include "xf_misc.h"
-#include "xf_request.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
+#include <sql/sql_query.h>
 
 void xf_request::handle_group_create(google::TemplateDictionary* dict0)
 {
@@ -48,9 +49,9 @@ int xf_request::handle_group(int gid, google::TemplateDictionary* dict0, bool ed
 			if (priv_name(1 << i).empty())
 				continue;
 			if (req_.has_post_argument("can_" + priv_name(1 << i)))
-				privileges |= 1 << i; 
+				privileges |= 1 << i;
 			else
-				privileges &= ~(1 << i); 
+				privileges &= ~(1 << i);
 		}
 		*/
 		if (!name.empty())

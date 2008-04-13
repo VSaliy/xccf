@@ -1,14 +1,15 @@
 #include "stdafx.h"
 #include "xf_request.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include "sql/sql_query.h"
-#include "sql/sql_result.h"
+
 #include "database.h"
 #include "http_cookie.h"
 #include "request.h"
-#include "sha1.h"
 #include "xf_misc.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
+#include <sha1.h>
+#include <sql/sql_query.h>
+#include <sql/sql_result.h>
 
 xf_request::xf_request(database_c& database, request& req):
 	database_(database),
@@ -53,7 +54,7 @@ void xf_request::handle()
 		req_.headers_ += "Status: 404\r\n";
 		title_ = "404 - Not Found";
 		break;
-	case 401:	
+	case 401:
 		title_ = uid_ ? "403 - Forbidden" : "401 - Authentication Required";
 		break;
 	default:

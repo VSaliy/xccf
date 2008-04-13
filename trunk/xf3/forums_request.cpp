@@ -1,11 +1,12 @@
 #include "stdafx.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include "sql/sql_query.h"
+#include "xf_request.h"
+
 #include "database.h"
 #include "request.h"
 #include "xf_misc.h"
-#include "xf_request.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
+#include <sql/sql_query.h>
 
 void xf_request::handle_forum_create(google::TemplateDictionary* dict0)
 {

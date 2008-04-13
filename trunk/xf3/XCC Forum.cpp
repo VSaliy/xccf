@@ -1,9 +1,9 @@
 #include "stdafx.h"
+#include "database.h"
+#include "server.h"
 #include <boost/program_options.hpp>
 #include <fstream>
 #include <iostream>
-#include "server.h"
-#include "database.h"
 
 int main(int argc, char* argv[])
 {
