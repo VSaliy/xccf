@@ -51,6 +51,7 @@ std::string xf_request::encode_text(const std::string& v) const
 
 std::string xf_request::format_time(time_t v) const
 {
+	v += time_offset_;
 	const char* day_names[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	if (const tm* date = gmtime(&v))
 		return (boost::format("%02d:%02d %02d-%02d-%04d") % date->tm_hour % date->tm_min % date->tm_mday % (date->tm_mon + 1) % (date->tm_year + 1900)).str();

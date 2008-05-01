@@ -74,5 +74,6 @@ private:
 	long long privileges_;
 	int gid_;
 	int sid_;
+	int time_offset_;
 	int uid_;
 };

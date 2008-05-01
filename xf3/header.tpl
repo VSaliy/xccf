@@ -1,6 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <link rel=stylesheet href="/xcc.css">
 <title>{{title:h}}</title>
+<script>
+	var d = new Date();
+	document.cookie = 'xcc_time_offset=' + escape(d.getTimezoneOffset() * -60) + '; expires=31-Dec-2020 12:00:00 GMT; path=/';
+</script>
 <table>
 	<tr>
 		<td><form action="{{form_action}}"><input name=q type=text> <input type=submit value="Search"></form>
