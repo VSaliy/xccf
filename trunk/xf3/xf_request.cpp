@@ -18,6 +18,7 @@ xf_request::xf_request(database_c& database, request& req):
 	privileges_ = 0;
 	gid_ = 0;
 	sid_ = 0;
+	time_offset_ = atoi(http_cookie(req_.get_argument0("HTTP_COOKIE"))["xcc_time_offset"].c_str());
 	uid_ = 0;
 }
 

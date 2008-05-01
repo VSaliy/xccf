@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="misc"
+				AdditionalIncludeDirectories="..\xf2\misc"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="misc"
+				AdditionalIncludeDirectories="..\xf2\misc"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -192,10 +192,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\xbt\misc\sql\database.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\database.cpp"
 				>
 				<FileConfiguration
@@ -216,6 +212,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\xbt\misc\sql\database.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\forums_request.cpp"
