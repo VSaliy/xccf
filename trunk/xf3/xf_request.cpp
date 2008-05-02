@@ -141,7 +141,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 		if (uri.size() == 2 && uri[1] == "_create")
 			handle_user_create(dict1->AddSectionDictionary("create"));
 		else if (uri.size() == 2 && uri[1] == "_create2")
-			handle_user_create(dict1->AddSectionDictionary("create2"));
+			handle_user_create2(dict1->AddSectionDictionary("create2"));
 		else if (uri.size() == 2 && uri[1] == "_recover")
 			handle_user_recover(dict1->AddSectionDictionary("recover"));
 		else if (uri.size() == 1)
