@@ -57,6 +57,7 @@ private:
 	void handle_ucp(google::TemplateDictionary*);
 	int handle_user(int, google::TemplateDictionary*, bool edit);
 	void handle_user_create(google::TemplateDictionary*);
+	void handle_user_create2(google::TemplateDictionary*);
 	void handle_user_recover(google::TemplateDictionary*);
 	void handle_users(const std::string& q0, google::TemplateDictionary*, int gid);
 	void pager(google::TemplateDictionary*, int page, int rows, int rows_per_page);
