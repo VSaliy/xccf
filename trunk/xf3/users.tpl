@@ -8,6 +8,8 @@
 		<tr><th><td><input type=submit value="Send Password">
 	</table>
 </form>
+{{/create}}
+{{#create2}}
 <form method=post>
 	<table>
 		<tr><th align=left>Name<td><input name=n type=text value="{{n:h}}" {{#n_error}}style="background-color: yellow;"{{/n_error}}>
@@ -15,7 +17,7 @@
 		<tr><th><td><input type=submit value="Create">
 	</table>
 </form>
-{{/create}}
+{{/create2}}
 {{#recover}}
 <span style="background-color: yellow;">
 	{{message}}

@@ -38,6 +38,11 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 		database_.send_mail(dict9);
 		return;
 	}
+}
+
+void xf_request::handle_user_create2(google::TemplateDictionary* dict0)
+{
+	title_ = "Create";
 	std::string n = trim_field(req_.get_post_argument("n"));
 	std::string p = trim_field(req_.get_post_argument("p"));
 	if (!n.empty() || !p.empty())
