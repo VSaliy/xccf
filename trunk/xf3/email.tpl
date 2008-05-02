@@ -3,6 +3,8 @@ Subject: {{site_title}} - Email Address Verification
 {{BI_NEWLINE}}
 {{#users_create}}
 Password: {{password}}
+{{BI_NEWLINE}}
+{{link}}
 {{/users_create}}
 {{#users_recover}}
 Name: {{name}}
