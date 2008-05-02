@@ -34,7 +34,7 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 		google::TemplateDictionary dict9("");
 		dict9.ShowSection("users_create");
 		dict9.SetValue("to", e);
-		dict9.SetValue("link", "http://" + req_.get_argument0("SERVER_NAME") + "/forums/users/_create2/");
+		dict9.SetValue("link", "http://" + req_.get_argument0("SERVER_NAME") + "/users/_create2/");
 		dict9.SetValue("password", p);
 		database_.send_mail(dict9);
 		return;
