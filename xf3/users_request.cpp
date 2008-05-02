@@ -67,7 +67,8 @@ void xf_request::handle_user_create2(google::TemplateDictionary* dict0)
 			dict0->ShowSection("p_error");
 			return;
 		}
-		Csql_query(database_, "insert into xf_users (gid, name, pass, email, mtime, ctime) values (?, ?, ?, ?, unix_timestamp(), unix_timestamp())").p(3).p(n).p(Csha1(p).read()).p(row[0].s()).execute();
+		int gid = Csql_query(database_, "select count(*) from xbt_users").execute().fetch_row()[0].i() ? 3 : 1;
+		Csql_query(database_, "insert into xf_users (gid, name, pass, email, mtime, ctime) values (?, ?, ?, ?, unix_timestamp(), unix_timestamp())").p(gid).p(n).p(Csha1(p).read()).p(row[0].s()).execute();
 		int uid = database_.insert_id();
 		Csql_query(database_, "delete from xf_email_verification where pass = ?").p(Csha1(p).read()).execute();
 		handle_login(dict0);
