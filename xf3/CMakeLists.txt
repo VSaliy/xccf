@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 2.4)
 set(CMAKE_BUILD_TYPE release)
 include_directories(. ../xbt/misc ../xf2/misc)
 add_executable(
