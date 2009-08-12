@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_forum_create(ctemplate::TemplateDictionary* dict0)
+void xf_request::handle_forum_create(ctemplate::TemplateDictionary& dict0)
 {
 	title_ = "Create";
 	std::string title = trim_field(req_.get_post_argument("title"));
@@ -20,7 +20,7 @@ void xf_request::handle_forum_create(ctemplate::TemplateDictionary* dict0)
 	}
 }
 
-int xf_request::handle_forum(int fid, ctemplate::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_forum(int fid, ctemplate::TemplateDictionary& dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select fid, title, mtime, description from xf_forums where fid = ?").p(fid).execute().fetch_row();
 	if (!row)
@@ -44,27 +44,27 @@ int xf_request::handle_forum(int fid, ctemplate::TemplateDictionary* dict0, bool
 			return 0;
 		}
 	}
-	dict0 = dict0->AddSectionDictionary(edit ? "edit" : "forum");
+	ctemplate::TemplateDictionary& dict1 = *dict0.AddSectionDictionary(edit ? "edit" : "forum");
 	title_ = row[1].s();
-	dict0->SetValue("title", row[1].s());
-	dict0->SetValue("description", row[3].s());
-	dict0->SetValue("mtime", format_time(row[2].i()));
+	dict1.SetValue("title", row[1].s());
+	dict1.SetValue("description", row[3].s());
+	dict1.SetValue("mtime", format_time(row[2].i()));
 	if (is_administrator())
-		dict0->ShowSection("can_edit_forum");
-	handle_topics(fid, 0, dict0->AddIncludeDictionary("topics_table"));
+		dict1.ShowSection("can_edit_forum");
+	handle_topics(fid, 0, *dict0.AddIncludeDictionary("topics_table"));
 	return 0;
 }
 
-void xf_request::handle_forums(ctemplate::TemplateDictionary* dict0)
+void xf_request::handle_forums(ctemplate::TemplateDictionary& dict0)
 {
 	Csql_result result = Csql_query(database_, "select fid, title, mtime, topics_count, posts_count from xf_forums order by fid").execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
-		dict1->SetValue("link", row[0].s() + "/");
-		dict1->SetValue("title", row[1].s());
-		dict1->SetIntValue("topics_count", row[3].i());
-		dict1->SetIntValue("posts_count", row[4].i());
-		dict1->SetValue("mtime", format_time(row[2].i()));
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddSectionDictionary("row");
+		dict1.SetValue("link", row[0].s() + "/");
+		dict1.SetValue("title", row[1].s());
+		dict1.SetIntValue("topics_count", row[3].i());
+		dict1.SetIntValue("posts_count", row[4].i());
+		dict1.SetValue("mtime", format_time(row[2].i()));
 	}
 }

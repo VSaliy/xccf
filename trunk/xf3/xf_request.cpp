@@ -46,8 +46,8 @@ void xf_request::handle()
 {
 	session_login(req_.get_argument0("HTTP_COOKIE"));
 	ctemplate::TemplateDictionary dict0("index");
-	ctemplate::TemplateDictionary* header = dict0.AddIncludeDictionary("header");
-	switch (handle1(header, &dict0))
+	ctemplate::TemplateDictionary& header = *dict0.AddIncludeDictionary("header");
+	switch (handle1(header, dict0))
 	{
 	case 0:
 		break;
@@ -63,19 +63,19 @@ void xf_request::handle()
 	}
 	if (req_.location_.empty() && req_.output_.empty())
 	{
-		header->SetFilename("header.tpl");
+		header.SetFilename("header.tpl");
 		if (boost::starts_with(title_, " - "))
 			title_.erase(0, 3);
 		title_ += " - " + config().site_title_;
-		header->SetValue("title", title_);
+		header.SetValue("title", title_);
 		if (is_administrator())
-			header->ShowSection("is_administrator");
+			header.ShowSection("is_administrator");
 		if (uid_)
-			header->ShowSection("logout");
+			header.ShowSection("logout");
 		else
-			header->ShowSection("login");
-		ctemplate::TemplateDictionary* tailer = dict0.AddIncludeDictionary("tailer");
-		tailer->SetFilename("tailer.tpl");
+			header.ShowSection("login");
+		ctemplate::TemplateDictionary& tailer = *dict0.AddIncludeDictionary("tailer");
+		tailer.SetFilename("tailer.tpl");
 #ifdef NDEBUG
 		ctemplate::Template* tpl = ctemplate::Template::GetTemplate("index.tpl", ctemplate::STRIP_WHITESPACE);
 #else
@@ -87,7 +87,7 @@ void xf_request::handle()
 	}
 }
 
-int xf_request::handle1(ctemplate::TemplateDictionary* header, ctemplate::TemplateDictionary* dict0)
+int xf_request::handle1(ctemplate::TemplateDictionary& header, ctemplate::TemplateDictionary& dict0)
 {
 	if (req_.get_post_argument("a") == "login")
 	{
@@ -110,93 +110,93 @@ int xf_request::handle1(ctemplate::TemplateDictionary* header, ctemplate::Templa
 	std::string q0 = trim_field(req_.get_argument1("q"));
 	if (uri[0] == "admin_control_panel")
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("admin_control_panel");
-		dict1->SetFilename("admin_control_panel.tpl");
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddIncludeDictionary("admin_control_panel");
+		dict1.SetFilename("admin_control_panel.tpl");
 		if (uri.size() == 1)
 		{
 			if (!uid_)
 				return 401;
-			handle_acp(dict1->AddSectionDictionary("index"));
+			handle_acp(*dict1.AddSectionDictionary("index"));
 		}
 		title_ += " - Admin Control Panel";
-		header->SetValue("form_action", "/admin_control_panel/");
+		header.SetValue("form_action", "/admin_control_panel/");
 	}
 	else if (uri[0] == "control_panel")
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("user_control_panel");
-		dict1->SetFilename("user_control_panel.tpl");
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddIncludeDictionary("user_control_panel");
+		dict1.SetFilename("user_control_panel.tpl");
 		if (uri.size() == 1)
 		{
 			if (!uid_)
 				return 401;
-			handle_ucp(dict1->AddSectionDictionary("index"));
+			handle_ucp(*dict1.AddSectionDictionary("index"));
 		}
 		title_ += " - Control Panel";
-		header->SetValue("form_action", "/control_panel/");
+		header.SetValue("form_action", "/control_panel/");
 	}
 	else if (uri[0] == "users")
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("users");
-		dict1->SetFilename("users.tpl");
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddIncludeDictionary("users");
+		dict1.SetFilename("users.tpl");
 		if (uri.size() == 2 && uri[1] == "_create")
-			handle_user_create(dict1->AddSectionDictionary("create"));
+			handle_user_create(*dict1.AddSectionDictionary("create"));
 		else if (uri.size() == 2 && uri[1] == "_create2")
-			handle_user_create2(dict1->AddSectionDictionary("create2"));
+			handle_user_create2(*dict1.AddSectionDictionary("create2"));
 		else if (uri.size() == 2 && uri[1] == "_recover")
-			handle_user_recover(dict1->AddSectionDictionary("recover"));
+			handle_user_recover(*dict1.AddSectionDictionary("recover"));
 		else if (uri.size() == 1)
-			handle_users(q0, dict1->AddIncludeDictionary("users_table"), 0);
+			handle_users(q0, *dict1.AddIncludeDictionary("users_table"), 0);
 		else if (uri.size() != 2)
 			return 1;
 		else if (handle_user(xf_atoi(uri[1]), dict1, edit))
 			return 1;
 		title_ += " - Users";
-		header->SetValue("form_action", "/users/");
+		header.SetValue("form_action", "/users/");
 	}
 	else if (uri[0] == "forums")
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("forums");
-		dict1->SetFilename("forums.tpl");
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddIncludeDictionary("forums");
+		dict1.SetFilename("forums.tpl");
 		if (is_administrator())
-			dict1->ShowSection("can_create_forum");
+			dict1.ShowSection("can_create_forum");
 		if (uri.size() == 1)
-			handle_forums(dict1->AddSectionDictionary("forums"));
+			handle_forums(*dict1.AddSectionDictionary("forums"));
 		else if (uri.size() == 2)
 		{
 			if (uri[1] == "_create")
 			{
 				if (!is_administrator())
 					return 401;
-				handle_forum_create(dict1->AddSectionDictionary("create"));
+				handle_forum_create(*dict1.AddSectionDictionary("create"));
 			}
 			else if (handle_forum(xf_atoi(uri[1]), dict1, edit))
 				return 1;
 		}
 		else if (uri.size() == 3)
 		{
-			dict1 = dict0->AddIncludeDictionary("topics");
-			dict1->SetFilename("topics.tpl");
+			ctemplate::TemplateDictionary& dict2 = *dict0.AddIncludeDictionary("topics");
+			dict2.SetFilename("topics.tpl");
 			int fid = xf_atoi(uri[1]);
 			if (uri[2] == "_create")
 			{
 				if (!uid_)
 					return 401;
-				handle_topic_create(fid, dict1->AddSectionDictionary("create"));
+				handle_topic_create(fid, *dict2.AddSectionDictionary("create"));
 			}
 			else if (handle_topic(fid, xf_atoi(uri[2]), dict1, edit))
 				return 1;
 		}
 		else if (uri.size() == 4)
 		{
-			dict1 = dict0->AddIncludeDictionary("posts");
-			dict1->SetFilename("posts.tpl");
+			ctemplate::TemplateDictionary& dict2 = *dict0.AddIncludeDictionary("posts");
+			dict2.SetFilename("posts.tpl");
 			int fid = xf_atoi(uri[1]);
 			int tid = xf_atoi(uri[2]);
 			if (uri[3] == "_create")
 			{
 				if (!uid_)
 					return 401;
-				handle_post_create(tid, dict1->AddSectionDictionary("create"));
+				handle_post_create(tid, *dict2.AddSectionDictionary("create"));
 			}
 			else if (handle_post(tid, xf_atoi(uri[3]), dict1, edit))
 				return 1;
@@ -204,42 +204,42 @@ int xf_request::handle1(ctemplate::TemplateDictionary* header, ctemplate::Templa
 		else
 			return 1;
 		title_ += " - Forums";
-		header->SetValue("form_action", "/forums/");
+		header.SetValue("form_action", "/forums/");
 	}
 	else if (uri[0] == "groups")
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("groups");
-		dict1->SetFilename("groups.tpl");
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddIncludeDictionary("groups");
+		dict1.SetFilename("groups.tpl");
 		if (uri.size() == 1)
-			handle_groups(q0, dict1->AddSectionDictionary("groups"));
+			handle_groups(q0, *dict1.AddSectionDictionary("groups"));
 		else if (uri.size() != 2)
 			return 1;
 		else if (uri[1] == "_create")
 		{
 			if (!can_create_group())
 				return 401;
-			handle_group_create(dict1->AddSectionDictionary("create"));
+			handle_group_create(*dict1.AddSectionDictionary("create"));
 		}
 		else if (handle_group(xf_atoi(uri[1]), dict1, edit))
 			return 1;
 		title_ += " - Groups";
-		header->SetValue("form_action", "/groups/");
+		header.SetValue("form_action", "/groups/");
 	}
 	else
 		return 1;
 	return 0;
 }
 
-void xf_request::pager(ctemplate::TemplateDictionary* dict, int page, int rows, int rows_per_page)
+void xf_request::pager(ctemplate::TemplateDictionary& dict, int page, int rows, int rows_per_page)
 {
-	dict->SetFilename("pager.tpl");
+	dict.SetFilename("pager.tpl");
 	if (page > 0)
-		dict->ShowSection("prev_page");
-	dict->SetIntValue("prev_page", page - 1);
-	dict->SetIntValue("page", page);
+		dict.ShowSection("prev_page");
+	dict.SetIntValue("prev_page", page - 1);
+	dict.SetIntValue("page", page);
 	int last_page = (rows - 1) / rows_per_page;
 	if (page < last_page)
-		dict->ShowSection("next_page");
-	dict->SetIntValue("next_page", page + 1);
-	dict->SetIntValue("last_page", last_page);
+		dict.ShowSection("next_page");
+	dict.SetIntValue("next_page", page + 1);
+	dict.SetIntValue("last_page", last_page);
 }

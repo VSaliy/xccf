@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_acp(ctemplate::TemplateDictionary* dict0)
+void xf_request::handle_acp(ctemplate::TemplateDictionary& dict0)
 {
 	std::string announce_host = trim_field(req_.get_post_argument("announce_host"));
 	bool anonymous_announce = req_.has_post_argument("anonymous_announce");
@@ -22,6 +22,6 @@ void xf_request::handle_acp(ctemplate::TemplateDictionary* dict0)
 		req_.location_ = ".";
 		return;
 	}
-	dict0->SetValue("email_from", config().email_from_);
-	dict0->SetValue("site_title", config().site_title_);
+	dict0.SetValue("email_from", config().email_from_);
+	dict0.SetValue("site_title", config().site_title_);
 }

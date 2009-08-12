@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_group_create(ctemplate::TemplateDictionary* dict0)
+void xf_request::handle_group_create(ctemplate::TemplateDictionary& dict0)
 {
 	title_ = "Create";
 	std::string n = trim_field(req_.get_post_argument("n"));
@@ -16,7 +16,7 @@ void xf_request::handle_group_create(ctemplate::TemplateDictionary* dict0)
 	{
 		if (Csql_query(database_, "select count(*) from xf_groups where name = ?").p(n).execute().fetch_row()[0].i())
 		{
-			dict0->SetValue("message", "Group exists already");
+			dict0.SetValue("message", "Group exists already");
 			return;
 		}
 		Csql_query(database_, "insert into xf_groups (name, ctime) values (?, unix_timestamp())").p(n).execute();
@@ -25,7 +25,7 @@ void xf_request::handle_group_create(ctemplate::TemplateDictionary* dict0)
 	}
 }
 
-int xf_request::handle_group(int gid, ctemplate::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_group(int gid, ctemplate::TemplateDictionary& dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select gid, name, description, ctime, privileges, users_count from xf_groups where gid = ?").p(gid).execute().fetch_row();
 	if (!row)
@@ -61,33 +61,33 @@ int xf_request::handle_group(int gid, ctemplate::TemplateDictionary* dict0, bool
 			return 0;
 		}
 	}
-	dict0 = dict0->AddSectionDictionary(edit ? "edit" : "group");
+	ctemplate::TemplateDictionary& dict1 = *dict0.AddSectionDictionary(edit ? "edit" : "group");
 	title_ = row[1].s();
-	dict0->SetValue("name", row[1].s());
-	dict0->SetValue("description", edit ? row[2].s() : encode_text(row[2].s()));
-	dict0->SetValue("ctime", format_time(row[3].i()));
-	dict0->SetIntValue("users_count", row[5].i());
+	dict1.SetValue("name", row[1].s());
+	dict1.SetValue("description", edit ? row[2].s() : encode_text(row[2].s()));
+	dict1.SetValue("ctime", format_time(row[3].i()));
+	dict1.SetIntValue("users_count", row[5].i());
 	if (can_edit_group())
 	{
-		dict0->ShowSection("can_edit_group");
+		dict1.ShowSection("can_edit_group");
 		for (int i = 0; i < 32; i++)
 		{
 			/*
 			if (row[4].i() & 1 << i && !priv_name(1 << i).empty())
 			{
 				if (edit)
-					dict0->SetValue("can_" + priv_name(1 << i), "checked");
+					dict1.SetValue("can_" + priv_name(1 << i), "checked");
 				else
-					dict0->AddSectionDictionary("privilege")->SetValue("n", priv_name(1 << i));
+					dict1.AddSectionDictionary("privilege").SetValue("n", priv_name(1 << i));
 			}
 			*/
 		}
 	}
-	handle_users("", dict0->AddIncludeDictionary("users_table"), gid);
+	handle_users("", *dict1.AddIncludeDictionary("users_table"), gid);
 	return 0;
 }
 
-void xf_request::handle_groups(const std::string& q0, ctemplate::TemplateDictionary* dict0)
+void xf_request::handle_groups(const std::string& q0, ctemplate::TemplateDictionary& dict0)
 {
 	Csql_query q(database_, "select gid, name, description, users_count from xf_groups");
 	if (!q0.empty())
@@ -105,10 +105,10 @@ void xf_request::handle_groups(const std::string& q0, ctemplate::TemplateDiction
 	}
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
-		dict1->SetValue("link", row[0].s() + "/");
-		dict1->SetValue("name", row[1].s());
-		dict1->SetValue("description", encode_field(row[2].s()));
-		dict1->SetIntValue("users_count", row[3].i());
+		ctemplate::TemplateDictionary& dict1 = *dict0.AddSectionDictionary("row");
+		dict1.SetValue("link", row[0].s() + "/");
+		dict1.SetValue("name", row[1].s());
+		dict1.SetValue("description", encode_field(row[2].s()));
+		dict1.SetIntValue("users_count", row[3].i());
 	}
 }
