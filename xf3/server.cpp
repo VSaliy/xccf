@@ -17,7 +17,7 @@ server::server(asio::io_service& io_service, request_handler& req_handler, int f
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(&server::handle_accept, this, asio::placeholders::error));
 }
 
-void server::handle_accept(const asio::error_code& e)
+void server::handle_accept(const boost::system::error_code& e)
 {
 	if (e)
 		return;

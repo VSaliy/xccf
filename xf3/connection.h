@@ -1,8 +1,10 @@
 #pragma once
 
+#include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <asio.hpp>
 #include "request.h"
+
+namespace asio = boost::asio;
 
 class server;
 
@@ -19,9 +21,9 @@ public:
 		return socket_;
 	}
 private:
-	void handle_read0(const asio::error_code&);
-	void handle_read1(const asio::error_code&);
-	void handle_write(const asio::error_code&);
+	void handle_read0(const boost::system::error_code&);
+	void handle_read1(const boost::system::error_code&);
+	void handle_write(const boost::system::error_code&);
 
 	typedef std::map<int, request> requests_t;
 

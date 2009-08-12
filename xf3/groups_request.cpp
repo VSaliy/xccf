@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_group_create(google::TemplateDictionary* dict0)
+void xf_request::handle_group_create(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Create";
 	std::string n = trim_field(req_.get_post_argument("n"));
@@ -25,7 +25,7 @@ void xf_request::handle_group_create(google::TemplateDictionary* dict0)
 	}
 }
 
-int xf_request::handle_group(int gid, google::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_group(int gid, ctemplate::TemplateDictionary* dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select gid, name, description, ctime, privileges, users_count from xf_groups where gid = ?").p(gid).execute().fetch_row();
 	if (!row)
@@ -87,7 +87,7 @@ int xf_request::handle_group(int gid, google::TemplateDictionary* dict0, bool ed
 	return 0;
 }
 
-void xf_request::handle_groups(const std::string& q0, google::TemplateDictionary* dict0)
+void xf_request::handle_groups(const std::string& q0, ctemplate::TemplateDictionary* dict0)
 {
 	Csql_query q(database_, "select gid, name, description, users_count from xf_groups");
 	if (!q0.empty())
@@ -105,7 +105,7 @@ void xf_request::handle_groups(const std::string& q0, google::TemplateDictionary
 	}
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
 		dict1->SetValue("link", row[0].s() + "/");
 		dict1->SetValue("name", row[1].s());
 		dict1->SetValue("description", encode_field(row[2].s()));

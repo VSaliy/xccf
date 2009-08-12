@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_topic_create(int fid, google::TemplateDictionary* dict0)
+void xf_request::handle_topic_create(int fid, ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Create";
 	std::string title = trim_field(req_.get_post_argument("title"));
@@ -39,7 +39,7 @@ void xf_request::handle_topic_create(int fid, google::TemplateDictionary* dict0)
 	return;
 }
 
-int xf_request::handle_topic(int fid, int tid, google::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_topic(int fid, int tid, ctemplate::TemplateDictionary* dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select tid, title, mtime, ctime, fid from xf_topics where tid = ?").p(tid).execute().fetch_row();
 	if (!row)
@@ -73,7 +73,7 @@ int xf_request::handle_topic(int fid, int tid, google::TemplateDictionary* dict0
 		Csql_result result = Csql_query(database_, "select fid, title from xf_forums order by title").execute();
 		for (Csql_row row; row = result.fetch_row(); )
 		{
-			google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("forum");
+			ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("forum");
 			if (row[0].i() == fid)
 				dict1->SetValue("selected", "selected");
 			dict1->SetIntValue("fid", row[0].i());
@@ -91,7 +91,7 @@ int xf_request::handle_topic(int fid, int tid, google::TemplateDictionary* dict0
 	return 0;
 }
 
-void xf_request::handle_topics(int fid, int uid, google::TemplateDictionary* dict0)
+void xf_request::handle_topics(int fid, int uid, ctemplate::TemplateDictionary* dict0)
 {
 	unsigned int page = req_.get_argument1_int("p");
 	int rows_per_page = config().rows_per_page_;
@@ -114,7 +114,7 @@ void xf_request::handle_topics(int fid, int uid, google::TemplateDictionary* dic
 	Csql_result result = Csql_query(database_, "select tid, title, t.mtime, t.posts_count, name, fid from xf_topics t left join xf_users using (uid)" + q.read() + " order by mtime desc limit ?, ?").p(rows_per_page * page).p(rows_per_page).execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
 		dict1->SetValue("link", "/forums/" + row[5].s() + "/" + row[0].s() + "/");
 		dict1->SetValue("title", row[1].s());
 		dict1->SetValue("mtime", format_time(row[2].i()));

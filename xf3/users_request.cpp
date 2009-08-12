@@ -9,7 +9,7 @@
 #include <sha1.h>
 #include <sql/sql_query.h>
 
-void xf_request::handle_user_create(google::TemplateDictionary* dict0)
+void xf_request::handle_user_create(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Create";
 	std::string e = trim_field(req_.get_post_argument("e"));
@@ -31,7 +31,7 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 		std::string p = generate_random_string(12);
 		Csql_query(database_, "insert into xf_email_verification (email, pass, ctime) values (lcase(?), ?, unix_timestamp())").p(e).p(Csha1(p).read()).execute();
 		dict0->SetValue("message", "A password has been sent to your email address.");
-		google::TemplateDictionary dict9("");
+		ctemplate::TemplateDictionary dict9("");
 		dict9.ShowSection("users_create");
 		dict9.SetValue("to", e);
 		dict9.SetValue("link", "http://" + req_.get_argument0("SERVER_NAME") + "/users/_create2/");
@@ -41,7 +41,7 @@ void xf_request::handle_user_create(google::TemplateDictionary* dict0)
 	}
 }
 
-void xf_request::handle_user_create2(google::TemplateDictionary* dict0)
+void xf_request::handle_user_create2(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Create";
 	std::string n = trim_field(req_.get_post_argument("n"));
@@ -77,7 +77,7 @@ void xf_request::handle_user_create2(google::TemplateDictionary* dict0)
 	}
 }
 
-void xf_request::handle_login(google::TemplateDictionary* dict0)
+void xf_request::handle_login(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Login";
 	std::string n = trim_field(req_.get_post_argument("n"));
@@ -113,7 +113,7 @@ void xf_request::handle_login(google::TemplateDictionary* dict0)
 	}
 }
 
-void xf_request::handle_logout(google::TemplateDictionary* dict0)
+void xf_request::handle_logout(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Logout";
 	Csql_query(database_, "delete from xf_sessions where sid = ?").p(sid_).execute();
@@ -121,7 +121,7 @@ void xf_request::handle_logout(google::TemplateDictionary* dict0)
 	req_.location_ = ".";
 }
 
-void xf_request::handle_user_recover(google::TemplateDictionary* dict0)
+void xf_request::handle_user_recover(ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Recover";
 	std::string e = trim_field(req_.get_post_argument("e"));
@@ -144,7 +144,7 @@ void xf_request::handle_user_recover(google::TemplateDictionary* dict0)
 		std::string p = generate_random_string(12);
 		Csql_query(database_, "insert into xf_email_verification (email, pass, ctime) values (lcase(?), ?, unix_timestamp())").p(e).p(Csha1(p).read()).execute();
 		dict0->SetValue("message", "A new password has been sent to your email address.");
-		google::TemplateDictionary dict9("");
+		ctemplate::TemplateDictionary dict9("");
 		dict9.ShowSection("users_recover");
 		dict9.SetValue("to", e);
 		dict9.SetValue("name", row[0].s());
@@ -154,7 +154,7 @@ void xf_request::handle_user_recover(google::TemplateDictionary* dict0)
 	}
 }
 
-int xf_request::handle_user(int uid, google::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_user(int uid, ctemplate::TemplateDictionary* dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select uid, u.name, mtime, u.ctime, gid, g.name, posts_count from xf_users u left join xf_groups g using (gid) where uid = ?").p(uid).execute().fetch_row();
 	if (!row)
@@ -187,7 +187,7 @@ int xf_request::handle_user(int uid, google::TemplateDictionary* dict0, bool edi
 		Csql_result result = Csql_query(database_, "select gid, name from xf_groups order by name").execute();
 		for (Csql_row row; row = result.fetch_row(); )
 		{
-			google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("group");
+			ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("group");
 			if (row[0].i() == gid)
 				dict1->SetValue("selected", "selected");
 			dict1->SetIntValue("gid", row[0].i());
@@ -205,7 +205,7 @@ int xf_request::handle_user(int uid, google::TemplateDictionary* dict0, bool edi
 	return 0;
 }
 
-void xf_request::handle_users(const std::string& q0, google::TemplateDictionary* dict0, int gid)
+void xf_request::handle_users(const std::string& q0, ctemplate::TemplateDictionary* dict0, int gid)
 {
 	unsigned int page = req_.get_argument1_int("p");
 	int rows_per_page = config().rows_per_page_;
@@ -237,7 +237,7 @@ void xf_request::handle_users(const std::string& q0, google::TemplateDictionary*
 	}
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
 		dict1->SetValue("link", "/users/" + row[0].s() + "/");
 		dict1->SetValue("name", row[1].s());
 		dict1->SetIntValue("posts_count", row[6].i());

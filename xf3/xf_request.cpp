@@ -45,8 +45,8 @@ bool xf_request::can_edit_post(int uid) const
 void xf_request::handle()
 {
 	session_login(req_.get_argument0("HTTP_COOKIE"));
-	google::TemplateDictionary dict0("index");
-	google::TemplateDictionary* header = dict0.AddIncludeDictionary("header");
+	ctemplate::TemplateDictionary dict0("index");
+	ctemplate::TemplateDictionary* header = dict0.AddIncludeDictionary("header");
 	switch (handle1(header, &dict0))
 	{
 	case 0:
@@ -74,12 +74,12 @@ void xf_request::handle()
 			header->ShowSection("logout");
 		else
 			header->ShowSection("login");
-		google::TemplateDictionary* tailer = dict0.AddIncludeDictionary("tailer");
+		ctemplate::TemplateDictionary* tailer = dict0.AddIncludeDictionary("tailer");
 		tailer->SetFilename("tailer.tpl");
 #ifdef NDEBUG
-		google::Template* tpl = google::Template::GetTemplate("index.tpl", google::STRIP_WHITESPACE);
+		ctemplate::Template* tpl = ctemplate::Template::GetTemplate("index.tpl", ctemplate::STRIP_WHITESPACE);
 #else
-		google::Template* tpl = google::Template::GetTemplate("index.tpl", google::STRIP_BLANK_LINES);
+		ctemplate::Template* tpl = ctemplate::Template::GetTemplate("index.tpl", ctemplate::STRIP_BLANK_LINES);
 #endif
 		if (!tpl)
 			throw std::runtime_error("Unable to load template");
@@ -87,7 +87,7 @@ void xf_request::handle()
 	}
 }
 
-int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDictionary* dict0)
+int xf_request::handle1(ctemplate::TemplateDictionary* header, ctemplate::TemplateDictionary* dict0)
 {
 	if (req_.get_post_argument("a") == "login")
 	{
@@ -110,7 +110,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	std::string q0 = trim_field(req_.get_argument1("q"));
 	if (uri[0] == "admin_control_panel")
 	{
-		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("admin_control_panel");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("admin_control_panel");
 		dict1->SetFilename("admin_control_panel.tpl");
 		if (uri.size() == 1)
 		{
@@ -123,7 +123,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	}
 	else if (uri[0] == "control_panel")
 	{
-		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("user_control_panel");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("user_control_panel");
 		dict1->SetFilename("user_control_panel.tpl");
 		if (uri.size() == 1)
 		{
@@ -136,7 +136,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	}
 	else if (uri[0] == "users")
 	{
-		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("users");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("users");
 		dict1->SetFilename("users.tpl");
 		if (uri.size() == 2 && uri[1] == "_create")
 			handle_user_create(dict1->AddSectionDictionary("create"));
@@ -155,7 +155,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	}
 	else if (uri[0] == "forums")
 	{
-		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("forums");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("forums");
 		dict1->SetFilename("forums.tpl");
 		if (is_administrator())
 			dict1->ShowSection("can_create_forum");
@@ -208,7 +208,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	}
 	else if (uri[0] == "groups")
 	{
-		google::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("groups");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddIncludeDictionary("groups");
 		dict1->SetFilename("groups.tpl");
 		if (uri.size() == 1)
 			handle_groups(q0, dict1->AddSectionDictionary("groups"));
@@ -230,7 +230,7 @@ int xf_request::handle1(google::TemplateDictionary* header, google::TemplateDict
 	return 0;
 }
 
-void xf_request::pager(google::TemplateDictionary* dict, int page, int rows, int rows_per_page)
+void xf_request::pager(ctemplate::TemplateDictionary* dict, int page, int rows, int rows_per_page)
 {
 	dict->SetFilename("pager.tpl");
 	if (page > 0)

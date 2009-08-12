@@ -1,7 +1,9 @@
 #pragma once
 
-#include <asio.hpp>
+#include <boost/asio.hpp>
 #include "request_handler.h"
+
+namespace asio = boost::asio;
 
 class connection;
 
@@ -9,7 +11,7 @@ class server
 {
 public:
 	server(asio::io_service&, request_handler&, int fcgi_port);
-	void handle_accept(const asio::error_code&);
+	void handle_accept(const boost::system::error_code&);
 	void handle_request(request&);
 private:
 	asio::ip::tcp::acceptor acceptor_;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <google/template.h>
+#include <ctemplate/template.h>
 #include <sql/sql_result.h>
 #include <string>
 #include "request.h"
@@ -34,33 +34,33 @@ private:
 	std::string encode_field(const std::string&) const;
 	std::string encode_text(const std::string&) const;
 	std::string format_time(time_t) const;
-	int handle1(google::TemplateDictionary* header, google::TemplateDictionary*);
-	void handle_acp(google::TemplateDictionary*);
-	int handle_forum(int, google::TemplateDictionary*, bool edit);
-	void handle_forum_create(google::TemplateDictionary*);
-	void handle_forums(google::TemplateDictionary*);
-	int handle_group(int, google::TemplateDictionary*, bool edit);
-	void handle_group_create(google::TemplateDictionary*);
-	void handle_groups(const std::string& q0, google::TemplateDictionary*);
-	void handle_login(google::TemplateDictionary*);
-	void handle_logout(google::TemplateDictionary*);
-	int handle_post(int ftid, int fpid, google::TemplateDictionary*, bool edit);
-	void handle_post_create(int ftid, google::TemplateDictionary*);
-	void handle_posts(int ftid, google::TemplateDictionary*);
-	int handle_topic(int fid, int ftid, google::TemplateDictionary*, bool edit);
-	void handle_topic_create(int fid, google::TemplateDictionary*);
-	void handle_topics(int fid, int uid, google::TemplateDictionary*);
-	void handle_torrent_create(google::TemplateDictionary*);
+	int handle1(ctemplate::TemplateDictionary* header, ctemplate::TemplateDictionary*);
+	void handle_acp(ctemplate::TemplateDictionary*);
+	int handle_forum(int, ctemplate::TemplateDictionary*, bool edit);
+	void handle_forum_create(ctemplate::TemplateDictionary*);
+	void handle_forums(ctemplate::TemplateDictionary*);
+	int handle_group(int, ctemplate::TemplateDictionary*, bool edit);
+	void handle_group_create(ctemplate::TemplateDictionary*);
+	void handle_groups(const std::string& q0, ctemplate::TemplateDictionary*);
+	void handle_login(ctemplate::TemplateDictionary*);
+	void handle_logout(ctemplate::TemplateDictionary*);
+	int handle_post(int ftid, int fpid, ctemplate::TemplateDictionary*, bool edit);
+	void handle_post_create(int ftid, ctemplate::TemplateDictionary*);
+	void handle_posts(int ftid, ctemplate::TemplateDictionary*);
+	int handle_topic(int fid, int ftid, ctemplate::TemplateDictionary*, bool edit);
+	void handle_topic_create(int fid, ctemplate::TemplateDictionary*);
+	void handle_topics(int fid, int uid, ctemplate::TemplateDictionary*);
+	void handle_torrent_create(ctemplate::TemplateDictionary*);
 	void handle_torrent_download(int tid);
-	int handle_torrent(int, google::TemplateDictionary*, bool edit);
-	void handle_torrents(const std::string& q0, google::TemplateDictionary*, int lid, int uid);
-	void handle_ucp(google::TemplateDictionary*);
-	int handle_user(int, google::TemplateDictionary*, bool edit);
-	void handle_user_create(google::TemplateDictionary*);
-	void handle_user_create2(google::TemplateDictionary*);
-	void handle_user_recover(google::TemplateDictionary*);
-	void handle_users(const std::string& q0, google::TemplateDictionary*, int gid);
-	void pager(google::TemplateDictionary*, int page, int rows, int rows_per_page);
+	int handle_torrent(int, ctemplate::TemplateDictionary*, bool edit);
+	void handle_torrents(const std::string& q0, ctemplate::TemplateDictionary*, int lid, int uid);
+	void handle_ucp(ctemplate::TemplateDictionary*);
+	int handle_user(int, ctemplate::TemplateDictionary*, bool edit);
+	void handle_user_create(ctemplate::TemplateDictionary*);
+	void handle_user_create2(ctemplate::TemplateDictionary*);
+	void handle_user_recover(ctemplate::TemplateDictionary*);
+	void handle_users(const std::string& q0, ctemplate::TemplateDictionary*, int gid);
+	void pager(ctemplate::TemplateDictionary*, int page, int rows, int rows_per_page);
 	std::string priv_name(int) const;
 	void session_login(const std::string&);
 
