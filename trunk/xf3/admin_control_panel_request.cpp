@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <sql/sql_query.h>
 
-void xf_request::handle_acp(google::TemplateDictionary* dict0)
+void xf_request::handle_acp(ctemplate::TemplateDictionary* dict0)
 {
 	std::string announce_host = trim_field(req_.get_post_argument("announce_host"));
 	bool anonymous_announce = req_.has_post_argument("anonymous_announce");

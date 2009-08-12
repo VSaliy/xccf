@@ -33,7 +33,7 @@ static std::string adjust_body(const std::string& v)
 	return trim_text(r);
 }
 
-void xf_request::handle_post_create(int tid, google::TemplateDictionary* dict0)
+void xf_request::handle_post_create(int tid, ctemplate::TemplateDictionary* dict0)
 {
 	title_ = "Reply";
 	std::string body = trim_text(req_.get_post_argument("body"));
@@ -61,7 +61,7 @@ void xf_request::handle_post_create(int tid, google::TemplateDictionary* dict0)
 	return;
 }
 
-int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0, bool edit)
+int xf_request::handle_post(int tid, int pid, ctemplate::TemplateDictionary* dict0, bool edit)
 {
 	Csql_row row = Csql_query(database_, "select pid, message, mtime, ctime, uid, tid from xf_posts where pid = ?").p(pid).execute().fetch_row();
 	if (!row)
@@ -101,7 +101,7 @@ int xf_request::handle_post(int tid, int pid, google::TemplateDictionary* dict0,
 	return 0;
 }
 
-void xf_request::handle_posts(int tid, google::TemplateDictionary* dict0)
+void xf_request::handle_posts(int tid, ctemplate::TemplateDictionary* dict0)
 {
 	unsigned int page = req_.get_argument1_int("p");
 	int rows_per_page = config().rows_per_page_;
@@ -113,7 +113,7 @@ void xf_request::handle_posts(int tid, google::TemplateDictionary* dict0)
 	Csql_result result = Csql_query(database_, "select pid, message, p.mtime, p.ctime, uid, name from xf_posts p left join xf_users using (uid) where tid = ? order by pid limit ?, ?").p(tid).p(rows_per_page * page).p(rows_per_page).execute();
 	for (Csql_row row; row = result.fetch_row(); )
 	{
-		google::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
+		ctemplate::TemplateDictionary* dict1 = dict0->AddSectionDictionary("row");
 		dict1->SetIntValue("pid", row[0].i());
 		dict1->SetValue("link", row[0].s() + "/");
 		dict1->SetValue("message", encode_text(row[1].s()));

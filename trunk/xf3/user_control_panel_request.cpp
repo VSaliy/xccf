@@ -9,7 +9,7 @@
 #include <bt_misc.h>
 #include <sql/sql_query.h>
 
-void xf_request::handle_ucp(google::TemplateDictionary* dict0)
+void xf_request::handle_ucp(ctemplate::TemplateDictionary* dict0)
 {
 	Csql_row row = Csql_query(database_, "select uid, email from xf_users where uid = ?").p(uid_).execute().fetch_row();
 	if (!row)
@@ -47,7 +47,7 @@ void xf_request::handle_ucp(google::TemplateDictionary* dict0)
 			std::string p = generate_random_string(12);
 			Csql_query(database_, "insert into xf_email_verification (email, pass, ctime) values (lcase(?), ?, unix_timestamp())").p(e).p(Csha1(p).read()).execute();
 			dict0->SetValue("message", "An email address verification code has been sent to your email address.");
-			google::TemplateDictionary dict9("");
+			ctemplate::TemplateDictionary dict9("");
 			dict9.ShowSection("users_update_email_address");
 			dict9.SetValue("to", e);
 			dict9.SetValue("password", p);

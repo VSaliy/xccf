@@ -1,6 +1,6 @@
 #pragma once
 
-#include <google/template.h>
+#include <ctemplate/template.h>
 #include <sql/database.h>
 #include "config.h"
 
@@ -14,7 +14,7 @@ public:
 	bool is_title_valid(const std::string& v) const;
 	void read_config();
 	void repair_counts();
-	void send_mail(google::TemplateDictionary&);
+	void send_mail(ctemplate::TemplateDictionary&);
 
 	const config_c& config() const
 	{

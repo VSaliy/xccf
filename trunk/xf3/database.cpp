@@ -51,10 +51,10 @@ void database_c::repair_counts()
 	}
 }
 
-void database_c::send_mail(google::TemplateDictionary& dict)
+void database_c::send_mail(ctemplate::TemplateDictionary& dict)
 {
 	dict.SetValue("site_title", config().site_title_);
-	google::Template* tpl = google::Template::GetTemplate("email.tpl", google::STRIP_BLANK_LINES);
+	ctemplate::Template* tpl = ctemplate::Template::GetTemplate("email.tpl", ctemplate::STRIP_BLANK_LINES);
 	if (!tpl)
 		throw std::runtime_error("Unable to load template");
 	std::string d;

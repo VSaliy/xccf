@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include <iostream>
 #include <stream_int.h>
 
 enum
@@ -63,14 +64,14 @@ void connection::start()
 	asio::async_read(socket_, asio::buffer(buffer_.begin(), 8), boost::bind(&connection::handle_read0, shared_from_this(), asio::placeholders::error));
 }
 
-void connection::handle_read0(const asio::error_code& e)
+void connection::handle_read0(const boost::system::error_code& e)
 {
 	if (e)
 		return;
 	asio::async_read(socket_, asio::buffer(&buffer_[8], read_int(2, &buffer_[4]) + buffer_[6]), boost::bind(&connection::handle_read1, shared_from_this(), asio::placeholders::error));
 }
 
-void connection::handle_read1(const asio::error_code& e)
+void connection::handle_read1(const boost::system::error_code& e)
 {
 	if (e)
 		return;
@@ -200,7 +201,7 @@ void connection::handle_read1(const asio::error_code& e)
 	start();
 }
 
-void connection::handle_write(const asio::error_code& e)
+void connection::handle_write(const boost::system::error_code& e)
 {
 	if (e)
 		return;
