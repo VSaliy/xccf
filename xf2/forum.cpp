@@ -1183,19 +1183,19 @@ const char* page_ipa_search()
 	switch (form.order)
 	{
 	case 1:
-		q0.p("ipa");
+		q0.p_raw("ipa");
 		break;
 	case 2:
-		q0.p("posts desc");
+		q0.p_raw("posts desc");
 		break;
 	case 3:
-		q0.p("time desc");
+		q0.p_raw("time desc");
 		break;
 	case 4:
-		q0.p("time");
+		q0.p_raw("time");
 		break;
 	default:
-		q0.p("name");
+		q0.p_raw("name");
 	}
 	Csql_result result = q0.execute();
 	page.reserve(256 * result.c_rows());
