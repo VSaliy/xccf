@@ -4,11 +4,11 @@ include_directories(. ../xbt/misc ../xf2/misc)
 add_executable(
 	xcc_forum
 	../xbt/misc/sha1.cpp
-	../xf2/misc/sql/database.cpp
-	../xf2/misc/sql/sql_query.cpp
-	../xf2/misc/sql/sql_result.cpp
-	../xf2/misc/virtual_binary.cpp
-	../xf2/misc/xcc_z.cpp
+	../xbt/misc/sql/database.cpp
+	../xbt/misc/sql/sql_query.cpp
+	../xbt/misc/sql/sql_result.cpp
+	../xbt/misc/virtual_binary.cpp
+	../xbt/misc/xcc_z.cpp
 	admin_control_panel_request.cpp
 	config.cpp
 	connection.cpp
@@ -27,4 +27,4 @@ add_executable(
 	xf_misc.cpp
 	xf_request.cpp
 )
-target_link_libraries(xcc_forum boost_program_options-mt ctemplate mysqlclient)
+target_link_libraries(xcc_forum boost_program_options-mt boost_system-mt ctemplate mysqlclient)

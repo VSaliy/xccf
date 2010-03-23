@@ -3,6 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
+#include <cstdio>
 
 std::string generate_random_string(int l)
 {
