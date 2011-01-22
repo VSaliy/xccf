@@ -27,4 +27,4 @@ add_executable(
 	xf_misc.cpp
 	xf_request.cpp
 )
-target_link_libraries(xcc_forum boost_program_options-mt boost_system-mt ctemplate mysqlclient)
+target_link_libraries(xcc_forum boost_program_options boost_system ctemplate mysqlclient)
