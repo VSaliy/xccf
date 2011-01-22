@@ -77,6 +77,11 @@ Csql_query& Csql_query::p_raw(const_memory_range v)
 	return *this;
 }
 
+Csql_query& Csql_query::p_raw(const char* v)
+{
+	return p_raw(const_memory_range(v));
+}
+
 Csql_query& Csql_query::p(long long v)
 {
 	char b[21];
