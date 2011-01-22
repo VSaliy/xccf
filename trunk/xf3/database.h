@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ctemplate/template.h>
-#include <sql/database.h>
+#include <xbt/database.h>
 #include "config.h"
 
 class database_c: public Cdatabase

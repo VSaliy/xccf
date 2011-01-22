@@ -6,7 +6,7 @@
 #include "xf_misc.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
-#include <sql/sql_query.h>
+#include <xbt/sql_query.h>
 
 void xf_request::handle_forum_create(ctemplate::TemplateDictionary& dict0)
 {

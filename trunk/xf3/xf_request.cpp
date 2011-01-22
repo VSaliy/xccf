@@ -8,8 +8,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <sha1.h>
-#include <sql/sql_query.h>
-#include <sql/sql_result.h>
+#include <xbt/sql_query.h>
+#include <xbt/sql_result.h>
 
 xf_request::xf_request(database_c& database, request& req):
 	database_(database),

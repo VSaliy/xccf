@@ -7,7 +7,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <bt_misc.h>
-#include <sql/sql_query.h>
+#include <xbt/sql_query.h>
 
 void xf_request::handle_ucp(ctemplate::TemplateDictionary& dict0)
 {
