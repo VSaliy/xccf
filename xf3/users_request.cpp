@@ -7,7 +7,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <sha1.h>
-#include <sql/sql_query.h>
+#include <xbt/sql_query.h>
 
 void xf_request::handle_user_create(ctemplate::TemplateDictionary& dict0)
 {

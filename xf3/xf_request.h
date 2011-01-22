@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ctemplate/template.h>
-#include <sql/sql_result.h>
+#include <xbt/sql_result.h>
 #include <string>
 #include "request.h"
 

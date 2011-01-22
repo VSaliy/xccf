@@ -10,7 +10,7 @@
 #include <boost/format.hpp>
 #include <ctemplate/template.h>
 #include <sha1.h>
-#include <sql/sql_query.h>
+#include <xbt/sql_query.h>
 #include <xcc_z.h>
 
 request_handler::request_handler(database_c& database, const std::string& templates_dir):

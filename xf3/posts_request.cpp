@@ -6,7 +6,7 @@
 #include "xf_misc.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
-#include <sql/sql_query.h>
+#include <xbt/sql_query.h>
 
 static std::string adjust_body(const std::string& v)
 {
