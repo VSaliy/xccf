@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <find_ptr.h>
 
 #ifdef WIN32
 #pragma comment(lib, "libmysql")
@@ -24,7 +25,7 @@ Cdatabase::~Cdatabase()
 void Cdatabase::open(const std::string& host, const std::string& user, const std::string& password, const std::string& database, bool echo_errors)
 {
 	m_echo_errors = echo_errors;
-	if (!mysql_init(&m_handle) || mysql_options(&m_handle, MYSQL_READ_DEFAULT_GROUP, "") || !mysql_real_connect(&m_handle, host.c_str(), user.c_str(), password.c_str(), database.c_str(), MYSQL_PORT, NULL, 0))
+	if (!mysql_init(&m_handle) || mysql_options(&m_handle, MYSQL_READ_DEFAULT_GROUP, "") || !mysql_real_connect(&m_handle, host.c_str(), user.c_str(), password.empty() ? NULL : password.c_str(), database.c_str(), 0, NULL, 0))
 		throw exception(mysql_error(&m_handle));
 	char a0 = true;
 	mysql_options(&m_handle, MYSQL_OPT_RECONNECT, &a0);
@@ -60,12 +61,34 @@ void Cdatabase::close()
 	mysql_close(&m_handle);
 }
 
+int Cdatabase::affected_rows()
+{
+	return mysql_affected_rows(&m_handle);
+}
+
 int Cdatabase::insert_id()
 {
 	return mysql_insert_id(&m_handle);
 }
 
+int Cdatabase::select_db(const std::string& v)
+{
+	return mysql_select_db(&m_handle, v.c_str());
+}
+
 void Cdatabase::set_query_log(const std::string& v)
 {
 	m_query_log = v;
+}
+
+void Cdatabase::set_name(const std::string& a, const std::string& b)
+{
+	m_names[a] = b;
+}
+
+const std::string& Cdatabase::name(const std::string& v) const
+{
+	const std::string* i = find_ptr(m_names, v);
+	assert(i);
+	return i ? *i : v;	
 }
