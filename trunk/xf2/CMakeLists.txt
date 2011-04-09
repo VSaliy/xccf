@@ -35,4 +35,4 @@ add_executable(
 	forum_database.cpp
 	forum_global.cpp
 )
-target_link_libraries(forum.cgi mysqlclient)
+target_link_libraries(forum.cgi mysqlclient z)
