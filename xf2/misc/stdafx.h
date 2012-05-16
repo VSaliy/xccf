@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <find_ptr.h>
 #include <fstream>
 #include <iostream>
 #include <map>

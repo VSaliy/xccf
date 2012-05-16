@@ -268,7 +268,7 @@ t_cgi_error Ccgi_input::read()
 					m_input = get_cgi_pairs(data);
 					delete[] data;
 					t_cgi_input get_input = get_cgi_pairs(get_env("QUERY_STRING"));
-					for (t_cgi_input::const_iterator i = get_input.begin(); i != get_input.end(); i++)
+					for (auto i = get_input.begin(); i != get_input.end(); i++)
 					{
 						if (m_input.find(i->first) == m_input.end())
 							m_input[i->first] = i->second;
@@ -297,8 +297,8 @@ std::string Ccgi_input::get_cookie()
 
 std::string Ccgi_input::get_value(const std::string& name) const
 {
-	t_cgi_input::const_iterator i = m_input.find(name);
-	return i == m_input.end() ? "" : i->second;
+	auto i = find_ptr(m_input, name);
+	return i ? *i : "";
 }
 
 int Ccgi_input::get_value_int(const std::string& name) const
@@ -308,14 +308,13 @@ int Ccgi_input::get_value_int(const std::string& name) const
 
 bool Ccgi_input::has_name(const std::string& name) const
 {
-	t_cgi_input::const_iterator i = m_input.find(name);
-	return i != m_input.end();
+	return m_input.count(name);
 }
 
 bool Ccgi_input::has_value(const std::string& name) const
 {
-	t_cgi_input::const_iterator i = m_input.find(name);
-	return i != m_input.end() && !i->second.empty();
+	auto i = find_ptr(m_input, name);
+	return i && !i->empty();
 }
 
 int Ccgi_input::load(const std::string& fname)
@@ -338,7 +337,7 @@ int Ccgi_input::save(const std::string& fname) const
 	std::ofstream f(fname.c_str());
 	f << m_url << std::endl
 		<< get_cookie() << std::endl;
-	for (t_cgi_input::const_iterator i = m_input.begin(); i != m_input.end(); i++)
+	for (auto i = m_input.begin(); i != m_input.end(); i++)
 		f << i->first << '=' << i->second << std::endl;
 	return f.bad();
 }

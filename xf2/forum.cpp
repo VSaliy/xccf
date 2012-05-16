@@ -410,7 +410,7 @@ typedef std::multimap<int, int, std::greater<int> > t_sort_map;
 
 void fill_sort_map(t_sort_map& sort_map, const Cforum_database::t_parent_map& parent_map, int mid)
 {
-	for (Cforum_database::t_parent_map::const_iterator i = parent_map.lower_bound(mid); i != parent_map.upper_bound(mid); i++)
+	for (auto i = parent_map.lower_bound(mid); i != parent_map.upper_bound(mid); i++)
 	{
 		const Cfd_message& e = database.fd_message(i->second);
 		if (e.forum())
@@ -468,7 +468,7 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 	fill_sort_map(sort_map, database.parent_map(), mid);
 	{
 		r.reserve(r.size() + 256 * sort_map.size());
-		for (t_sort_map::const_iterator i = sort_map.begin(); i != sort_map.end(); i++)
+		for (auto i = sort_map.begin(); i != sort_map.end(); i++)
 		{
 			const Cfd_message& e = database.fd_message(i->second);
 			Chtml_template t = database.select_template(ti_entry_thread);
