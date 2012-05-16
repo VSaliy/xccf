@@ -206,7 +206,7 @@ const char* page_search()
 	{
 		std::set<int> guest_set;
 		std::set<int> user_set;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
 			if (message.aid)
@@ -246,7 +246,7 @@ const char* page_news()
 	q.p(mt_news);
 	Csql_result result = q.execute();
 	page.reserve(result.c_rows() << 10);
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 	{
 		Chtml_template t = database.select_template(ti_entry_news);
 		Cfd_message(row, fields).r(t, database, 0);
@@ -304,20 +304,19 @@ const char* page_message_list()
 	{
 		int fields = Cfd_guest::fields(database.select_template(ti_entry_message));
 		Csql_result result = database.query("select " + Cfd_guest::fields(fields) + " from xf_guests");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 			database.fd_guest(Cfd_guest(row, fields));
 	}
 	{
 		int fields = Cfd_user::fields(database.select_template(ti_entry_message));
 		Csql_result result = database.query("select " + Cfd_user::fields(fields) + " from xf_users");
-		Csql_row row;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 			database.fd_user(Cfd_user(row, fields));
 	}
 	int fields = Cfd_message::fields(database.select_template(ti_entry_message));
 	Csql_result result = database.query("select " + Cfd_message::fields(fields) + " from xf_messages order by mid desc");
 	page.reserve(256 * result.c_rows());
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 	{
 		Chtml_template t = database.select_template(ti_entry_message);
 		database.fd_message(Cfd_message(row, fields)).r(t, database, 0);
@@ -361,7 +360,7 @@ const char* page_recent_messages(int order, int show_page)
 	{
 		std::set<int> guest_set;
 		std::set<int> user_set;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
 			if (message.aid)
@@ -453,7 +452,7 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 			q.p(7 * 24 * 60 * 60 * show_page);
 		}
 		Csql_result result = q.execute();
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			const Cfd_message& e = database.fd_message(Cfd_message(row, fields));
 			if (e.aid)
@@ -468,9 +467,9 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 	fill_sort_map(sort_map, database.parent_map(), mid);
 	{
 		r.reserve(r.size() + 256 * sort_map.size());
-		for (auto i = sort_map.begin(); i != sort_map.end(); i++)
+		for (auto& i : sort_map)
 		{
-			const Cfd_message& e = database.fd_message(i->second);
+			const Cfd_message& e = database.fd_message(i.second);
 			Chtml_template t = database.select_template(ti_entry_thread);
 			e.r(t, database, 1);
 			t.r(ti_var_indent, get_spaces(4 * l));
@@ -629,7 +628,7 @@ const char* page_languages()
 		Csql_result result = database.query("select " + Cfd_language::fields(-1) + " from xf_languages");
 		Csql_row row;
 		std::string list;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -663,7 +662,7 @@ const char* page_layouts()
 	{
 		Csql_result result = database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
 		std::string list;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -697,7 +696,7 @@ const char* page_smilies()
 	{
 		Csql_result result = database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
 		std::string list;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_smily e = static_cast<Cfd_smily>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))
@@ -731,7 +730,7 @@ const char* page_styles()
 	{
 		Csql_result result = database.query("select " + Cfd_style::fields(-1) + " from xf_styles");
 		std::string list;
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_style e = static_cast<Cfd_style>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))
@@ -1026,7 +1025,7 @@ const char* page_show_message(int mid, const std::string& hl)
 			guest_set.insert(e.aid);
 		else
 			user_set.insert(e.uid);
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			const Cfd_message& message = database.fd_message(Cfd_message(row, fields));
 			if (message.aid)

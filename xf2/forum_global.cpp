@@ -190,14 +190,14 @@ std::string encode_field(const std::string& v, const t_smily_map& smily_map, con
 			bool done = false;
 			if (!smily_map.empty())
 			{
-				for (auto j = smily_map.begin(); j != smily_map.end(); j++)
+				for (auto& j : smily_map)
 				{
-					if (boost::istarts_with(v.c_str() + i, j->first))
+					if (boost::istarts_with(v.c_str() + i, j.first))
 					{
 						r += highlight(w, hl);
 						w.erase();
-						r += "<img src=\"/forum/" + j->second + "\" alt=\"" + j->first + "\">";
-						i += j->first.length();
+						r += "<img src=\"/forum/" + j.second + "\" alt=\"" + j.first + "\">";
+						i += j.first.length();
 						done = true;
 						break;
 					}

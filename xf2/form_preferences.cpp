@@ -17,7 +17,7 @@ const char* Cform_preferences::read()
 	{
 		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_languages order by name");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == language);
@@ -27,7 +27,7 @@ const char* Cform_preferences::read()
 	{
 		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_layouts order by name");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == layout);
@@ -37,7 +37,7 @@ const char* Cform_preferences::read()
 	{
 		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select sid, name from xf_styles order by name");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == style);

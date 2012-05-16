@@ -268,10 +268,10 @@ t_cgi_error Ccgi_input::read()
 					m_input = get_cgi_pairs(data);
 					delete[] data;
 					t_cgi_input get_input = get_cgi_pairs(get_env("QUERY_STRING"));
-					for (auto i = get_input.begin(); i != get_input.end(); i++)
+					for (auto& i : get_input)
 					{
-						if (m_input.find(i->first) == m_input.end())
-							m_input[i->first] = i->second;
+						if (!m_input.count(i.first))
+							m_input[i.first] = i.second;
 					}
 				}
 				else
@@ -337,7 +337,7 @@ int Ccgi_input::save(const std::string& fname) const
 	std::ofstream f(fname.c_str());
 	f << m_url << std::endl
 		<< get_cookie() << std::endl;
-	for (auto i = m_input.begin(); i != m_input.end(); i++)
-		f << i->first << '=' << i->second << std::endl;
+	for (auto& i : m_input)
+		f << i.first << '=' << i.second << std::endl;
 	return f.bad();
 }
