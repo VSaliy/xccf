@@ -71,9 +71,9 @@ inline int Chtml_template::compute_len() const
 			{
 				int p = *reinterpret_cast<const int*>(r);
 				r += sizeof(int);
-				t_map::const_iterator k = m_map.find(p);
+				auto k = find_ptr(m_map, p);
 				stack <<= 1;
-				stack |= stack & 2 && (k != m_map.end() && strcmp(k->second, "0") || p == -2);
+				stack |= stack & 2 && (k && strcmp(*k, "0") || p == -2);
 			}
 			break;
 		case te_else:
@@ -89,8 +89,8 @@ inline int Chtml_template::compute_len() const
 			if (stack & 1)
 			{
 				int p = *reinterpret_cast<const int*>(r);
-				t_map::const_iterator k = m_map.find(p);
-				len += strlen(k == m_map.end() ? m_database.select_string(p) : k->second);
+				auto k = find_ptr(m_map, p);
+				len += strlen(!k ? m_database.select_string(p) : *k);
 			}
 			r += sizeof(int);
 			break;
@@ -136,9 +136,9 @@ Chtml_template::operator const char*() const
 			{
 				int p = *reinterpret_cast<const int*>(r);
 				r += sizeof(int);
-				t_map::const_iterator k = m_map.find(p);
+				auto k = find_ptr(m_map, p);
 				stack <<= 1;
-				stack |= stack & 2 && (k != m_map.end() && strcmp(k->second, "0") || p == -2);
+				stack |= stack & 2 && (k && strcmp(*k, "0") || p == -2);
 			}
 			break;
 		case te_else:
@@ -154,8 +154,8 @@ Chtml_template::operator const char*() const
 			if (stack & 1)
 			{
 				int p = *reinterpret_cast<const int*>(r);
-				t_map::const_iterator k = m_map.find(p);
-				w += write(w, k == m_map.end() ? m_database.select_string(p) : k->second);
+				auto k = find_ptr(m_map, p);
+				w += write(w, !k ? m_database.select_string(p) : *k);
 			}
 			r += sizeof(int);
 			break;

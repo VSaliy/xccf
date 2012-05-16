@@ -28,7 +28,7 @@ const char* Cform_message::read()
 	{
 		const t_smily_map& map = database().smily_map(database().enable_smilies());
 		std::string list;
-		for (t_smily_map::const_iterator i = map.begin(); i != map.end(); i++)
+		for (auto i = map.begin(); i != map.end(); i++)
 			list += "<img src=\"/forum/" + i->second + "\" alt=\"" + i->first + "\"> " + i->first + "<br>";
 		t.r(ti_field_allow_smilies, html_input_check("allow_smilies", flags & mf_allow_smilies));
 		t.r(ti_var_smily_legend, list);

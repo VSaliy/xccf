@@ -778,9 +778,8 @@ int Cforum_database::get_string_i(const std::string& name)
 		i++;
 	}
 	{
-		t_custom_identifiers::const_iterator j = m_custom_identifiers.find(name);
-		if (j != m_custom_identifiers.end())
-			return j->second;
+		if (auto j = find_ptr(m_custom_identifiers, name))
+			return *j;
 		i += m_custom_identifiers.size();
 		m_custom_identifiers[name] = i;
 		return i;
@@ -1063,17 +1062,17 @@ int Cforum_database::export_template_cache()
 		{
 			for (int i = 0; i < c_strings; i++)
 			{
-				t_string_map::const_iterator it = string_map.find(std::make_pair(lid, i));
-				if (it == string_map.end())
+				auto it = find_ptr(string_map, std::make_pair(lid, i));
+				if (!it)
 					*w2++ = lid == 1 ? 0 : *(w2 - c_strings);
 				else
 				{
 					*w++ = 4;
-					*reinterpret_cast<int*>(w) = it->second.length();
+					*reinterpret_cast<int*>(w) = it->length();
 					w += sizeof(int);
 					*w2++ = w - d.data();
-					memcpy(w, it->second.c_str(), it->second.length() + 1);
-					w += it->second.length() + 1;
+					memcpy(w, it->c_str(), it->length() + 1);
+					w += it->length() + 1;
 					*w++ = 5;
 				}
 			}
@@ -1083,17 +1082,17 @@ int Cforum_database::export_template_cache()
 		h.styles_index = reinterpret_cast<byte*>(w2) - d;
 		for (int i = 1; i <= c_styles; i++)
 		{
-			t_style_map::const_iterator it = style_map.find(i);
-			if (it == style_map.end())
+			auto it = find_ptr(style_map, i);
+			if (!it)
 				*w2++ = 0;
 			else
 			{
 				*w++ = 4;
-				*reinterpret_cast<int*>(w) = it->second.length();
+				*reinterpret_cast<int*>(w) = it->length();
 				w += sizeof(int);
 				*w2++ = w - d.data();
-				memcpy(w, it->second.c_str(), it->second.length() + 1);
-				w += it->second.length() + 1;
+				memcpy(w, it->c_str(), it->length() + 1);
+				w += it->length() + 1;
 				*w++ = 5;
 			}
 		}
@@ -1104,13 +1103,13 @@ int Cforum_database::export_template_cache()
 		{
 			for (int i = 0; i < c_templates; i++)
 			{
-				t_template_map::const_iterator it = template_map.find(std::make_pair(lid, i));
-				if (it == template_map.end())
+				auto it = find_ptr(template_map, std::make_pair(lid, i));
+				if (!it)
 					*w2++ = lid == 1 ? 0 : *(w2 - c_templates);
 				else
 				{
 					*w2++ = w - d.data();
-					w += it->second.read(w);
+					w += it->read(w);
 				}
 			}
 		}
@@ -1168,7 +1167,7 @@ void Cforum_database::prefetch_guests(const std::set<int>& v, int fm)
 	Csql_query q(*this, "select ? from xf_guests where aid in (?)");
 	q.p_raw(Cfd_guest::fields(fm));
 	std::string w;
-	for (std::set<int>::const_iterator i = v.begin(); i != v.end(); i++)
+	for (auto i = v.begin(); i != v.end(); i++)
 	{
 		if (!m_guest_cache.has(*i))
 			w += n(*i) + ',';
@@ -1189,7 +1188,7 @@ void Cforum_database::prefetch_users(const std::set<int>& v, int fm)
 	Csql_query q(*this, "select ? from xf_users where uid in (?)");
 	q.p_raw(Cfd_user::fields(fm));
 	std::string w;
-	for (std::set<int>::const_iterator i = v.begin(); i != v.end(); i++)
+	for (auto i = v.begin(); i != v.end(); i++)
 	{
 		if (!m_user_cache.has(*i))
 			w += n(*i) + ',';

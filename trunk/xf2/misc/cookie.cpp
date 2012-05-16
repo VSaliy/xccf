@@ -33,8 +33,8 @@ void Ccookie::operator=(Cmulti_line v)
 
 std::string Ccookie::get_value(const std::string& name) const
 {
-	t_keys::const_iterator i = m_read_keys.find(name);
-	return i == m_read_keys.end() ? "" : i->second;
+	auto i = find_ptr(m_read_keys, name);
+	return i ? *i : "";
 }
 
 int Ccookie::get_value_int(const std::string& name) const
@@ -44,8 +44,7 @@ int Ccookie::get_value_int(const std::string& name) const
 
 bool Ccookie::has_value(const std::string& name) const
 {
-	t_keys::const_iterator i = m_read_keys.find(name);
-	return i != m_read_keys.end();
+	return m_read_keys.count(name);
 }
 
 void Ccookie::set_value(const std::string& name, int value)
@@ -70,10 +69,9 @@ void Ccookie::set_session_value(const std::string& name, const std::string& valu
 
 std::ostream& operator<<(std::ostream& os, const Ccookie& v)
 {
-	Ccookie::t_keys::const_iterator i;
-	for (i = v.m_write_keys.begin(); i != v.m_write_keys.end(); i++)
+	for (auto i = v.m_write_keys.begin(); i != v.m_write_keys.end(); i++)
 		os << "Set-cookie: " << uri_encode(i->first) << '=' << uri_encode(i->second) << "; expires=31-Dec-2030 12:00:00 GMT; path=/" << std::endl;
-	for (i = v.m_write_session_keys.begin(); i != v.m_write_session_keys.end(); i++)
+	for (auto i = v.m_write_session_keys.begin(); i != v.m_write_session_keys.end(); i++)
 		os << "Set-cookie: " << uri_encode(i->first) << "=" << uri_encode(i->second) << std::endl;		
 	return os;
 }
