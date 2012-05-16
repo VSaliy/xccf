@@ -722,7 +722,7 @@ void Cforum_database::import_strings()
 {
 	query("delete from xf_strings");
 	Csql_result result = query("select lid, fname from xf_languages");
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 		import_strings(row[0].i(), row[1].s());
 	if (!result.c_rows())
 		import_strings(1, "xf_english.txt");
@@ -762,7 +762,7 @@ void Cforum_database::import_templates()
 {
 	query("delete from xf_templates");
 	Csql_result result = query("select lid, fname from xf_layouts");
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 		import_templates(row[0].i(), row[1].s());
 	if (!result.c_rows())
 		import_templates(1, "xf_templates.txt");
@@ -832,7 +832,7 @@ int Cforum_database::aid(const std::string& name)
 	Csql_query q(*this, "select aid, name from xf_guests where name = ?");
 	q.p(name);
 	Csql_result result = q.execute();
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 	{
 		if (row[1].s() == name)
 			return row[0].i();
@@ -984,7 +984,7 @@ const t_smily_map& Cforum_database::smily_map(bool v)
 	if (m_smily_map.empty())
 	{
 		Csql_result result = query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_smily e = row;
 			m_smily_map[e.name] = e.fname;
@@ -1005,7 +1005,7 @@ int Cforum_database::export_template_cache()
 	int cb_templates = 0;
 	{
 		Csql_result result = query("select lid, i, value from xf_strings");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Csql_row e = row;
 			int lid = e[0].i();
@@ -1020,7 +1020,7 @@ int Cforum_database::export_template_cache()
 	t_style_map style_map;
 	{
 		Csql_result result = query("select " + Cfd_style::fields(-1) + " from xf_styles");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Cfd_style e = row;
 			c_styles = std::max(c_styles, e.sid);
@@ -1033,7 +1033,7 @@ int Cforum_database::export_template_cache()
 	t_template_map template_map;
 	{
 		Csql_result result = query("select lid, i, value from xf_templates");
-		for (Csql_row row; row = result.fetch_row(); )
+		while (Csql_row row = result.fetch_row())
 		{
 			Csql_row e = row;
 			int lid = e[0].i();
@@ -1167,17 +1167,17 @@ void Cforum_database::prefetch_guests(const std::set<int>& v, int fm)
 	Csql_query q(*this, "select ? from xf_guests where aid in (?)");
 	q.p_raw(Cfd_guest::fields(fm));
 	std::string w;
-	for (auto i = v.begin(); i != v.end(); i++)
+	for (auto& i : v)
 	{
-		if (!m_guest_cache.has(*i))
-			w += n(*i) + ',';
+		if (!m_guest_cache.has(i))
+			w += n(i) + ',';
 	}
 	if (w.empty())
 		return;
 	w.erase(w.length() - 1);
 	q.p_raw(w);
 	Csql_result result = q.execute();
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 		fd_guest(Cfd_guest(row, fm));
 }
 
@@ -1188,24 +1188,24 @@ void Cforum_database::prefetch_users(const std::set<int>& v, int fm)
 	Csql_query q(*this, "select ? from xf_users where uid in (?)");
 	q.p_raw(Cfd_user::fields(fm));
 	std::string w;
-	for (auto i = v.begin(); i != v.end(); i++)
+	for (auto& i : v)
 	{
-		if (!m_user_cache.has(*i))
-			w += n(*i) + ',';
+		if (!m_user_cache.has(i))
+			w += n(i) + ',';
 	}
 	if (w.empty())
 		return;
 	w.erase(w.length() - 1);
 	q.p_raw(w);
 	Csql_result result = q.execute();
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 		fd_user(Cfd_user(row, fm));
 }
 
 void Cforum_database::read_config()
 {
 	Csql_result result = query("select name, value from xf_config where value is not null");
-	for (Csql_row row; row = result.fetch_row(); )
+	while (Csql_row row = result.fetch_row())
 	{
 		if (row[0].s() == "forum_title")
 			m_forum_title = row[1].s();
