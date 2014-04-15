@@ -6,7 +6,7 @@ class Cresult_cache
 public:
 	bool has(T id) const
 	{
-		return m_map.find(id) != m_map.end();
+		return m_map.count(id);
 	}
 
 	const U& get(T id) const
