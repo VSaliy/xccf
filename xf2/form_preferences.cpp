@@ -12,8 +12,8 @@ const char* Cform_preferences::read()
 {
 	Cfd_user e = database().fd_user(database().uid());
 	Chtml_template t = select_template(ti_page_preferences);
-	t.r(ti_var_action, "?a=" + n(ac_preferences));
-	t.r(ti_field_custom_css, html_input_text("custom_css", field_size(), 127, web_encode(custom_css)));
+	t[ti_var_action] = "?a=" + n(ac_preferences);
+	t[ti_field_custom_css] = html_input_text("custom_css", field_size(), 127, web_encode(custom_css));
 	{
 		std::string v = html_option("Default", "0", false);
 		Csql_result result = database().query("select lid, name from xf_languages order by name");
@@ -22,7 +22,7 @@ const char* Cform_preferences::read()
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == language);
 		}
-		t.r(ti_field_language, html_select(v, "name=language"));
+		t[ti_field_language] = html_select(v, "name=language");
 	}
 	{
 		std::string v = html_option("Default", "0", false);
@@ -32,7 +32,7 @@ const char* Cform_preferences::read()
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == layout);
 		}
-		t.r(ti_field_layout, html_select(v, "name=layout"));
+		t[ti_field_layout] = html_select(v, "name=layout");
 	}
 	{
 		std::string v = html_option("Default", "0", false);
@@ -42,16 +42,16 @@ const char* Cform_preferences::read()
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == style);
 		}
-		t.r(ti_field_style, html_select(v, "name=style"));
+		t[ti_field_style] = html_select(v, "name=style");
 	}
-	t.r(ti_field_field_height, html_input_text("field_height", field_size(), 15, n(field_height)));
-	t.r(ti_field_field_length, html_input_text("field_length", field_size(), 15, n(field_length)));
-	t.r(ti_field_rows_per_page, html_input_text("rows_per_page", field_size(), 15, n(rows_per_page)));
-	t.r(ti_field_time_offset, html_input_text("time_offset", field_size(), 15, n(time_offset)));
-	t.r(ti_field_notify_mail, html_input_check("notify_mail", notify_mail));
-	t.r(ti_field_notify_icq, html_input_check("notify_icq", notify_icq));
-	t.r(ti_field_enable_signatures, html_input_check("enable_signatures", enable_signatures));
-	t.r(ti_field_enable_smilies, html_input_check("enable_smilies", enable_smilies));
+	t[ti_field_field_height] = html_input_text("field_height", field_size(), 15, n(field_height));
+	t[ti_field_field_length] = html_input_text("field_length", field_size(), 15, n(field_length));
+	t[ti_field_rows_per_page] = html_input_text("rows_per_page", field_size(), 15, n(rows_per_page));
+	t[ti_field_time_offset] = html_input_text("time_offset", field_size(), 15, n(time_offset));
+	t[ti_field_notify_mail] = html_input_check("notify_mail", notify_mail);
+	t[ti_field_notify_icq] = html_input_check("notify_icq", notify_icq);
+	t[ti_field_enable_signatures] = html_input_check("enable_signatures", enable_signatures);
+	t[ti_field_enable_smilies] = html_input_check("enable_smilies", enable_smilies);
 	if (submit)
 	{
 		field_error(t, ti_field_error_custom_css, custom_css_valid());

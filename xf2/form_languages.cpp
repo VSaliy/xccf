@@ -17,10 +17,10 @@ const char* Cform_languages::read()
 		static_cast<Cfd_language>(row).r(t);
 		list += t;
 	}
-	t.r(ti_var_list, list);
-	t.r(ti_var_action, "?a=" + n(ac_languages));
-	t.r(ti_field_fname, html_input_text("fname", field_size(), 31, web_encode(fname)));
-	t.r(ti_field_name, html_input_text("name", field_size(), 63, web_encode(name)));
+	t[ti_var_list] = list;
+	t[ti_var_action] = "?a=" + n(ac_languages);
+	t[ti_field_fname] = html_input_text("fname", field_size(), 31, web_encode(fname));
+	t[ti_field_name] = html_input_text("name", field_size(), 63, web_encode(name));
 	if (submit)
 	{
 		field_error(t, ti_field_error_fname, fname_valid());

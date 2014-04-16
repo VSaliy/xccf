@@ -69,10 +69,10 @@ const char* pager(t_action action, int current, int count, int order = 0)
 		r += pager_entry(action, current, i, order);
 	r += pager_entry(action, current, count - 1, order);
 	if (current > 0)
-		t.r(ti_url_prev, url_self(action, (order ? "o=" + n(order) + ";" : "") + "p=" + n(current - 1)));
+		t[ti_url_prev] = url_self(action, (order ? "o=" + n(order) + ";" : "") + "p=" + n(current - 1));
 	if (current + 1 < count)
-		t.r(ti_url_next, url_self(action, (order ? "o=" + n(order) + ";" : "") + "p=" + n(current + 1)));
-	t.r(ti_var_list, r);
+		t[ti_url_next] = url_self(action, (order ? "o=" + n(order) + ";" : "") + "p=" + n(current + 1));
+	t[ti_var_list] = r;
 	return t;
 }
 
@@ -85,44 +85,44 @@ Chtml_template global_replace(int mid)
 		database.fd_user(uid).r(t, database);
 		if (database.can_admin())
 		{
-			t.r(ti_link_admin, url_self(ac_admin));
-			t.r(ti_link_config, url_self(ac_config));
-			t.r(ti_link_ipa_search, url_self(ac_ipa_search));
-			t.r(ti_link_languages, url_self(ac_languages));
-			t.r(ti_link_layouts, url_self(ac_layouts));
-			t.r(ti_link_smilies, url_self(ac_smilies));
-			t.r(ti_link_styles, url_self(ac_styles));
+			t[ti_link_admin] = url_self(ac_admin);
+			t[ti_link_config] = url_self(ac_config);
+			t[ti_link_ipa_search] = url_self(ac_ipa_search);
+			t[ti_link_languages] = url_self(ac_languages);
+			t[ti_link_layouts] = url_self(ac_layouts);
+			t[ti_link_smilies] = url_self(ac_smilies);
+			t[ti_link_styles] = url_self(ac_styles);
 		}
 		if (database.can_moderate(mid))
 		{
-			t.r(ti_link_moderate, url_self(ac_moderate));
+			t[ti_link_moderate] = url_self(ac_moderate);
 		}
-		t.r(ti_link_logout, url_self(ac_logout));
-		t.r(ti_link_password, url_self(ac_password));
-		t.r(ti_link_post, url_self(ac_post, "pid=" + n(database.fid(mid))));
-		t.r(ti_link_preferences, url_self(ac_preferences));
-		t.r(ti_link_profile, url_self(ac_profile));
+		t[ti_link_logout] = url_self(ac_logout);
+		t[ti_link_password] = url_self(ac_password);
+		t[ti_link_post] = url_self(ac_post, "pid=" + n(database.fid(mid)));
+		t[ti_link_preferences] = url_self(ac_preferences);
+		t[ti_link_profile] = url_self(ac_profile);
 		if (mid && !database.fd_message(mid).forum())
-			t.r(ti_link_reply, url_self(ac_post, "pid=" + n(mid)));
+			t[ti_link_reply] = url_self(ac_post, "pid=" + n(mid));
 	}
 	else
 	{
-		t.r(ti_var_uid, 0);
-		t.r(ti_var_name, "Guest");
-		t.r(ti_link_login, url_self(ac_login));
-		t.r(ti_link_register, url_self(ac_register));
+		t[ti_var_uid] = 0;
+		t[ti_var_name] = "Guest";
+		t[ti_link_login] = url_self(ac_login);
+		t[ti_link_register] = url_self(ac_register);
 	}
-	t.r(ti_var_date, database.convert_date(time(NULL)));
-	t.r(ti_var_date_long, database.convert_date(time(NULL), true));
-	t.r(ti_var_css, database.select_style());
-	t.r(ti_var_forum_title, database.forum_title());
-	t.r(ti_var_page_title, g_title);
-	t.r(ti_link_history, url_self(ac_history));
-	t.r(ti_link_home, url_self(ac_home));
-	t.r(ti_link_search, url_self(ac_search));
-	t.r(ti_link_message_list, url_self(ac_message_list));
-	t.r(ti_link_user_list, url_self(ac_user_list));
-	t.r(ti_link_recent_messages, url_self(ac_recent_messages));
+	t[ti_var_date] = database.convert_date(time(NULL));
+	t[ti_var_date_long] = database.convert_date(time(NULL), true);
+	t[ti_var_css] = database.select_style();
+	t[ti_var_forum_title] = database.forum_title();
+	t[ti_var_page_title] = g_title;
+	t[ti_link_history] = url_self(ac_history);
+	t[ti_link_home] = url_self(ac_home);
+	t[ti_link_search] = url_self(ac_search);
+	t[ti_link_message_list] = url_self(ac_message_list);
+	t[ti_link_user_list] = url_self(ac_user_list);
+	t[ti_link_recent_messages] = url_self(ac_recent_messages);
 	return t;
 }
 
@@ -130,10 +130,10 @@ const char* final_replace(const std::string& v, int mid)
 {
 	Chtml_template t = database.select_template(ti_html_file);
 	Chtml_template u = global_replace(mid);
-	t.r(ti_html_head, u.apply(database.select_template(ti_html_head)));
-	t.r(ti_html_top, u.apply(database.select_template(ti_html_top)));
-	t.r(ti_html_page, v);
-	t.r(ti_html_bottom, u.apply(database.select_template(ti_html_bottom)));
+	t[ti_html_head] = u.apply(database.select_template(ti_html_head));
+	t[ti_html_top] = u.apply(database.select_template(ti_html_top));
+	t[ti_html_page] = v;
+	t[ti_html_bottom] = u.apply(database.select_template(ti_html_bottom));
 	return t;
 }
 
@@ -226,13 +226,13 @@ const char* page_search()
 		const Cfd_message& message = Cfd_message(row, fields);
 		message.r(t, database, 1, form.body);
 		if (form.show_bodies)
-			t.r(ti_var_body, encode_text(message.body, database.smily_map(message.flags & mf_allow_smilies), database.local_domain_url(), database.local_forum_url(), true, true, ~message.flags & mf_allow_html, form.body));
-		t.r(ti_var_row_index, row_index & 1);
+			t[ti_var_body] = encode_text(message.body, database.smily_map(message.flags & mf_allow_smilies), database.local_domain_url(), database.local_forum_url(), true, true, ~message.flags & mf_allow_html, form.body);
+		t[ti_var_row_index] = row_index & 1;
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_search_results);
-	t.r(ti_var_form, form.read());
-	t.r(ti_var_list, page);
+	t[ti_var_form] = form.read();
+	t[ti_var_list] = page;
 	return t;
 }
 
@@ -250,11 +250,11 @@ const char* page_news()
 	{
 		Chtml_template t = database.select_template(ti_entry_news);
 		Cfd_message(row, fields).r(t, database, 0);
-		t.r(ti_var_thread_size, Cfd_message(row, fields).thread_size - 1);
+		t[ti_var_thread_size] = Cfd_message(row, fields).thread_size - 1;
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_news);
-	t.r(ti_var_list, page);
+	t[ti_var_list] = page;
 	return t;
 }
 
@@ -323,7 +323,7 @@ const char* page_message_list()
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_message_list);
-	t.r(ti_var_list, page);
+	t[ti_var_list] = page;
 	return t;
 }
 
@@ -379,15 +379,15 @@ const char* page_recent_messages(int order, int show_page)
 		Chtml_template t = database.select_template(ti_entry_recent_message);
 		const Cfd_message& message = Cfd_message(row, fields);
 		message.r(t, database, 0);
-		t.r(ti_var_row_index, row_index & 1);
+		t[ti_var_row_index] = row_index & 1;
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_recent_messages);
-	t.r(ti_url_order_by_ctime, url_message_list(1, show_page));
-	t.r(ti_url_order_by_name, url_message_list(2, show_page));
-	t.r(ti_url_order_by_subject, url_message_list(3, show_page));
-	t.r(ti_var_list, page);
-	t.r(ti_var_pager, pager(ac_recent_messages, show_page, (database.query("select count(*) from xf_messages").fetch_row()[0].i() + database.rows_per_page() - 1) / database.rows_per_page(), order));
+	t[ti_url_order_by_ctime] = url_message_list(1, show_page);
+	t[ti_url_order_by_name] = url_message_list(2, show_page);
+	t[ti_url_order_by_subject] = url_message_list(3, show_page);
+	t[ti_var_list] = page;
+	t[ti_var_pager] = pager(ac_recent_messages, show_page, (database.query("select count(*) from xf_messages").fetch_row()[0].i() + database.rows_per_page() - 1) / database.rows_per_page(), order);
 	g_refresh = "60";
 	return t;
 }
@@ -472,19 +472,19 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 			const Cfd_message& e = database.fd_message(i.second);
 			Chtml_template t = database.select_template(ti_entry_thread);
 			e.r(t, database, 1);
-			t.r(ti_var_indent, get_spaces(4 * l));
-			t.r(ti_var_row_index, row_index & 1);
+			t[ti_var_indent] = get_spaces(4 * l);
+			t[ti_var_row_index] = row_index & 1;
 			if (l)
 			{
-				t.r(ti_var_path, "");
-				t.r(ti_var_thread_size, "");
+				t[ti_var_path] = "";
+				t[ti_var_thread_size] = "";
 			}
 			if (e.forum())
 			{
-				t.r(ti_var_date, "");
-				t.r(ti_var_name, "");
-				t.r(ti_var_path, "");
-				t.r(ti_var_thread_size, "");
+				t[ti_var_date] = "";
+				t[ti_var_name] = "";
+				t[ti_var_path] = "";
+				t[ti_var_thread_size] = "";
 			}
 			r += t;
 			list_thread(r, e.mid, l + 1, e.forum(), row_index, 0);
@@ -530,8 +530,8 @@ std::string list_parents(int mid)
 		stack.pop();
 		Chtml_template t = database.select_template(ti_entry_thread);
 		e.r(t, database, 1);
-		t.r(ti_var_thread_size, "");
-		t.r(ti_var_row_index, row_index & 1);
+		t[ti_var_thread_size] = "";
+		t[ti_var_row_index] = row_index & 1;
 		r += t;
 		row_index++;
 	}
@@ -542,9 +542,9 @@ const char* page_thread_list(int mid, int show_page)
 {
 	g_title = "Home";
 	Chtml_template t = database.select_template(ti_page_thread_list);
-	t.r(ti_var_list, list_thread(mid, 0, false, show_page));
+	t[ti_var_list] = list_thread(mid, 0, false, show_page);
 	if (!mid)
-		t.r(ti_var_pager, pager(ac_home, show_page, database.query("select unix_timestamp() - min(mtime) from xf_messages where pid = 0").fetch_row()[0].i() / (7 * 24 * 60 * 60) + 1));
+		t[ti_var_pager] = pager(ac_home, show_page, database.query("select unix_timestamp() - min(mtime) from xf_messages where pid = 0").fetch_row()[0].i() / (7 * 24 * 60 * 60) + 1);
 	return t;
 }
 
@@ -584,17 +584,17 @@ const char* page_user_list(int order)
 	{
 		Chtml_template t = database.select_template(ti_entry_user);
 		Cfd_user(row, fields).r(t, database);
-		t.r(ti_var_row_index, row_index & 1);
+		t[ti_var_row_index] = row_index & 1;
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_user_list);
-	t.r(ti_url_order_by_ctime, url_user_list(1));
-	t.r(ti_url_order_by_icq, url_user_list(2));
-	t.r(ti_url_order_by_link, url_user_list(3));
-	t.r(ti_url_order_by_mail, url_user_list(4));
-	t.r(ti_url_order_by_name, url_user_list(5));
-	t.r(ti_url_order_by_uid, url_user_list(6));
-	t.r(ti_var_list, page);
+	t[ti_url_order_by_ctime] = url_user_list(1);
+	t[ti_url_order_by_icq] = url_user_list(2);
+	t[ti_url_order_by_link] = url_user_list(3);
+	t[ti_url_order_by_mail] = url_user_list(4);
+	t[ti_url_order_by_name] = url_user_list(5);
+	t[ti_url_order_by_uid] = url_user_list(6);
+	t[ti_var_list] = page;
 	return t;
 }
 
@@ -979,34 +979,34 @@ const char* page_show_message(int mid, const std::string& hl)
 	{
 		if (database.can_admin())
 		{
-			t.r(ti_can_admin, 1);
+			t[ti_can_admin] = 1;
 			if (~e.flags & mf_forum)
-				t.r(ti_link_create_forum, url_message(ac_create_forum, mid));
+				t[ti_link_create_forum] = url_message(ac_create_forum, mid);
 			else
-				t.r(ti_link_destroy_forum, url_message(ac_destroy_forum, mid));
+				t[ti_link_destroy_forum] = url_message(ac_destroy_forum, mid);
 			if (~e.flags & mf_moderated)
-				t.r(ti_link_moderate_forum, url_message(ac_moderate_forum, mid));
+				t[ti_link_moderate_forum] = url_message(ac_moderate_forum, mid);
 			else
-				t.r(ti_link_unmoderate_forum, url_message(ac_unmoderate_forum, mid));
+				t[ti_link_unmoderate_forum] = url_message(ac_unmoderate_forum, mid);
 		}
 		if (database.can_moderate(mid))
 		{
-			t.r(ti_can_moderate, 1);
-			t.r(ti_link_edit, url_message(ac_post, mid));
+			t[ti_can_moderate] = 1;
+			t[ti_link_edit] = url_message(ac_post, mid);
 			if (~e.flags & mf_allow_html)
-				t.r(ti_link_allow_html, url_message(ac_allow_html, mid));
+				t[ti_link_allow_html] = url_message(ac_allow_html, mid);
 			else
-				t.r(ti_link_disallow_html, url_message(ac_disallow_html, mid));
+				t[ti_link_disallow_html] = url_message(ac_disallow_html, mid);
 			/*
 			if (~e.flags & mf_hidden)
-				t.r(ti_link_hide, url_message(ac_hide, mid));
+				t[ti_link_hide, url_message(ac_hide, mid));
 			else
-				t.r(ti_link_unhide, url_message(ac_unhide, mid));
+				t[ti_link_unhide, url_message(ac_unhide, mid));
 			*/
 			if (~e.flags & mf_locked)
-				t.r(ti_link_lock, url_message(ac_lock, mid));
+				t[ti_link_lock] = url_message(ac_lock, mid);
 			else
-				t.r(ti_link_unlock, url_message(ac_unlock, mid));
+				t[ti_link_unlock] = url_message(ac_unlock, mid);
 		}
 	}
 	{
@@ -1037,15 +1037,15 @@ const char* page_show_message(int mid, const std::string& hl)
 		database.prefetch_users(user_set, Cfd_user::fields(database.select_template(ti_entry_search_result)));
 	}
 	e.r(t, database, 0, hl);
-	t.r(ti_var_list, list_thread(mid, 0, false, 0));
-	t.r(ti_var_list2, list_parents(mid));
+	t[ti_var_list] = list_thread(mid, 0, false, 0);
+	t[ti_var_list2] = list_parents(mid);
 	Cform_message form(database);
 	form.write_cookie(cookie);
 	form.write_parent(e);
-	t.r(ti_link_reply, url_self(ac_post, "pid=" + n(mid)));
+	t[ti_link_reply] = url_self(ac_post, "pid=" + n(mid));
 	if (database.uid())
 	{
-		t.r(ti_page_message, form.read());
+		t[ti_page_message] = form.read();
 		Csql_query q(database, "insert delayed ignore into xf_messages_read (uid, mid, ctime) values (?, ?, unix_timestamp())");
 		q.p(database.uid());
 		q.p(mid);
@@ -1129,15 +1129,15 @@ const char* page_history()
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
 		Chtml_template t = database.select_template(ti_entry_history);
-		t.r(ti_var_month, row[0].i());
-		t.r(ti_var_year, row[1].i());
-		t.r(ti_var_row_index, row_index & 1);
-		t.r(ti_var_thread_size, row[2].i());
-		t.r(ti_url_show_month, url_self(ac_home, "month=" + n(row[0].i()) + "&year=" + n(row[1].i())));
-		t.r(ti_url_show_year, url_self(ac_home, "year=" + n(row[1].i())));
+		t[ti_var_month] = row[0].i();
+		t[ti_var_year] = row[1].i();
+		t[ti_var_row_index] = row_index & 1;
+		t[ti_var_thread_size] = row[2].i();
+		t[ti_url_show_month] = url_self(ac_home, "month=" + n(row[0].i()) + "&year=" + n(row[1].i()));
+		t[ti_url_show_year] = url_self(ac_home, "year=" + n(row[1].i()));
 		page += t;
 	}
-	t.r(ti_var_list, page);
+	t[ti_var_list] = page;
 	return t;
 }
 
@@ -1210,31 +1210,31 @@ const char* page_ipa_search()
 			int ipa_nbo = htonl(ipa0);
 			hostent* e = gethostbyaddr(reinterpret_cast<const char*>(&ipa_nbo), 4, AF_INET);
 			if (e && e->h_name)
-				t.r(ti_var_domain_name, g_mm.strcpy(e->h_name));
+				t[ti_var_domain_name] = g_mm.strcpy(e->h_name);
 			if (ipa1)
 			{
 				ipa_nbo = htonl(ipa1);
 				e = gethostbyaddr(reinterpret_cast<const char*>(&ipa_nbo), 4, AF_INET);
 				if (e && e->h_name)
-					t.r(ti_var_domain_name1, g_mm.strcpy(e->h_name));
+					t[ti_var_domain_name1] = g_mm.strcpy(e->h_name);
 			}
 		}
-		t.r(ti_url_find_messages_by_ipa0, url_self(ac_search, "ipa=" + ip2a(ipa0)));
+		t[ti_url_find_messages_by_ipa0] = url_self(ac_search, "ipa=" + ip2a(ipa0));
 		if (ipa1)
-			t.r(ti_url_find_messages_by_ipa1, url_self(ac_search, "ipa=" + ip2a(ipa1)));
-		t.r(ti_url_find_messages_by_name, url_self(ac_search, "name=" + name));
-		t.r(ti_var_date, database.convert_date(row[3].i()));
-		t.r(ti_var_name, name);
-		t.r(ti_var_ipa0, ip2a(ipa0));
+			t[ti_url_find_messages_by_ipa1] = url_self(ac_search, "ipa=" + ip2a(ipa1));
+		t[ti_url_find_messages_by_name] = url_self(ac_search, "name=" + name);
+		t[ti_var_date] = database.convert_date(row[3].i());
+		t[ti_var_name] = name;
+		t[ti_var_ipa0] = ip2a(ipa0);
 		if (ipa1)
-			t.r(ti_var_ipa1, ip2a(ipa1));
-		t.r(ti_var_post_count, row[2].i());
-		t.r(ti_var_row_index, row_index & 1);
+			t[ti_var_ipa1] = ip2a(ipa1);
+		t[ti_var_post_count] = row[2].i();
+		t[ti_var_row_index] = row_index & 1;
 		page += t;
 	}
 	Chtml_template t = database.select_template(ti_page_ipa_search_results);
-	t.r(ti_var_form, form.read());
-	t.r(ti_var_list, page);
+	t[ti_var_form] = form.read();
+	t[ti_var_list] = page;
 	return t;
 }
 

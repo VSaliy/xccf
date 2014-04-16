@@ -231,8 +231,8 @@ Cfd_guest::Cfd_guest(const Csql_row& v, int fm)
 
 void Cfd_guest::r(Chtml_template& t) const
 {
-	t.r(ti_var_aid, aid);
-	t.r(ti_var_name, web_encode(name));
+	t[ti_var_aid] = aid;
+	t[ti_var_name] = web_encode(name);
 }
 
 std::string Cfd_guest::fields(int fm, const std::string& prefix)
@@ -284,9 +284,9 @@ std::string Cfd_language::fields(int fm, const std::string& prefix)
 
 void Cfd_language::r(Chtml_template& t) const
 {
-	t.r(ti_var_lid, lid);
-	t.r(ti_var_fname, web_encode(fname));
-	t.r(ti_var_name, web_encode(name));
+	t[ti_var_lid] = lid;
+	t[ti_var_fname] = web_encode(fname);
+	t[ti_var_name] = web_encode(name);
 }
 
 Cfd_layout::Cfd_layout(const Csql_row& v)
@@ -310,9 +310,9 @@ std::string Cfd_layout::fields(int fm, const std::string& prefix)
 
 void Cfd_layout::r(Chtml_template& t) const
 {
-	t.r(ti_var_lid, lid);
-	t.r(ti_var_fname, web_encode(fname));
-	t.r(ti_var_name, web_encode(name));
+	t[ti_var_lid] = lid;
+	t[ti_var_fname] = web_encode(fname);
+	t[ti_var_name] = web_encode(name);
 }
 
 Cfd_smily::Cfd_smily(const Csql_row& v)
@@ -336,9 +336,9 @@ std::string Cfd_smily::fields(int fm, const std::string& prefix)
 
 void Cfd_smily::r(Chtml_template& t) const
 {
-	t.r(ti_var_sid, sid);
-	t.r(ti_var_fname, web_encode(fname));
-	t.r(ti_var_name, web_encode(name));
+	t[ti_var_sid] = sid;
+	t[ti_var_fname] = web_encode(fname);
+	t[ti_var_name] = web_encode(name);
 }
 
 Cfd_style::Cfd_style(const Csql_row& v)
@@ -362,9 +362,9 @@ std::string Cfd_style::fields(int fm, const std::string& prefix)
 
 void Cfd_style::r(Chtml_template& t) const
 {
-	t.r(ti_var_sid, sid);
-	t.r(ti_var_link, web_encode(link));
-	t.r(ti_var_name, web_encode(name));
+	t[ti_var_sid] = sid;
+	t[ti_var_link] = web_encode(link);
+	t[ti_var_name] = web_encode(name);
 }
 
 Cfd_message::Cfd_message()
@@ -421,49 +421,49 @@ void Cfd_message::r(Chtml_template& t, Cforum_database& database, int fm, const 
 	switch (fm)
 	{
 	case 0:
-		t.r(ti_var_mid, mid);
-		t.r(ti_var_aid, aid);
-		t.r(ti_var_uid, uid);
+		t[ti_var_mid] = mid;
+		t[ti_var_aid] = aid;
+		t[ti_var_uid] = uid;
 		if (aid)
 			database.fd_guest(aid).r(t);
 		else if (uid)
 			database.fd_user(uid).r(t, database);
-		t.r(ti_var_body, encode_text(body, database.smily_map(flags & mf_allow_smilies), database.local_domain_url(), database.local_forum_url(), true, true, ~flags & mf_allow_html, hl));
+		t[ti_var_body] = encode_text(body, database.smily_map(flags & mf_allow_smilies), database.local_domain_url(), database.local_forum_url(), true, true, ~flags & mf_allow_html, hl);
 		if (database.enable_signatures())
-			t.r(ti_var_signature, encode_text(signature, t_smily_map(), database.local_domain_url(), database.local_forum_url(), true, false, true, hl));
-		t.r(ti_var_pid, pid);
+			t[ti_var_signature] = encode_text(signature, t_smily_map(), database.local_domain_url(), database.local_forum_url(), true, false, true, hl);
+		t[ti_var_pid] = pid;
 		if (database.can_admin())
 		{
-			t.r(ti_url_find_messages_by_ipa0, url_self(ac_search, "ipa=" + ip2a(ipa0)));
-			t.r(ti_url_find_messages_by_ipa1, url_self(ac_search, "ipa=" + ip2a(ipa1)));
-			t.r(ti_url_find_messages_by_name, url_self(ac_search, "name=" + uri_encode(name(database))));
-			t.r(ti_url_find_messages_by_uid, url_self(ac_search, "uid=" + n(uid)));
+			t[ti_url_find_messages_by_ipa0] = url_self(ac_search, "ipa=" + ip2a(ipa0));
+			t[ti_url_find_messages_by_ipa1] = url_self(ac_search, "ipa=" + ip2a(ipa1));
+			t[ti_url_find_messages_by_name] = url_self(ac_search, "name=" + uri_encode(name(database)));
+			t[ti_url_find_messages_by_uid] = url_self(ac_search, "uid=" + n(uid));
 		}
-		t.r(ti_var_flags, flags);
-		t.r(ti_var_type, type);
+		t[ti_var_flags] = flags;
+		t[ti_var_type] = type;
 		
 		if (pid)
-			t.r(ti_url_show_parent, url_show_message(pid));
+			t[ti_url_show_parent] = url_show_message(pid);
 		if (uid)
-			t.r(ti_url_show_user, url_show_user(uid));
+			t[ti_url_show_user] = url_show_user(uid);
 		break;
 	case 1:
-		t.r(ti_var_name, web_encode(name(database)));
+		t[ti_var_name] = web_encode(name(database));
 		break;
 	}
-	t.r(ti_url_show_message, url_show_message(mid, hl));
-	// t.r(ti_var_path, database.get_path(pid));
-	t.r(ti_var_date, database.convert_date(ctime));
-	t.r(ti_var_date_long, database.convert_date(ctime, true));
-	t.r(ti_var_subject, web_encode(subject));
+	t[ti_url_show_message] = url_show_message(mid, hl);
+	// t[ti_var_path] = database.get_path(pid);
+	t[ti_var_date] = database.convert_date(ctime);
+	t[ti_var_date_long] = database.convert_date(ctime, true);
+	t[ti_var_subject] = web_encode(subject);
 	if (database.can_moderate(mid))
 	{
-		t.r(ti_var_ipa0, ip2a(ipa0));
+		t[ti_var_ipa0] = ip2a(ipa0);
 		if (ipa1)
-			t.r(ti_var_ipa1, ip2a(ipa1));
+			t[ti_var_ipa1] = ip2a(ipa1);
 	}
 	if (thread_size > 1)
-		t.r(ti_var_thread_size, thread_size);
+		t[ti_var_thread_size] = thread_size;
 }
 
 std::string Cfd_message::name(Cforum_database& database) const
@@ -592,18 +592,18 @@ bool Cfd_user::moderate() const
 
 void Cfd_user::r(Chtml_template& t, Cforum_database& database) const
 {		
-	t.r(ti_var_uid, uid);
-	t.r(ti_var_name, web_encode(name));
-	t.r(ti_var_public_mail, web_encode(public_mail));
-	t.r(ti_var_user_signature, encode_text(signature, t_smily_map(), database.local_domain_url(), database.local_forum_url(), true, false, true));
-	t.r(ti_var_icq_id, icq_id);
-	t.r(ti_var_link_title, web_encode(link_title));
-	t.r(ti_var_link, web_encode(link));
-	t.r(ti_var_custom_css, custom_css);
-	t.r(ti_var_user_ctime, database.convert_date(ctime));
+	t[ti_var_uid] = uid;
+	t[ti_var_name] = web_encode(name);
+	t[ti_var_public_mail] = web_encode(public_mail);
+	t[ti_var_user_signature] = encode_text(signature, t_smily_map(), database.local_domain_url(), database.local_forum_url(), true, false, true);
+	t[ti_var_icq_id] = icq_id;
+	t[ti_var_link_title] = web_encode(link_title);
+	t[ti_var_link] = web_encode(link);
+	t[ti_var_custom_css] = custom_css;
+	t[ti_var_user_ctime] = database.convert_date(ctime);
 
-	t.r(ti_link_find_messages_by_user, url_self(ac_search, "name=" + uri_encode(name)));
-	t.r(ti_url_show_user, url_show_user(uid));
+	t[ti_link_find_messages_by_user] =  url_self(ac_search, "name=" + uri_encode(name));
+	t[ti_url_show_user] = url_show_user(uid);
 }
 
 std::string Cfd_user::fields(int fm, const std::string& prefix)

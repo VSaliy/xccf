@@ -11,27 +11,27 @@ Cform_message::Cform_message(Cforum_database& database):
 const char* Cform_message::read()
 {
 	Chtml_template t = select_template(ti_page_message);
-	t.r(ti_var_action, "?a=" + n(ac_post) + ";mid=" + n(mid) + ";pid=" + n(pid));
+	t[ti_var_action] = "?a=" + n(ac_post) + ";mid=" + n(mid) + ";pid=" + n(pid);
 	if (!database().uid())
-		t.r(ti_field_name, html_input_text("name", field_size(), 31, web_encode(name)));
-	t.r(ti_field_subject, html_input_text("subject", field_size(), 47, web_encode(subject)));
-	t.r(ti_field_body, html_text_area("body", field_size(), field_height(), web_encode(body)));
+		t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name));
+	t[ti_field_subject] = html_input_text("subject", field_size(), 47, web_encode(subject));
+	t[ti_field_body] = html_text_area("body", field_size(), field_height(), web_encode(body));
 	if (mid && database().can_admin())
 	{
 		std::string v;
 		for (int i = 0; i < mt_count; i++)
 			v += html_option(mt_name[i], n(i), i == type);
-		t.r(ti_field_type, html_select(v, "name=type"));
-		t.r(ti_field_forum, html_input_check("forum", flags & mf_forum));
-		t.r(ti_field_moderated, html_input_check("moderated", flags & mf_moderated));
+		t[ti_field_type] = html_select(v, "name=type");
+		t[ti_field_forum] = html_input_check("forum", flags & mf_forum);
+		t[ti_field_moderated] = html_input_check("moderated", flags & mf_moderated);
 	}
 	{
 		const t_smily_map& map = database().smily_map(database().enable_smilies());
 		std::string list;
 		for (auto& i : map)
 			list += "<img src=\"/forum/" + i.second + "\" alt=\"" + i.first + "\"> " + i.first + "<br>";
-		t.r(ti_field_allow_smilies, html_input_check("allow_smilies", flags & mf_allow_smilies));
-		t.r(ti_var_smily_legend, list);
+		t[ti_field_allow_smilies] = html_input_check("allow_smilies", flags & mf_allow_smilies);
+		t[ti_var_smily_legend] = list;
 	}
 	if (submit)
 	{
