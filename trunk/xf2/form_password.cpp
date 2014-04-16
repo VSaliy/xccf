@@ -11,10 +11,10 @@ Cform_password::Cform_password(Cforum_database& database):
 const char* Cform_password::read()
 {
 	Chtml_template t = select_template(ti_page_password);
-	t.r(ti_var_action, "?a=" + n(ac_password));
-	t.r(ti_field_old_password, html_input_password("old_password", field_size(), 31, ""));
-	t.r(ti_field_password, html_input_password("password", field_size(), 31, ""));
-	t.r(ti_field_password_again, html_input_password("password_again", field_size(), 31, ""));
+	t[ti_var_action] = "?a=" + n(ac_password);
+	t[ti_field_old_password] = html_input_password("old_password", field_size(), 31, "");
+	t[ti_field_password] = html_input_password("password", field_size(), 31, "");
+	t[ti_field_password_again] = html_input_password("password_again", field_size(), 31, "");
 	if (submit)
 	{
 		field_error(t, ti_field_error_old_password, old_password_valid());

@@ -8,7 +8,7 @@ Cform_base::Cform_base(Cforum_database& database):
 
 void Cform_base::field_error(Chtml_template& t, int i, bool valid)
 {
-	t.r(i, database().select_template(valid ? ti_html_field_valid : ti_html_field_error));
+	t[i] = database().select_template(valid ? ti_html_field_valid : ti_html_field_error);
 }
 
 int Cform_base::field_height()

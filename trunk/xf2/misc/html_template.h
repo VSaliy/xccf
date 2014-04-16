@@ -9,8 +9,21 @@ class Cforum_database;
 class Chtml_template  
 {
 public:
+	class set_proxy_t
+	{
+	public:
+		set_proxy_t(Chtml_template& t, int i) : t_(t), i_(i) {};
+		void operator=(const char* value) { t_.r(i_, value); }
+		void operator=(int value) { t_.r(i_, value); }
+		void operator=(const std::string& value) { t_.r(i_, value); }
+	private:
+		Chtml_template& t_;
+		int i_;
+	};
+
 	const char* apply(const Chtml_template& v);
 	const char* apply(const char* v);
+	set_proxy_t operator[](int i) { return set_proxy_t(*this, i); }
 	void r(int i, const char* value);
 	void r(int i, int value);
 	void r(int i, const std::string& value);
@@ -21,10 +34,8 @@ public:
 	Chtml_template(Cforum_database& database);
 	Chtml_template(Cforum_database& database, const char* v);
 private:
-	typedef std::map<int, const char*> t_map;
-
 	Cforum_database& m_database;
-	t_map m_map;
+	std::map<int, const char*> m_map;
 	const char* m_value;
 };
 

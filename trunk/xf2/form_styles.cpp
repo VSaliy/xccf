@@ -17,10 +17,10 @@ const char* Cform_styles::read()
 		static_cast<Cfd_style>(row).r(t);
 		list += t;
 	}
-	t.r(ti_var_list, list);
-	t.r(ti_var_action, "?a=" + n(ac_styles));
-	t.r(ti_field_link, html_input_text("link", field_size(), 63, web_encode(link)));
-	t.r(ti_field_name, html_input_text("name", field_size(), 63, web_encode(name)));
+	t[ti_var_list] = list;
+	t[ti_var_action] = "?a=" + n(ac_styles);
+	t[ti_field_link] = html_input_text("link", field_size(), 63, web_encode(link));
+	t[ti_field_name] = html_input_text("name", field_size(), 63, web_encode(name));
 	if (submit)
 	{
 		field_error(t, ti_field_error_link, link_valid());

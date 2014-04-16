@@ -9,14 +9,14 @@ Cform_config::Cform_config(Cforum_database& database):
 const char* Cform_config::read()
 {
 	Chtml_template t = select_template(ti_page_config);
-	t.r(ti_var_action, "?a=" + n(ac_config));
-	t.r(ti_field_forum_title, html_input_text("forum_title", field_size(), 255, web_encode(forum_title)));
-	t.r(ti_field_local_domain_url, html_input_text("local_domain_url", field_size(), 255, web_encode(local_domain_url)));
-	t.r(ti_field_local_forum_url, html_input_text("local_forum_url", field_size(), 255, web_encode(local_forum_url)));
-	t.r(ti_field_mail_from, html_input_text("mail_from", field_size(), 255, web_encode(mail_from)));
-	t.r(ti_field_min_name_length, html_input_text("min_name_length", field_size(), 255, n(min_name_length)));
-	t.r(ti_field_min_pass_length, html_input_text("min_pass_length", field_size(), 255, n(min_pass_length)));
-	t.r(ti_field_max_signature_length, html_input_text("max_signature_length", field_size(), 255, n(max_signature_length)));
+	t[ti_var_action] = "?a=" + n(ac_config);
+	t[ti_field_forum_title] = html_input_text("forum_title", field_size(), 255, web_encode(forum_title));
+	t[ti_field_local_domain_url] = html_input_text("local_domain_url", field_size(), 255, web_encode(local_domain_url));
+	t[ti_field_local_forum_url] = html_input_text("local_forum_url", field_size(), 255, web_encode(local_forum_url));
+	t[ti_field_mail_from] = html_input_text("mail_from", field_size(), 255, web_encode(mail_from));
+	t[ti_field_min_name_length] = html_input_text("min_name_length", field_size(), 255, n(min_name_length));
+	t[ti_field_min_pass_length] = html_input_text("min_pass_length", field_size(), 255, n(min_pass_length));
+	t[ti_field_max_signature_length] = html_input_text("max_signature_length", field_size(), 255, n(max_signature_length));
 	if (submit)
 	{
 	}

@@ -11,11 +11,11 @@ Cform_register::Cform_register(Cforum_database& database):
 const char* Cform_register::read(const std::string& error_msg)
 {
 	Chtml_template t = select_template(ti_page_register);
-	t.r(ti_var_action, "?a=" + n(ac_register));
-	t.r(ti_var_error_msg, error_msg);
-	t.r(ti_field_name, html_input_text("name", field_size(), 31, web_encode(name)));
-	t.r(ti_field_password, html_input_password("password", field_size(), 31, ""));
-	t.r(ti_field_password_again, html_input_password("password_again", field_size(), 31, ""));
+	t[ti_var_action] = "?a=" + n(ac_register);
+	t[ti_var_error_msg] = error_msg;
+	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name));
+	t[ti_field_password] = html_input_password("password", field_size(), 31, "");
+	t[ti_field_password_again] = html_input_password("password_again", field_size(), 31, "");
 	if (submit)
 	{
 		field_error(t, ti_field_error_name, name_valid());
