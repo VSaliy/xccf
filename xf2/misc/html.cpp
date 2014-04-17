@@ -50,7 +50,7 @@ std::string html_input_check(const std::string& name, bool value)
 
 std::string html_input_text(const std::string& name, int size, int max_length, const std::string& value, const std::string& placeholder)
 {
-	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (placeholder.empty() ? "" : "placeholder=\"" + placeholder + "\"") + " value=\"" + value + "\">";
+	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (placeholder.empty() ? "" : " placeholder=\"" + placeholder + "\"") + " value=\"" + value + "\">";
 }
 
 std::string html_text_area(const std::string& name, int cx, int cy, const std::string& value)
