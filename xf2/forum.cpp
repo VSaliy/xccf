@@ -241,10 +241,7 @@ const char* page_news()
 	g_title = "News";
 	std::string page;
 	int fields = Cfd_message::fields(database.select_template(ti_entry_news));
-	Csql_query q(database, "select ? from xf_messages where type = ? order by ctime desc");
-	q.p_raw(Cfd_message::fields(fields));
-	q(mt_news);
-	Csql_result result = q.execute();
+	Csql_result result = Csql_query(database, "select ? from xf_messages where type = ? order by mid desc").p_raw(Cfd_message::fields(fields))(mt_news).execute();
 	page.reserve(result.size() << 10);
 	while (Csql_row row = result.fetch_row())
 	{
@@ -287,13 +284,13 @@ const char* page_register()
 		return form.read();
 	if (database.uid(form.name))
 		return form.read("Name already in use");
-	Csql_query q(database, "insert into xf_users (name, password, ipa, ipa1, flags, mtime, ctime) values (?, md5(?), ?, ?, ?, unix_timestamp(), unix_timestamp())");
-	q(form.name);
-	q(form.password);
-	q(form.ipa0);
-	q(form.ipa1);
-	q(uf_default);
-	q.execute();
+	Csql_query(database, "insert into xf_users (name, password, ipa, ipa1, flags, mtime, ctime) values (?, md5(?), ?, ?, ?, unix_timestamp(), unix_timestamp())")
+		(form.name)
+		(form.password)
+		(form.ipa0)
+		(form.ipa1)
+		(uf_default)
+		.execute();
 	return page_login();
 }
 
@@ -793,18 +790,18 @@ const char* page_preferences()
 			flags |= uf_enable_signatures;
 		if (form.enable_smilies)
 			flags |= uf_enable_smilies;
-		Csql_query q(database, "update xf_users set custom_css = ?, language = ?, layout = ?, style = ?, field_height = ?, field_length = ?, rows_per_page = ?, time_offset = ?, flags = ?, mtime = unix_timestamp() where uid = ?");
-		q(form.custom_css);
-		q(form.language);
-		q(form.layout);
-		q(form.style);
-		q(form.field_height);
-		q(form.field_length);
-		q(form.rows_per_page);
-		q(form.time_offset);
-		q(flags);
-		q(database.uid());
-		q.execute();
+		Csql_query(database, "update xf_users set custom_css = ?, language = ?, layout = ?, style = ?, field_height = ?, field_length = ?, rows_per_page = ?, time_offset = ?, flags = ?, mtime = unix_timestamp() where uid = ?")
+			(form.custom_css)
+			(form.language)
+			(form.layout)
+			(form.style)
+			(form.field_height)
+			(form.field_length)
+			(form.rows_per_page)
+			(form.time_offset)
+			(flags)
+			(database.uid())
+			.execute();
 		return page_forward(url_self(ac_preferences));
 	}
 	return form.read();
@@ -817,15 +814,15 @@ const char* page_profile()
 	form.write(cgi);
 	if (form.submit && form.valid())
 	{
-		Csql_query q(database, "update xf_users set private_mail = ?, public_mail = ?, signature = ?, icq_id = ?, link_title = ?, link = ?, mtime = unix_timestamp() where uid = ?");
-		q(form.private_mail);
-		q(form.public_mail);
-		q(form.signature);
-		q(form.icq_id);
-		q(form.link_title);
-		q(form.link);
-		q(database.uid());
-		q.execute();
+		Csql_query(database, "update xf_users set private_mail = ?, public_mail = ?, signature = ?, icq_id = ?, link_title = ?, link = ?, mtime = unix_timestamp() where uid = ?")
+			(form.private_mail)
+			(form.public_mail)
+			(form.signature)
+			(form.icq_id)
+			(form.link_title)
+			(form.link)
+			(database.uid())
+			.execute();
 		return page_forward(url_self(ac_profile));
 	}
 	return form.read();
@@ -834,8 +831,7 @@ const char* page_profile()
 static void send_mail(const std::string& from, const std::string& to, const std::string& subject, const std::string& body)
 {
 #ifndef WIN32
-	FILE* mail = popen("/usr/sbin/sendmail -oi -t", "w");
-	if (mail)
+	if (FILE* mail = popen("/usr/sbin/sendmail -oi -t", "w"))
 	{
 		fprintf(mail, "Content-Type: text/html\n");
 		fprintf(mail, "From: %s\n", from.c_str());
