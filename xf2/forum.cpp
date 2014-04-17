@@ -623,7 +623,7 @@ const char* page_languages()
 		std::string list;
 		for (auto& row : database.query("select " + Cfd_language::fields(-1) + " from xf_languages"))
 		{
-			Cfd_layout e = static_cast<Cfd_layout>(row);
+			Cfd_layout e = row;
 			if (cgi.has_value("remove_" + n(e.lid)))
 				Csql_query(database, "delete from xf_languages where lid = ?")(e.lid).execute();
 		}

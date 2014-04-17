@@ -13,7 +13,7 @@ const char* Cform_styles::read()
 	for (auto& row : database().query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 	{
 		Chtml_template t = database().select_template(ti_entry_style);
-		static_cast<Cfd_style>(row).r(t);
+		Cfd_style(row).r(t);
 		list += t;
 	}
 	t[ti_var_list] = list;

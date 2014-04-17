@@ -13,7 +13,7 @@ const char* Cform_smilies::read()
 	for (auto& row : database().query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 	{
 		Chtml_template t = database().select_template(ti_entry_smily);
-		static_cast<Cfd_smily>(row).r(t);
+		Cfd_smily(row).r(t);
 		list += t;
 	}
 	t[ti_var_list] = list;
