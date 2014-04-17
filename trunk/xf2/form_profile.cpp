@@ -14,7 +14,7 @@ const char* Cform_profile::read()
 	Cfd_user e = database().fd_user(database().uid());
 	Chtml_template t = select_template(ti_page_profile);
 	t[ti_var_action] = "?a=" + n(ac_profile);
-	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(e.name), true);
+	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(e.name), "Name");
 	t[ti_field_private_mail] = html_input_text("private_mail", field_size(), 63, web_encode(private_mail));
 	t[ti_field_public_mail] = html_input_text("public_mail", field_size(), 63, web_encode(public_mail));
 	t[ti_field_signature] = html_text_area("signature", field_size(), 4, web_encode(signature));
