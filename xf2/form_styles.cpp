@@ -10,7 +10,7 @@ const char* Cform_styles::read()
 {
 	Chtml_template t = select_template(ti_page_styles);
 	std::string list;
-	for (auto& row : database().query("select " + Cfd_style::fields(-1) + " from xf_styles"))
+	for (auto row : database().query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 	{
 		Chtml_template t = database().select_template(ti_entry_style);
 		Cfd_style(row).r(t);
