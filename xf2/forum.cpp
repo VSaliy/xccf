@@ -647,7 +647,7 @@ const char* page_layouts()
 		std::string list;
 		for (auto& row : database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts"))
 		{
-			Cfd_layout e = static_cast<Cfd_layout>(row);
+			Cfd_layout e = row;
 			if (cgi.has_value("remove_" + n(e.lid)))
 				Csql_query(database, "delete from xf_layouts where lid = ?")(e.lid).execute();
 		}
@@ -671,7 +671,7 @@ const char* page_smilies()
 		std::string list;
 		for (auto& row : database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 		{
-			Cfd_smily e = static_cast<Cfd_smily>(row);
+			Cfd_smily e = row;
 			if (cgi.has_value("remove_" + n(e.sid)))
 				Csql_query(database, "delete from xf_smilies where sid = ?")(e.sid).execute();
 		}
@@ -695,7 +695,7 @@ const char* page_styles()
 		std::string list;
 		for (auto& row : database.query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 		{
-			Cfd_style e = static_cast<Cfd_style>(row);
+			Cfd_style e = row;
 			if (cgi.has_value("remove_" + n(e.sid)))
 				Csql_query(database, "delete from xf_styles where sid = ?")(e.sid).execute();
 		}
