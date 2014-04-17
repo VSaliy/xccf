@@ -58,7 +58,6 @@
 <table width="100%">
 	<tr>
 		<td valign=top>
-			<%date_long%><br>
 			#if uid
 				Welcome back <a href="<%url_show_user%>"><%name%></a>!
 			#endif
