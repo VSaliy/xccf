@@ -706,11 +706,7 @@ void Cforum_database::import_strings(int lid, const std::string& fname)
 		std::string value = l.get_next_line('\0');
 		if (i == -1 || value.empty())
 			continue;
-		Csql_query q(*this, " (?, ?, ?),");
-		q.p(lid);
-		q.p(i);
-		q.p(value);
-		qu += q.read();
+		qu += Csql_query(*this, " (?, ?, ?),")(lid)(i)(value).read();
 	}
 	if (qu.empty())
 		return;
@@ -732,11 +728,7 @@ void Cforum_database::insert_template(int lid, int i, Cvirtual_binary value)
 {
 	if (i == -1)
 		return;
-	Csql_query q(*this, "replace into xf_templates (lid, i, value) values (?, ?, ?)");
-	q.p(lid);
-	q.p(i);
-	q.p(value);
-	q.execute();
+	Csql_query(*this, "replace into xf_templates (lid, i, value) values (?, ?, ?)")(lid)(i)(value).execute();
 }
 
 void Cforum_database::import_templates(int lid, const std::string& fname)
@@ -829,17 +821,13 @@ Chtml_template Cforum_database::select_template(int i)
 
 int Cforum_database::aid(const std::string& name)
 {
-	Csql_query q(*this, "select aid, name from xf_guests where name = ?");
-	q.p(name);
-	Csql_result result = q.execute();
+	Csql_result result = Csql_query(*this, "select aid, name from xf_guests where name = ?")(name).execute();
 	while (Csql_row row = result.fetch_row())
 	{
 		if (row[1].s() == name)
 			return row[0].i();
 	}
-	q = "insert into xf_guests (name) values (?)";
-	q.p(name);
-	q.execute();
+	Csql_query(*this, "insert into xf_guests (name) values (?)")(name).execute();
 	return insert_id();
 }
 
@@ -847,25 +835,18 @@ int Cforum_database::uid(const std::string& name)
 {
 	if (name.empty())
 		return 0;
-	Csql_query q(*this, "select uid from xf_users where name = ?");
-	q.p(name);
-	Csql_row row = q.execute().fetch_row();
+	Csql_row row = Csql_query(*this, "select uid from xf_users where name = ?")(name).execute().fetch_row();
 	return row ? row[0].i() : 0;
 }
 
 std::string Cforum_database::md5(const std::string& v)
 {
-	Csql_query q(*this, "select md5(?)");
-	q.p(v);
-	return q.execute().fetch_row()[0].s();
+	return Csql_query(*this, "select md5(?)")(v).execute().fetch_row()[0].s();
 }
 
 bool Cforum_database::password_valid(int uid, const std::string& password)
 {
-	Csql_query q(*this, "select password = md5(?) from xf_users where uid = ?");
-	q.p(password);
-	q.p(uid);
-	return q.execute().fetch_row()[0].i();
+	return Csql_query(*this, "select password = md5(?) from xf_users where uid = ?")(password)(uid).execute().fetch_row()[0].i();
 }
 
 std::string Cforum_database::token(const std::string& name, const std::string& password)
@@ -879,12 +860,7 @@ void Cforum_database::token(const std::string& v)
 		return;
 	std::string name, password;
 	split_key(v, name, password);
-	Csql_query q(*this, "select ? from xf_users where name = ? and password = ?");
-	q.p_raw(Cfd_user::fields(-1));
-	q.p(name);
-	q.p(password);
-	Csql_row row;
-	if (row = q.execute().fetch_row())
+	if (Csql_row row = Csql_query(*this, "select ? from xf_users where name = ? and password = ?").p_raw(Cfd_user::fields(-1))(name)(password).execute().fetch_row())
 	{
 		Cfd_user e(row, -1);
 		m_uid = e.uid;
@@ -930,10 +906,7 @@ const Cfd_guest& Cforum_database::fd_guest(int aid)
 {
 	if (m_guest_cache.has(aid))
 		return m_guest_cache.get(aid);
-	Csql_query q(*this, "select ? from xf_guests where aid = ?");
-	q.p_raw(Cfd_guest::fields(-1));
-	q.p(aid);
-	Csql_row row = q.execute().fetch_row();
+	Csql_row row = Csql_query(*this, "select ? from xf_guests where aid = ?").p_raw(Cfd_guest::fields(-1))(aid).execute().fetch_row();
 	if (!row)
 		throw std::runtime_error("Unable to fetch fd_guest");
 	return m_guest_cache.set(aid, Cfd_guest(row, -1));
@@ -949,10 +922,7 @@ const Cfd_message& Cforum_database::fd_message(int mid)
 {
 	if (m_message_cache.has(mid))
 		return m_message_cache.get(mid);
-	Csql_query q(*this, "select ? from xf_messages where mid = ?");
-	q.p_raw(Cfd_message::fields(-1));
-	q.p(mid);
-	Csql_row row = q.execute().fetch_row();
+	Csql_row row = Csql_query(*this, "select ? from xf_messages where mid = ?").p_raw(Cfd_message::fields(-1))(mid).execute().fetch_row();
 	if (!row)
 		throw std::runtime_error("Unable to fetch fd_message");
 	return fd_message(Cfd_message(row, -1));
@@ -967,10 +937,7 @@ const Cfd_user& Cforum_database::fd_user(int uid)
 {
 	if (m_user_cache.has(uid))
 		return m_user_cache.get(uid);
-	Csql_query q(*this, "select ? from xf_users where uid = ?");
-	q.p_raw(Cfd_user::fields(-1));
-	q.p(uid);
-	Csql_row row = q.execute().fetch_row();
+	Csql_row row = Csql_query(*this, "select ? from xf_users where uid = ?").p_raw(Cfd_user::fields(-1))(uid).execute().fetch_row();
 	if (!row)
 		throw std::runtime_error("Unable to fetch fd_user");
 	return m_user_cache.set(uid, Cfd_user(row, -1));
