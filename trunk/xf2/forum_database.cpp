@@ -724,7 +724,7 @@ void Cforum_database::import_strings()
 	Csql_result result = query("select lid, fname from xf_languages");
 	while (Csql_row row = result.fetch_row())
 		import_strings(row[0].i(), row[1].s());
-	if (!result.c_rows())
+	if (!result.size())
 		import_strings(1, "xf_english.txt");
 }
 
@@ -764,7 +764,7 @@ void Cforum_database::import_templates()
 	Csql_result result = query("select lid, fname from xf_layouts");
 	while (Csql_row row = result.fetch_row())
 		import_templates(row[0].i(), row[1].s());
-	if (!result.c_rows())
+	if (!result.size())
 		import_templates(1, "xf_templates.txt");
 }
 
@@ -1040,7 +1040,7 @@ int Cforum_database::export_template_cache()
 			int i = e[1].i();
 			c_layouts = std::max(c_layouts, lid);
 			c_templates = std::max(c_templates, i + 1);
-			template_map[std::make_pair(lid, i)] = e[2].vdata();
+			template_map[std::make_pair(lid, i)] = const_memory_range(e[2].begin(), e[2].end());
 			cb_templates += e[2].size();
 		}
 	}

@@ -218,7 +218,7 @@ const char* page_search()
 		database.prefetch_users(user_set, Cfd_user::fields(database.select_template(ti_entry_search_result)));
 		result.data_seek(0);
 	}
-	page.reserve(256 * result.c_rows());
+	page.reserve(256 * result.size());
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
@@ -245,7 +245,7 @@ const char* page_news()
 	q.p_raw(Cfd_message::fields(fields));
 	q.p(mt_news);
 	Csql_result result = q.execute();
-	page.reserve(result.c_rows() << 10);
+	page.reserve(result.size() << 10);
 	while (Csql_row row = result.fetch_row())
 	{
 		Chtml_template t = database.select_template(ti_entry_news);
@@ -315,7 +315,7 @@ const char* page_message_list()
 	}
 	int fields = Cfd_message::fields(database.select_template(ti_entry_message));
 	Csql_result result = database.query("select " + Cfd_message::fields(fields) + " from xf_messages order by mid desc");
-	page.reserve(256 * result.c_rows());
+	page.reserve(256 * result.size());
 	while (Csql_row row = result.fetch_row())
 	{
 		Chtml_template t = database.select_template(ti_entry_message);
@@ -353,7 +353,7 @@ const char* page_recent_messages(int order, int show_page)
 	const int fields = Cfd_message::fields(database.select_template(ti_entry_recent_message));
 	Csql_query q(database, "select ? from xf_messages m left join xf_guests g on m.aid = g.aid left join xf_users u on m.uid = u.uid order by ? limit ?, ?");
 	q.p_raw(Cfd_message::fields(fields, "m."));
-	q.p_raw(message_list_order_i2a(order));
+	q.p_raw(data_ref(message_list_order_i2a(order)));
 	q.p(database.rows_per_page() * show_page);
 	q.p(database.rows_per_page());
 	Csql_result result = q.execute();
@@ -372,7 +372,7 @@ const char* page_recent_messages(int order, int show_page)
 		database.prefetch_users(user_set, Cfd_user::fields(database.select_template(ti_entry_recent_message)));
 		result.data_seek(0);
 	}
-	page.reserve(256 * result.c_rows());
+	page.reserve(256 * result.size());
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
@@ -1014,11 +1014,7 @@ const char* page_show_message(int mid, const std::string& hl)
 			| Cfd_message::f_flags
 			| Cfd_message::f_pid
 			;
-		Csql_query q(database, "select ? from xf_messages where mid != ? and tid = ?");
-		q.p_raw(Cfd_message::fields(fields));
-		q.p(e.mid);
-		q.p(e.tid);
-		Csql_result result = q.execute();
+		Csql_result result = Csql_query(database, "select ? from xf_messages where mid != ? and tid = ?").p_raw(Cfd_message::fields(fields)).p(e.mid).p(e.tid).execute();
 		std::set<int> guest_set;
 		std::set<int> user_set;
 		if (e.aid)
@@ -1046,10 +1042,7 @@ const char* page_show_message(int mid, const std::string& hl)
 	if (database.uid())
 	{
 		t[ti_page_message] = form.read();
-		Csql_query q(database, "insert delayed ignore into xf_messages_read (uid, mid, ctime) values (?, ?, unix_timestamp())");
-		q.p(database.uid());
-		q.p(mid);
-		q.execute();
+		Csql_query(database, "insert delayed ignore into xf_messages_read (uid, mid, ctime) values (?, ?, unix_timestamp())").p(database.uid()).p(mid).execute();
 	}
 	return t;
 }
@@ -1182,22 +1175,22 @@ const char* page_ipa_search()
 	switch (form.order)
 	{
 	case 1:
-		q0.p_raw("ipa");
+		q0.p_name("ipa");
 		break;
 	case 2:
-		q0.p_raw("posts desc");
+		q0.p_raw(data_ref("posts desc"));
 		break;
 	case 3:
-		q0.p_raw("time desc");
+		q0.p_raw(data_ref("time desc"));
 		break;
 	case 4:
-		q0.p_raw("time");
+		q0.p_name("time");
 		break;
 	default:
-		q0.p_raw("name");
+		q0.p_name("name");
 	}
 	Csql_result result = q0.execute();
-	page.reserve(256 * result.c_rows());
+	page.reserve(256 * result.size());
 	Csql_row row;
 	for (int row_index = 0; row = result.fetch_row(); row_index++)
 	{
