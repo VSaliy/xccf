@@ -37,7 +37,6 @@ Ccgi_input cgi;
 Ccookie cookie = static_cast<Cmulti_line>(cgi.get_cookie());
 Cforum_database database;
 std::string g_location;
-std::string g_refresh = "600";
 std::string g_title;
 
 std::string an_self(const char* title, t_action action, const std::string& elements)
@@ -383,7 +382,6 @@ const char* page_recent_messages(int order, int show_page)
 	t[ti_url_order_by_subject] = url_message_list(3, show_page);
 	t[ti_var_list] = page;
 	t[ti_var_pager] = pager(ac_recent_messages, show_page, (database.query("select count(*) from xf_messages").fetch_row()[0].i() + database.rows_per_page() - 1) / database.rows_per_page(), order);
-	g_refresh = "60";
 	return t;
 }
 
@@ -802,7 +800,6 @@ static void send_mail(const std::string& from, const std::string& to, const std:
 
 const char* page_message()
 {
-	g_refresh.erase();
 	g_title = "Post";
 	Cform_message form(database);
 	form.write(cgi);
@@ -1320,15 +1317,12 @@ int main()
 				}
 				page = final_replace(page, mid);
 			}
-			database.close();
 		}
 		std::cout << "Content-Type: text/html; charset=utf-8" << std::endl
 			<< cookie;
 		if (g_location.empty())
 		{
-			if (!g_refresh.empty())
-				std::cout << "Refresh: " << g_refresh << std::endl;
-			if (get_env("HTTP_ACCEPT_ENCODING").find("gzip") == std::string::npos)
+			if (0) // get_env("HTTP_ACCEPT_ENCODING").find("gzip") == std::string::npos)
 			{
 				std::cout << std::endl
 					<< page;

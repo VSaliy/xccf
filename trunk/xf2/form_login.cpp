@@ -12,8 +12,8 @@ const char* Cform_login::read()
 {
 	Chtml_template t = select_template(ti_page_login);
 	t[ti_var_action] = "?a=" + n(ac_login);
-	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name));
-	t[ti_field_password] = html_input_password("password", field_size(), 31, "");
+	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name), "Name");
+	t[ti_field_password] = html_input_password("password", field_size(), "Password");
 	if (submit)
 	{
 		field_error(t, ti_field_error_name, name_valid());
