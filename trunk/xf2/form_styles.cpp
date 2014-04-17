@@ -9,9 +9,8 @@ Cform_styles::Cform_styles(Cforum_database& database):
 const char* Cform_styles::read()
 {
 	Chtml_template t = select_template(ti_page_styles);
-	Csql_result result = database().query("select " + Cfd_style::fields(-1) + " from xf_styles");
 	std::string list;
-	while (Csql_row row = result.fetch_row())
+	for (auto& row : database().query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 	{
 		Chtml_template t = database().select_template(ti_entry_style);
 		static_cast<Cfd_style>(row).r(t);

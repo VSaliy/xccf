@@ -9,9 +9,8 @@ Cform_smilies::Cform_smilies(Cforum_database& database):
 const char* Cform_smilies::read()
 {
 	Chtml_template t = select_template(ti_page_smilies);
-	Csql_result result = database().query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
 	std::string list;
-	while (Csql_row row = result.fetch_row())
+	for (auto& row : database().query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 	{
 		Chtml_template t = database().select_template(ti_entry_smily);
 		static_cast<Cfd_smily>(row).r(t);
