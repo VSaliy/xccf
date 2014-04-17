@@ -300,14 +300,12 @@ const char* page_message_list()
 	std::string page;
 	{
 		int fields = Cfd_guest::fields(database.select_template(ti_entry_message));
-		Csql_result result = database.query("select " + Cfd_guest::fields(fields) + " from xf_guests");
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_guest::fields(fields) + " from xf_guests"))
 			database.fd_guest(Cfd_guest(row, fields));
 	}
 	{
 		int fields = Cfd_user::fields(database.select_template(ti_entry_message));
-		Csql_result result = database.query("select " + Cfd_user::fields(fields) + " from xf_users");
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_user::fields(fields) + " from xf_users"))
 			database.fd_user(Cfd_user(row, fields));
 	}
 	int fields = Cfd_message::fields(database.select_template(ti_entry_message));
@@ -448,8 +446,7 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 			q(7 * 24 * 60 * 60 * (show_page + 1));
 			q(7 * 24 * 60 * 60 * show_page);
 		}
-		Csql_result result = q.execute();
-		for (auto& row : result)
+		for (auto& row : q.execute())
 		{
 			const Cfd_message& e = database.fd_message(Cfd_message(row, fields));
 			if (e.aid)
@@ -622,28 +619,18 @@ const char* page_languages()
 	form.write(cgi);
 	if (form.submit)
 	{
-		Csql_result result = database.query("select " + Cfd_language::fields(-1) + " from xf_languages");
 		Csql_row row;
 		std::string list;
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_language::fields(-1) + " from xf_languages"))
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
-			{
-				Csql_query q(database, "delete from xf_languages where lid = ?");
-				q(e.lid);
-				q.execute();
-			}
+				Csql_query(database, "delete from xf_languages where lid = ?")(e.lid).execute();
 		}
 		if (form.valid())
 		{
 			if (form.try_insert())
-			{
-				Csql_query q(database, "insert into xf_languages (fname, name) values (?, ?)");
-				q(form.fname);
-				q(form.name);
-				q.execute();
-			}
+				Csql_query(database, "insert into xf_languages (fname, name) values (?, ?)")(form.fname)(form.name).execute();
 			return page_forward(url_self(ac_languages));
 		}
 	}
@@ -657,27 +644,17 @@ const char* page_layouts()
 	form.write(cgi);
 	if (form.submit)
 	{
-		Csql_result result = database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
 		std::string list;
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts"))
 		{
 			Cfd_layout e = static_cast<Cfd_layout>(row);
 			if (cgi.has_value("remove_" + n(e.lid)))
-			{
-				Csql_query q(database, "delete from xf_layouts where lid = ?");
-				q(e.lid);
-				q.execute();
-			}
+				Csql_query(database, "delete from xf_layouts where lid = ?")(e.lid).execute();
 		}
 		if (form.valid())
 		{
 			if (form.try_insert())
-			{
-				Csql_query q(database, "insert into xf_layouts (fname, name) values (?, ?)");
-				q(form.fname);
-				q(form.name);
-				q.execute();
-			}
+				Csql_query(database, "insert into xf_layouts (fname, name) values (?, ?)")(form.fname)(form.name).execute();
 			return page_forward(url_self(ac_layouts));
 		}
 	}
@@ -691,27 +668,17 @@ const char* page_smilies()
 	form.write(cgi);
 	if (form.submit)
 	{
-		Csql_result result = database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies");
 		std::string list;
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 		{
 			Cfd_smily e = static_cast<Cfd_smily>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))
-			{
-				Csql_query q(database, "delete from xf_smilies where sid = ?");
-				q(e.sid);
-				q.execute();
-			}
+				Csql_query(database, "delete from xf_smilies where sid = ?")(e.sid).execute();
 		}
 		if (form.valid())
 		{
 			if (form.try_insert())
-			{
-				Csql_query q(database, "insert into xf_smilies (fname, name) values (?, ?)");
-				q(form.fname);
-				q(form.name);
-				q.execute();
-			}
+				Csql_query(database, "insert into xf_smilies (fname, name) values (?, ?)")(form.fname)(form.name).execute();
 			return page_forward(url_self(ac_smilies));
 		}
 	}
@@ -725,27 +692,17 @@ const char* page_styles()
 	form.write(cgi);
 	if (form.submit)
 	{
-		Csql_result result = database.query("select " + Cfd_style::fields(-1) + " from xf_styles");
 		std::string list;
-		for (auto& row : result)
+		for (auto& row : database.query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 		{
 			Cfd_style e = static_cast<Cfd_style>(row);
 			if (cgi.has_value("remove_" + n(e.sid)))
-			{
-				Csql_query q(database, "delete from xf_styles where sid = ?");
-				q(e.sid);
-				q.execute();
-			}
+				Csql_query(database, "delete from xf_styles where sid = ?")(e.sid).execute();
 		}
 		if (form.valid())
 		{
 			if (form.try_insert())
-			{
-				Csql_query q(database, "insert into xf_styles (link, name) values (?, ?)");
-				q(form.link);
-				q(form.name);
-				q.execute();
-			}
+				Csql_query(database, "insert into xf_styles (link, name) values (?, ?)")(form.link)(form.name).execute();
 			return page_forward(url_self(ac_styles));
 		}
 	}
