@@ -13,7 +13,7 @@ const char* Cform_languages::read()
 	for (auto& row : database().query("select " + Cfd_language::fields(-1) + " from xf_languages"))
 	{
 		Chtml_template t = database().select_template(ti_entry_language);
-		static_cast<Cfd_language>(row).r(t);
+		Cfd_language(row).r(t);
 		list += t;
 	}
 	t[ti_var_list] = list;
