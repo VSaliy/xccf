@@ -14,7 +14,7 @@ const char* Cform_message::read()
 	t[ti_var_action] = "?a=" + n(ac_post) + ";mid=" + n(mid) + ";pid=" + n(pid);
 	if (!database().uid())
 		t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name));
-	t[ti_field_subject] = html_input_text("subject", field_size(), 47, web_encode(subject));
+	t[ti_field_subject] = html_input_text("subject", field_size(), 47, web_encode(subject), "Subject");
 	t[ti_field_body] = html_text_area("body", field_size(), field_height(), web_encode(body));
 	if (mid && database().can_admin())
 	{
