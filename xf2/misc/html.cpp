@@ -38,9 +38,9 @@ std::string html_input_hidden(const std::string& name, const std::string& value)
 	return "<input type=hidden name=" + name + " value=\"" + value + "\">";
 }
 
-std::string html_input_password(const std::string& name, int size, int max_length, const std::string& value)
+std::string html_input_password(const std::string& name, int size, const std::string& placeholder)
 {
-	return "<input type=password name=" + name + " size=" + n(size) + " maxlength=" + n(max_length) + " value=\"" + value + "\">";
+	return "<input name=" + name + " type=password size=" + n(size) + " placeholder=\"" + placeholder + "\">";
 }
 
 std::string html_input_check(const std::string& name, bool value)
@@ -50,7 +50,12 @@ std::string html_input_check(const std::string& name, bool value)
 
 std::string html_input_text(const std::string& name, int size, int max_length, const std::string& value, bool read_only)
 {
-	return "<input type=text name=" + name + " size=" + n(size) + " maxlength=" + n(max_length) + (read_only ? " readonly" : "") + " value=\"" + value + "\">";
+	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (read_only ? " readonly" : "") + " value=\"" + value + "\">";
+}
+
+std::string html_input_text(const std::string& name, int size, int max_length, const std::string& value, const std::string& placeholder)
+{
+	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (placeholder.empty() ? "" : "placeholder=\"" + placeholder + "\"") + " value=\"" + value + "\">";
 }
 
 std::string html_text_area(const std::string& name, int cx, int cy, const std::string& value)
