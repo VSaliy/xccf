@@ -263,7 +263,7 @@ std::string select_fields(int field_mask, const char** field_names, const std::s
 			v += prefix + *r + ',';
 	}
 	if (!v.empty())
-		v.erase(v.length() - 1);
+		v.pop_back();
 	return v;
 }
 

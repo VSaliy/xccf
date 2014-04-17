@@ -16,8 +16,7 @@ const char* Cform_preferences::read()
 	t[ti_field_custom_css] = html_input_text("custom_css", field_size(), 127, web_encode(custom_css));
 	{
 		std::string v = html_option("Default", "0", false);
-		Csql_result result = database().query("select lid, name from xf_languages order by name");
-		while (Csql_row row = result.fetch_row())
+		for (auto& row : database().query("select lid, name from xf_languages order by name"))
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == language);
@@ -26,8 +25,7 @@ const char* Cform_preferences::read()
 	}
 	{
 		std::string v = html_option("Default", "0", false);
-		Csql_result result = database().query("select lid, name from xf_layouts order by name");
-		while (Csql_row row = result.fetch_row())
+		for (auto& row : database().query("select lid, name from xf_layouts order by name"))
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == layout);
@@ -36,8 +34,7 @@ const char* Cform_preferences::read()
 	}
 	{
 		std::string v = html_option("Default", "0", false);
-		Csql_result result = database().query("select sid, name from xf_styles order by name");
-		while (Csql_row row = result.fetch_row())
+		for (auto& row : database().query("select sid, name from xf_styles order by name"))
 		{
 			int i = row[0].i();
 			v += html_option(row[1].s(), n(i), i == style);

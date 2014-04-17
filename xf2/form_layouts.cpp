@@ -9,9 +9,8 @@ Cform_layouts::Cform_layouts(Cforum_database& database):
 const char* Cform_layouts::read()
 {
 	Chtml_template t = select_template(ti_page_layouts);
-	Csql_result result = database().query("select " + Cfd_layout::fields(-1) + " from xf_layouts");
 	std::string list;
-	while (Csql_row row = result.fetch_row())
+	for (auto& row : database().query("select " + Cfd_layout::fields(-1) + " from xf_layouts"))
 	{
 		Chtml_template t = database().select_template(ti_entry_layout);
 		static_cast<Cfd_layout>(row).r(t);
