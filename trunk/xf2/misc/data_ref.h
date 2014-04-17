@@ -98,9 +98,9 @@ public:
 		return to_float(*this);
 	}
 
-	long long i(long long d = 0) const
+	long long i() const
 	{
-		return to_int(*this, d);
+		return to_int(*this);
 	}
 
 	const std::string s() const
@@ -193,10 +193,9 @@ T parse(str_ref s)
 	return try_parse(d, s) ? 0 : d;
 }
 
-inline long long to_int(str_ref v, long long z = 0)
+inline long long to_int(str_ref v)
 {
-	long long d;
-	return try_parse(d, v) ? z : d;
+	return parse<long long>(v);
 	if (v.empty())
 		return 0;
 	if (!*v.end())

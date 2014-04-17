@@ -542,11 +542,11 @@ Cfd_user::Cfd_user(const Csql_row& v, int fm)
 	if (fm & f_custom_css)
 		custom_css = v[i++].s();
 	if (fm & f_field_height)
-		field_height = v[i++].i(15);
+		field_height = v[i++].i();
 	if (fm & f_field_length)
-		field_length = v[i++].i(60);
+		field_length = v[i++].i();
 	if (fm & f_flags)
-		flags = static_cast<t_user_flags>(v[i++].i(uf_default));
+		flags = static_cast<t_user_flags>(v[i++].i());
 	if (fm & f_icq_id)
 		icq_id = v[i++].i();
 	if (fm & f_ipa)
@@ -568,7 +568,7 @@ Cfd_user::Cfd_user(const Csql_row& v, int fm)
 	if (fm & f_public_mail)
 		public_mail = v[i++].s();
 	if (fm & f_rows_per_page)
-		rows_per_page = v[i++].i(25);
+		rows_per_page = v[i++].i();
 	if (fm & f_signature)
 		signature = v[i++].s();
 	if (fm & f_time_offset)
@@ -577,6 +577,14 @@ Cfd_user::Cfd_user(const Csql_row& v, int fm)
 		uid = v[i++].i();
 	if (fm & f_style)
 		style = v[i++].i();
+	if (!field_height)
+		field_height = 15;
+	if (!field_length)
+		field_length = 60;
+	if (!flags)
+		flags = uf_default;
+	if (!rows_per_page)
+		rows_per_page = 25;
 	rows_per_page = std::max(10, std::min(rows_per_page, 100));
 }
 
