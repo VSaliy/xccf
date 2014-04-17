@@ -885,18 +885,13 @@ If you would like to post a reply, use the form below.
 <link rel=stylesheet href="/forum.css">
 <title>XCC News</title>
 <%list%>
-<hr>
-<center>
-	<a target=_top href="http://sourceforge.net/projects/xccf/"><img src="http://sourceforge.net/sflogo.php?group_id=38949;type=1"></a>
-	<a target=_top href="http://sourceforge.net/projects/xccu/"><img src="http://sourceforge.net/sflogo.php?group_id=14171;type=1"></a>
-</center>
 
 #define notification_icq
-http://xccu.sourceforge.net/cgi-bin/forum.cgi<%url_show_message%>
+http://xhp.xwis.net/cgi-bin/forum.cgi<%url_show_message%>
 
 #define notification_mail
 <html>
-	<base href="http://xccu.sourceforge.net/cgi-bin/forum.cgi">
+	<base href="http://xhp.xwis.net/cgi-bin/forum.cgi">
 	<link rel=stylesheet href="/forum.css">
 	<table>
 		<tr>
