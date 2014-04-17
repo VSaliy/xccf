@@ -26,9 +26,8 @@ const char* Cform_message::read()
 		t[ti_field_moderated] = html_input_check("moderated", flags & mf_moderated);
 	}
 	{
-		const t_smily_map& map = database().smily_map(database().enable_smilies());
 		std::string list;
-		for (auto& i : map)
+		for (auto& i : database().smily_map(database().enable_smilies()))
 			list += "<img src=\"/forum/" + i.second + "\" alt=\"" + i.first + "\"> " + i.first + "<br>";
 		t[ti_field_allow_smilies] = html_input_check("allow_smilies", flags & mf_allow_smilies);
 		t[ti_var_smily_legend] = list;
