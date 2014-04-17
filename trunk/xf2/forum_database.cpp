@@ -726,7 +726,7 @@ void Cforum_database::import_strings()
 {
 	query("delete from xf_strings");
 	auto result = query("select lid, fname from xf_languages");
-	for (auto& row : result)
+	for (auto row : result)
 		import_strings(row[0].i(), row[1].s());
 	if (!result.size())
 		import_strings(1, "xf_english.txt");
@@ -762,7 +762,7 @@ void Cforum_database::import_templates()
 {
 	query("delete from xf_templates");
 	auto result = query("select lid, fname from xf_layouts");
-	for (auto& row : result)
+	for (auto row : result)
 		import_templates(row[0].i(), row[1].s());
 	if (!result.size())
 		import_templates(1, "xf_templates.txt");
@@ -829,7 +829,7 @@ Chtml_template Cforum_database::select_template(int i)
 
 int Cforum_database::aid(const std::string& name)
 {
-	for (auto& row : Csql_query(*this, "select aid, name from xf_guests where name = ?")(name).execute())
+	for (auto row : Csql_query(*this, "select aid, name from xf_guests where name = ?")(name).execute())
 	{
 		if (row[1].s() == name)
 			return row[0].i();
@@ -957,7 +957,7 @@ const t_smily_map& Cforum_database::smily_map(bool v)
 		return z;
 	if (m_smily_map.empty())
 	{
-		for (auto& row : query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
+		for (auto row : query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 		{
 			Cfd_smily e = row;
 			m_smily_map[e.name] = e.fname;
@@ -977,7 +977,7 @@ int Cforum_database::export_template_cache()
 	t_string_map string_map;
 	int cb_templates = 0;
 	{
-		for (auto& row : query("select lid, i, value from xf_strings"))
+		for (auto row : query("select lid, i, value from xf_strings"))
 		{
 			Csql_row e = row;
 			int lid = e[0].i();
@@ -991,7 +991,7 @@ int Cforum_database::export_template_cache()
 	int c_styles = 0;
 	t_style_map style_map;
 	{
-		for (auto& row : query("select " + Cfd_style::fields(-1) + " from xf_styles"))
+		for (auto row : query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 		{
 			Cfd_style e = row;
 			c_styles = std::max(c_styles, e.sid);
@@ -1003,7 +1003,7 @@ int Cforum_database::export_template_cache()
 	int c_templates = 0;
 	t_template_map template_map;
 	{
-		for (auto& row : query("select lid, i, value from xf_templates"))
+		for (auto row : query("select lid, i, value from xf_templates"))
 		{
 			Csql_row e = row;
 			int lid = e[0].i();
@@ -1146,7 +1146,7 @@ void Cforum_database::prefetch_guests(const std::set<int>& v, int fm)
 		return;
 	w.pop_back();
 	q.p_raw(w);
-	for (auto& row : q.execute())
+	for (auto row : q.execute())
 		fd_guest(Cfd_guest(row, fm));
 }
 
@@ -1166,13 +1166,13 @@ void Cforum_database::prefetch_users(const std::set<int>& v, int fm)
 		return;
 	w.pop_back();
 	q.p_raw(w);
-	for (auto& row : q.execute())
+	for (auto row : q.execute())
 		fd_user(Cfd_user(row, fm));
 }
 
 void Cforum_database::read_config()
 {
-	for (auto& row : query("select name, value from xf_config where value is not null"))
+	for (auto row : query("select name, value from xf_config where value is not null"))
 	{
 		if (row[0].s() == "forum_title")
 			m_forum_title = row[1].s();

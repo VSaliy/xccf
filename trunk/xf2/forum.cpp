@@ -206,7 +206,7 @@ const char* page_search()
 	{
 		std::set<int> guest_set;
 		std::set<int> user_set;
-		for (auto& row : result)
+		for (auto row : result)
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
 			if (message.aid)
@@ -243,7 +243,7 @@ const char* page_news()
 	int fields = Cfd_message::fields(database.select_template(ti_entry_news));
 	Csql_result result = Csql_query(database, "select ? from xf_messages where type = ? order by mid desc").p_raw(Cfd_message::fields(fields))(mt_news).execute();
 	page.reserve(result.size() << 10);
-	for (auto& row : result)
+	for (auto row : result)
 	{
 		Chtml_template t = database.select_template(ti_entry_news);
 		Cfd_message(row, fields).r(t, database, 0);
@@ -300,18 +300,18 @@ const char* page_message_list()
 	std::string page;
 	{
 		int fields = Cfd_guest::fields(database.select_template(ti_entry_message));
-		for (auto& row : database.query("select " + Cfd_guest::fields(fields) + " from xf_guests"))
+		for (auto row : database.query("select " + Cfd_guest::fields(fields) + " from xf_guests"))
 			database.fd_guest(Cfd_guest(row, fields));
 	}
 	{
 		int fields = Cfd_user::fields(database.select_template(ti_entry_message));
-		for (auto& row : database.query("select " + Cfd_user::fields(fields) + " from xf_users"))
+		for (auto row : database.query("select " + Cfd_user::fields(fields) + " from xf_users"))
 			database.fd_user(Cfd_user(row, fields));
 	}
 	int fields = Cfd_message::fields(database.select_template(ti_entry_message));
 	Csql_result result = database.query("select " + Cfd_message::fields(fields) + " from xf_messages order by mid desc");
 	page.reserve(256 * result.size());
-	for (auto& row : result)
+	for (auto row : result)
 	{
 		Chtml_template t = database.select_template(ti_entry_message);
 		database.fd_message(Cfd_message(row, fields)).r(t, database, 0);
@@ -355,7 +355,7 @@ const char* page_recent_messages(int order, int show_page)
 	{
 		std::set<int> guest_set;
 		std::set<int> user_set;
-		for (auto& row : result)
+		for (auto row : result)
 		{
 			const Cfd_message& message = Cfd_message(row, fields);
 			if (message.aid)
@@ -446,7 +446,7 @@ void list_thread(std::string& r, int mid, int l, bool forums_only, int row_index
 			q(7 * 24 * 60 * 60 * (show_page + 1));
 			q(7 * 24 * 60 * 60 * show_page);
 		}
-		for (auto& row : q.execute())
+		for (auto row : q.execute())
 		{
 			const Cfd_message& e = database.fd_message(Cfd_message(row, fields));
 			if (e.aid)
@@ -621,7 +621,7 @@ const char* page_languages()
 	{
 		Csql_row row;
 		std::string list;
-		for (auto& row : database.query("select " + Cfd_language::fields(-1) + " from xf_languages"))
+		for (auto row : database.query("select " + Cfd_language::fields(-1) + " from xf_languages"))
 		{
 			Cfd_layout e = row;
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -645,7 +645,7 @@ const char* page_layouts()
 	if (form.submit)
 	{
 		std::string list;
-		for (auto& row : database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts"))
+		for (auto row : database.query("select " + Cfd_layout::fields(-1) + " from xf_layouts"))
 		{
 			Cfd_layout e = row;
 			if (cgi.has_value("remove_" + n(e.lid)))
@@ -669,7 +669,7 @@ const char* page_smilies()
 	if (form.submit)
 	{
 		std::string list;
-		for (auto& row : database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
+		for (auto row : database.query("select " + Cfd_smily::fields(-1) + " from xf_smilies"))
 		{
 			Cfd_smily e = row;
 			if (cgi.has_value("remove_" + n(e.sid)))
@@ -693,7 +693,7 @@ const char* page_styles()
 	if (form.submit)
 	{
 		std::string list;
-		for (auto& row : database.query("select " + Cfd_style::fields(-1) + " from xf_styles"))
+		for (auto row : database.query("select " + Cfd_style::fields(-1) + " from xf_styles"))
 		{
 			Cfd_style e = row;
 			if (cgi.has_value("remove_" + n(e.sid)))
@@ -974,7 +974,7 @@ const char* page_show_message(int mid, const std::string& hl)
 			guest_set.insert(e.aid);
 		else
 			user_set.insert(e.uid);
-		for (auto& row : result)
+		for (auto row : result)
 		{
 			const Cfd_message& message = database.fd_message(Cfd_message(row, fields));
 			if (message.aid)
