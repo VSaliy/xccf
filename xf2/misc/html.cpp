@@ -48,11 +48,6 @@ std::string html_input_check(const std::string& name, bool value)
 	return "<input type=checkbox name=" + name + (value ? " checked" : "") + ">";
 }
 
-std::string html_input_text(const std::string& name, int size, int max_length, const std::string& value, bool read_only)
-{
-	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (read_only ? " readonly" : "") + " value=\"" + value + "\">";
-}
-
 std::string html_input_text(const std::string& name, int size, int max_length, const std::string& value, const std::string& placeholder)
 {
 	return "<input name=" + name + " type=text size=" + n(size) + " maxlength=" + n(max_length) + (placeholder.empty() ? "" : "placeholder=\"" + placeholder + "\"") + " value=\"" + value + "\">";

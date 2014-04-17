@@ -18,8 +18,8 @@ const char* Cform_smilies::read()
 	}
 	t[ti_var_list] = list;
 	t[ti_var_action] = "?a=" + n(ac_smilies);
-	t[ti_field_fname] = html_input_text("fname", field_size(), 31, web_encode(fname));
-	t[ti_field_name] = html_input_text("name", field_size(), 15, web_encode(name));
+	t[ti_field_fname] = html_input_text("fname", field_size(), 31, web_encode(fname), "Filename");
+	t[ti_field_name] = html_input_text("name", field_size(), 15, web_encode(name), "Name");
 	if (submit)
 	{
 		field_error(t, ti_field_error_fname, fname_valid());

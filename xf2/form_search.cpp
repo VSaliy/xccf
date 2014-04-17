@@ -12,15 +12,15 @@ const char* Cform_search::read()
 {
 	Chtml_template t = select_template(ti_page_search);
 	t[ti_field_hidden] = html_input_hidden("a", n(ac_search));
-	t[ti_field_subject] = html_input_text("subject", field_size(), 31, web_encode(subject));
-	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name));
-	t[ti_field_body] = html_input_text("body", field_size(), 31, web_encode(body));
-	t[ti_field_signature] = html_input_text("signature", field_size(), 31, web_encode(signature));
+	t[ti_field_subject] = html_input_text("subject", field_size(), 31, web_encode(subject), "Subject");
+	t[ti_field_name] = html_input_text("name", field_size(), 31, web_encode(name), "Name");
+	t[ti_field_body] = html_input_text("body", field_size(), 31, web_encode(body), "Body");
+	t[ti_field_signature] = html_input_text("signature", field_size(), 31, web_encode(signature), "Signature");
 	if (database().can_admin())
-		t[ti_field_ipa] = html_input_text("ipa", field_size(), 31, web_encode(ipa));
-	t[ti_field_uid] = html_input_text("uid", field_size(), 31, uid ? n(uid) : "");
+		t[ti_field_ipa] = html_input_text("ipa", field_size(), 31, web_encode(ipa), "IP Address");
+	t[ti_field_uid] = html_input_text("uid", field_size(), 31, uid ? n(uid) : "", "User ID");
 	t[ti_field_order] = html_select(html_option("Subject", "0", order == 0) + html_option("Date", "1", order == 1) + html_option("Date (reverse)", "2", order == 2), "name=order");
-	t[ti_field_limit] = html_input_text("limit", field_size(), 31, limit ? n(limit) : "");
+	t[ti_field_limit] = html_input_text("limit", field_size(), 31, limit ? n(limit) : "", "Limit");
 	t[ti_field_show_bodies] = html_input_check("show_bodies", show_bodies);
 	return t;
 }
