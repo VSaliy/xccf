@@ -115,7 +115,7 @@ Chtml_template global_replace(int mid)
 	t[ti_var_date_long] = database.convert_date(time(NULL), true);
 	t[ti_var_css] = database.select_style();
 	t[ti_var_forum_title] = database.forum_title();
-	t[ti_var_page_title] = g_title;
+	t[ti_var_page_title] = web_encode(g_title);
 	t[ti_link_history] = url_self(ac_history);
 	t[ti_link_home] = url_self(ac_home);
 	t[ti_link_search] = url_self(ac_search);
