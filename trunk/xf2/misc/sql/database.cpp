@@ -4,9 +4,7 @@
 #include <iostream>
 #include <find_ptr.h>
 
-#ifdef WIN32
-#pragma comment(lib, "libmysql")
-#else
+#ifndef WIN32
 #include <syslog.h>
 #endif
 
